@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hoverEffect {
+    @apply hover:brightness-[0.98] active:brightness-[0.96] transition-all duration-100;
+}
+.hoverEffectOpacity {
+    @apply hover:opacity-90 active:opacity-80 transition-all duration-100;
+}
