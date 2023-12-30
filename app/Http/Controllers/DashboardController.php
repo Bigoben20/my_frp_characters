@@ -39,13 +39,18 @@ class DashboardController extends Controller
 
         $character = Character::where([["user_id",Auth::id()],["id",$validateData["id"]]])->first();
         if (!$character) {
-            return redirect()->back()->with('error','Karakter silinemedi');
+            return redirect()->back()->with('warning','Karakter bulunamadı');
         }
         try {
             $character->delete();
             return redirect()->back()->with('success','Karakter başarıyla silindi');;
         } catch (\Exception $e) {
-            return redirect()->back()->with('error','Karakter silinemedi');;
+            return redirect()->back()->with('error','Karakter silinemedi; '.$e->getMessage());;
         }
+    }
+
+    public function detailsCharacter($id) {
+        $character = Character::find($id);
+        return Inertia::render('CharacterDetails',compact("character"));
     }
 }

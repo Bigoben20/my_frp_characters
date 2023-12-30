@@ -15,21 +15,31 @@
 
 <script setup>
 import ToastListItem from '@/Components/ToastListItem.vue'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { router, usePage } from '@inertiajs/vue3'
 import toast from '@/Stores/toast'
 
 const page = usePage();
 
-onMounted(() => {
-    router.on('finish', () => {
-        if (page.props.success) {
-            toast.add({
-                type:'success', message: page.props.success
-            });
-    
-        }
-    })
+router.on('finish', () => {
+    if (page.props.success && page.props.success != null) {
+        toast.add({
+            type:'success', message: page.props.success
+        });
+
+    }
+    else if (page.props.warning && page.props.warning != null) {
+        toast.add({
+            type:'warning', message: page.props.warning
+        });
+
+    }
+    else if (page.props.error && page.props.error != null) {
+        toast.add({
+            type:'error', message: page.props.error
+        });
+
+    }
 });
 
 function remove(index) {

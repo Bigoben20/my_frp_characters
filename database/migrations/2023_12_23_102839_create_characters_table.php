@@ -15,6 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->string("high_concept");
+            $table->string("trouble")->nullable()->default(null);
+            $table->string("relationship")->nullable()->default(null);
+            $table->string("aspect")->nullable()->default(null);
+            $table->string("aspect2")->nullable()->default(null);
+            $table->longText("stunts")->nullable()->default(null);
+            $table->tinyInteger("refresh")->default(0);
+            $table->tinyInteger("fate_point")->default(0);
+            $table->tinyInteger("physical_stress")->default(0);
+            $table->tinyInteger("mental_stress")->default(0);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
             

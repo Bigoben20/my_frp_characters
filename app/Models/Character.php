@@ -14,6 +14,12 @@ class Character extends Model
     protected $fillable = [
         'name',
         'high_concept',
+        'trouble',
+        'aspect',
+        'aspect2',
+        'stunts',
+        'physical_stress',
+        'mental_stress',
         'user_id',
     ];
 

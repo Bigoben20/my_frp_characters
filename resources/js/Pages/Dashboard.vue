@@ -8,18 +8,18 @@
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="p-6 overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                    <div class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Your Characters</div>
+                <div class="p-4 overflow-hidden bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
+                    <div class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Karakterler</div>
                     <div class="mb-2">
                         <button type="button" class="px-4 py-2 rounded bg-sky-100 text-sky-700 hoverEffect" @click="createModalShow = true">
-                            Create
+                            Oluştur
                         </button>
                         <button type="button" class="px-4 py-2 ml-4 rounded bg-sky-100 text-sky-700 hoverEffect" @click="toast.add({type:'warning',message:'test'})">
                             + add toast
                         </button>
 
                     </div>
-                    <div>
+                    <div class="w-full overflow-x-auto">
                         <table class="w-full text-left table-auto">
                             <thead class="dark:text-gray-300">
                                 <tr class="bg-gray-100 dark:bg-gray-700">
@@ -38,10 +38,10 @@
                                     <td class="px-3 py-1.5">{{ character.high_concept }}</td>
                                     <td class="px-3 py-1.5 w-[168px]">
                                         <div class="flex items-center gap-2 w-fit">
-                                            <button type="button" class="px-4 py-2 rounded bg-sky-100 text-sky-700 hoverEffect">
+                                            <Link :href="route('character.details',[id=character.id])" type="button" class="px-4 py-2 rounded bg-sky-100 text-sky-700 hoverEffect">
                                                 Details
-                                            </button>
-                                            <button type="button" class="px-4 py-2 rounded bg-rose-100 text-rose-700 hoverEffect" @click="deleteCharacter(character.id)">
+                                            </Link>
+                                            <button type="button" class="px-4 py-2 rounded bg-rose-100 text-rose-700 hoverEffect" @click="selectedCharacter = character; deleteModalShow = true;">
                                                 Delete
                                             </button>
                                         </div>
@@ -55,6 +55,7 @@
         </div>
     </AuthenticatedLayout>
 
+    <!-- Create Modal -->
     <Modal :show="createModalShow">
         <div class="p-6">
             <div class="relative mb-2">
@@ -88,11 +89,38 @@
             </form>
         </div>
     </Modal>
+
+    <!-- Delete Modal -->
+    <Modal :show="deleteModalShow">
+        <div class="p-6">
+            <div class="relative mb-2">
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    Karakteri Sil
+                </h2>
+                <button class="absolute top-0 right-0 flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hoverEffect" @click="selectedCharacter = null; deleteModalShow = false;">
+                    <i class="text-sm fa-solid fa-x"></i>
+                </button>
+            </div>
+            <div class="my-6">
+                "{{ selectedCharacter.name }}" karakterini silmek istediğinize emin misiniz?
+            </div>
+            <div class="flex items-center justify-between">
+                
+                <button class="px-4 py-2 rounded bg-sky-100 text-sky-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click="selectedCharacter = null; deleteModalShow = false;">
+                    <span>Vazgeç</span>
+                </button>
+                <button class="px-4 py-2 rounded bg-red-100 text-red-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click="deleteCharacter(selectedCharacter.id)">
+                    <span>Sil</span>
+                    <MiniLoader :show="deleteLoad" radius="4" />
+                </button>
+            </div>
+        </div>
+    </Modal>
 </template>
 
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, router, useForm, usePage } from '@inertiajs/vue3';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import Modal from '@/Components/Modal.vue';
 import { ref } from 'vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -108,7 +136,9 @@ defineProps({
 
 const page = usePage();
 
+const selectedCharacter = ref(null);
 const createModalShow = ref(false);
+const deleteModalShow = ref(false);
 const successMessage = ref(false);
 const errors = ref([]);
 const submitLoad = ref(false);
@@ -124,7 +154,7 @@ const submitForm = async () => {
         preserveScroll: true,
         onSuccess: (success) => {
             // console.log(success);
-            successMessage.value = true;
+            resetCreate();
         },
         onError: (error) => {
             // console.log(error);
@@ -154,6 +184,7 @@ function deleteCharacter(id) {
         preserveScroll: true,
         onSuccess: (success) => {
             // console.log(success);
+            deleteModalShow.value = false;
         },
         onError: (error) => {
             // console.log(error);
