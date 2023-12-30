@@ -28,6 +28,8 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::post('/character-create', [DashboardController::class, 'storeCharacter'])->name('character.create');
+    Route::post('/character-delete', [DashboardController::class, 'deleteCharacter'])->name('character.delete');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
