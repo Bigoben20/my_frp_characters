@@ -9,7 +9,7 @@ import { Link } from '@inertiajs/vue3';
     <div class="flex flex-col items-stretch min-h-screen pt-6 bg-gray-100 sm:pt-0 dark:bg-gray-900">
         <ToastList></ToastList>
         
-        <div class="fixed top-0 z-20 flex justify-center w-full bg-white shadow-sm">
+        <div class="fixed top-0 z-20 flex justify-center w-full bg-white shadow-sm dark:bg-gray-800">
             <div class="flex justify-between w-full max-w-6xl p-4">
                 <Link href="/">
                     <ApplicationLogo class="w-10 h-10 text-gray-500 fill-current" />

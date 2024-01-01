@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Character;
+use App\Models\Skills;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -27,9 +28,16 @@ class DashboardController extends Controller
             'high_concept.max' => 'High concept alanı en fazla 255 karakter olabilir'
         ]);
         $validateData["user_id"] = Auth::id();
-        Character::create($validateData);
 
-        return redirect()->back()->with('success','Karakter başarıyla oluşturuldu');
+        try {
+            $character = Character::create($validateData);
+            $skills = new Skills();
+            $skills->character_id = $character->id;
+            $skills->save();
+            return redirect()->back()->with('success','Karakter başarıyla oluşturuldu');;
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error','Karakter oluşturulamadı; '.$e->getMessage());;
+        }
     }
 
     public function deleteCharacter(Request $request) {
@@ -51,6 +59,44 @@ class DashboardController extends Controller
 
     public function detailsCharacter($id) {
         $character = Character::find($id);
-        return Inertia::render('CharacterDetails',compact("character"));
+        $skills = Skills::where("character_id",$id)->first();
+        return Inertia::render('CharacterDetails',compact("character","skills"));
+    }
+
+    public function updateCharacter(Request $request) {
+        if (!Auth::user()) {
+            return redirect()->back()->with('warning','Üye girişi yapılmamış!');
+        }
+
+        $character = (object) $request->characterData;
+        $skills = (object) $request->skills;
+        $characterDB = Character::find($character->id);
+        if (!$characterDB) {
+            return redirect()->back()->with('error','Karakter bulunamadı!');
+        }
+        $skillsDB = Skills::where("character_id",$character->id)->first();
+
+        try {
+            $characterDB->name = $character->name;
+            $characterDB->high_concept = $character->high_concept;
+            $characterDB->trouble = $character->trouble;
+            $characterDB->relationship = $character->relationship;
+            $characterDB->aspect = $character->aspect;
+            $characterDB->aspect2 = $character->aspect2;
+            $characterDB->stunts = $character->stunts;
+            $characterDB->physical_stress = $character->physical_stress;
+            $characterDB->mental_stress = $character->mental_stress;
+            $characterDB->fate_point = $character->fate_point;
+            $characterDB->refresh = $character->refresh;
+            
+            $skillsDB->skills = $skills->skills; 
+            $skillsDB->skills_data = $skills->skills_data; 
+            
+            $characterDB->save();
+            $skillsDB->save();
+            return redirect()->back()->with('success','Karakter başarıyla güncellendi');;
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error','Karakter güncellenemedi; '.$e->getMessage());;
+        }
     }
 }

@@ -1,0 +1,23 @@
+export default {
+    skills: {
+        Athletics: "Athletics",
+        Burglary: "Burglary",
+        Contacts: "Contacts",
+        Crafts: "Crafts",
+        Deceive: "Deceive",
+        Drive: "Drive",
+        Empathy: "Empathy",
+        Fight: "Fight",
+        Investigate: "Investigate",
+        Lore: "Lore",
+        Notice: "Notice",
+        Physique: "Physique",
+        Provoke: "Provoke",
+        Rapport: "Rapport",
+        Resources: "Resources",
+        Shoot: "Shoot",
+        Stealth: "Stealth",
+        Will: "Will",
+        Wisdom: "Wisdom",
+    },
+};

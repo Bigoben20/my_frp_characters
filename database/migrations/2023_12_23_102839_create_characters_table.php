@@ -24,6 +24,11 @@ return new class extends Migration
             $table->tinyInteger("fate_point")->default(0);
             $table->tinyInteger("physical_stress")->default(0);
             $table->tinyInteger("mental_stress")->default(0);
+            $table->string("mid")->nullable()->default(null);
+            $table->string("moderate")->nullable()->default(null);
+            $table->string("severe")->nullable()->default(null);
+            $table->string("extreme")->nullable()->default(null);
+            $table->string("mid2")->nullable()->default(null);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
             

@@ -6,11 +6,11 @@
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Karakter Detayı</h2>
         </template>
 
-        <Base :character="props.character"/>
+        <Base :character="props.character" :skills="props.skills"/>
     </AuthenticatedLayout>
 
     <DefaultLayout v-else>
-        <Base :character="props.character"/>
+        <Base :character="props.character" :skills="props.skills"/>
     </DefaultLayout>
 </template>
 
@@ -23,6 +23,9 @@ import { ref } from 'vue';
 
 const props = defineProps({
     character: {
+        type: Object,
+    },
+    skills: {
         type: Object,
     }
 })

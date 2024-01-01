@@ -9,14 +9,14 @@
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="p-4 overflow-hidden bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
-                    <div class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Karakterler</div>
+                    <div class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Karakterler <span>({{ characters.length }})</span></div>
                     <div class="mb-2">
-                        <button type="button" class="px-4 py-2 rounded bg-sky-100 text-sky-700 hoverEffect" @click="createModalShow = true">
+                        <button type="button" class="px-4 py-2 rounded bg-sky-200 text-sky-700 hoverEffect" @click="createModalShow = true">
                             Oluştur
                         </button>
-                        <button type="button" class="px-4 py-2 ml-4 rounded bg-sky-100 text-sky-700 hoverEffect" @click="toast.add({type:'warning',message:'test'})">
+                        <!-- <button type="button" class="px-4 py-2 ml-4 rounded bg-sky-100 text-sky-700 hoverEffect" @click="toast.add({type:'warning',message:'test'})">
                             + add toast
-                        </button>
+                        </button> -->
 
                     </div>
                     <div class="w-full overflow-x-auto">
@@ -34,15 +34,15 @@
                             <tbody class="dark:text-gray-100">
                                 <tr v-for="character in characters" :key="character.id">
                                     <td class="px-3 py-1.5">{{ character.id }}</td>
-                                    <td class="px-3 py-1.5">{{ character.name }}</td>
-                                    <td class="px-3 py-1.5">{{ character.high_concept }}</td>
+                                    <td class="px-3 py-1.5 whitespace-nowrap">{{ character.name }}</td>
+                                    <td class="px-3 py-1.5 whitespace-nowrap">{{ character.high_concept }}</td>
                                     <td class="px-3 py-1.5 w-[168px]">
                                         <div class="flex items-center gap-2 w-fit">
-                                            <Link :href="route('character.details',[id=character.id])" type="button" class="px-4 py-2 rounded bg-sky-100 text-sky-700 hoverEffect">
-                                                Details
+                                            <Link :href="route('character.details',[id=character.id])" type="button" class="px-4 py-2 rounded bg-sky-200 text-sky-700 hoverEffect">
+                                                Detaylar
                                             </Link>
-                                            <button type="button" class="px-4 py-2 rounded bg-rose-100 text-rose-700 hoverEffect" @click="selectedCharacter = character; deleteModalShow = true;">
-                                                Delete
+                                            <button type="button" class="px-4 py-2 rounded bg-rose-200 text-rose-700 hoverEffect" @click="selectedCharacter = character; deleteModalShow = true;">
+                                                Sil
                                             </button>
                                         </div>
                                     </td>
@@ -62,7 +62,7 @@
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     Create Character
                 </h2>
-                <button class="absolute top-0 right-0 flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hoverEffect" @click="resetCreate">
+                <button class="absolute top-0 right-0 flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-900 dark:text-white hoverEffect" @click="resetCreate">
                     <i class="text-sm fa-solid fa-x"></i>
                 </button>
             </div>
@@ -81,7 +81,7 @@
                     <label for="high_concept">High Concept:</label>
                     <TextInput id="high_concept" v-model="form.high_concept" />
                 </div>
-                <button class="px-4 py-2 rounded bg-indigo-100 text-indigo-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" type="submit" :disabled="submitLoad || successMessage">
+                <button class="px-4 py-2 rounded bg-indigo-200 text-indigo-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" type="submit" :disabled="submitLoad || successMessage">
                     <span>Kaydet</span>
                     <MiniLoader :show="submitLoad" radius="4" />
                     <i class="text-green-500 fa-solid fa-check-circle" v-if="successMessage"></i>
@@ -97,19 +97,19 @@
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     Karakteri Sil
                 </h2>
-                <button class="absolute top-0 right-0 flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hoverEffect" @click="selectedCharacter = null; deleteModalShow = false;">
+                <button class="absolute top-0 right-0 flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-900 dark:text-white hoverEffect" @click="selectedCharacter = null; deleteModalShow = false;">
                     <i class="text-sm fa-solid fa-x"></i>
                 </button>
             </div>
-            <div class="my-6">
+            <div class="my-6 dark:text-gray-200">
                 "{{ selectedCharacter.name }}" karakterini silmek istediğinize emin misiniz?
             </div>
             <div class="flex items-center justify-between">
                 
-                <button class="px-4 py-2 rounded bg-sky-100 text-sky-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click="selectedCharacter = null; deleteModalShow = false;">
+                <button class="px-4 py-2 rounded bg-sky-200 text-sky-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click="selectedCharacter = null; deleteModalShow = false;">
                     <span>Vazgeç</span>
                 </button>
-                <button class="px-4 py-2 rounded bg-red-100 text-red-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click="deleteCharacter(selectedCharacter.id)">
+                <button class="px-4 py-2 rounded bg-red-200 text-red-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click="deleteCharacter(selectedCharacter.id)">
                     <span>Sil</span>
                     <MiniLoader :show="deleteLoad" radius="4" />
                 </button>

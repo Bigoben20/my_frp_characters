@@ -5,6 +5,20 @@ import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import { VueMaskDirective } from "v-mask";
+import { createI18n } from 'vue-i18n'
+
+import enMessages from '@/locales/en'; // Türkçe çeviriler
+import trMessages from '@/locales/tr'; // Türkçe çeviriler
+
+const messages = {
+    tr: trMessages,
+    en: enMessages
+  };
+const i18n = new createI18n({
+    locale: 'tr',
+    fallbackLocale: 'tr',
+    messages
+  });
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
@@ -20,6 +34,7 @@ createInertiaApp({
             .directive("mask", VueMaskDirective)
             .use(plugin)
             .use(ZiggyVue)
+            .use(i18n)
             .mount(el);
     },
     progress: {
