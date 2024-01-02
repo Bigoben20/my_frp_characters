@@ -47,13 +47,13 @@
                         </div>
                         <div class="flex justify-between gap-2">
                             <div class="flex flex-col-reverse items-center justify-between md:flex-row">
-                                <input :disabled="!$page.props.auth.user" type="number" id="refresh" max="10" v-model="character.characterData.refresh"
+                                <input :disabled="!$page.props.auth.user" type="tel" id="refresh" v-mask="'#'" v-model="character.characterData.refresh"
                                     class="w-20 h-20 p-4 text-4xl bg-transparent border border-gray-300 rounded-full focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-300">
                                 <label for="refresh" class="ml-2 text-3xl">Refresh</label>
                             </div>
                             <div class="flex flex-col items-center justify-between md:flex-row">
                                 <label for="fp" class="mr-2 text-3xl">Fate Point</label>
-                                <input :disabled="!$page.props.auth.user" type="number" id="fp" max="10" v-model="character.characterData.fate_point"
+                                <input :disabled="!$page.props.auth.user" type="number" id="fp" v-mask="'#'" v-model="character.characterData.fate_point"
                                     class="w-20 h-20 p-4 text-4xl bg-transparent border border-gray-300 rounded-full focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-300">
                             </div>
                         </div>
