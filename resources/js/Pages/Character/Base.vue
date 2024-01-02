@@ -164,6 +164,7 @@ import TextAreainput from '@/Components/TextAreaInput.vue';
 import { ref } from 'vue'
 import { router, useForm } from '@inertiajs/vue3';
 import MiniLoader from '@/Components/MiniLoader.vue';
+import NProgress from 'nprogress'
 
 const props = defineProps({
     character: {
@@ -214,6 +215,7 @@ const skills_data = ref(JSON.parse(props.skills.skills_data));
 console.log(JSON.parse(props.skills.skills));
 
 const updateCharacter = async () => {
+    NProgress.start()
     saveLoading.value = true;
     character.skills.skills_data = JSON.stringify(skills_data.value);
     character.post('/character-update', {
@@ -230,6 +232,7 @@ const updateCharacter = async () => {
         },
         onFinish: () => {
             saveLoading.value = false;
+            NProgress.done()
         }
     });
 }

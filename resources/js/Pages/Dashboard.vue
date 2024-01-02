@@ -127,6 +127,7 @@ import TextInput from '@/Components/TextInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import MiniLoader from '@/Components/MiniLoader.vue';
 import toast from '@/Stores/toast';
+import nprogress from 'nprogress';
 
 defineProps({
     characters: {
@@ -148,6 +149,7 @@ const form = useForm({
     high_concept: '',
 });
 const submitForm = async () => {
+    nprogress.start();
     submitLoad.value = true;
     errors.value = [];
     form.post('/character-create', {
@@ -165,6 +167,7 @@ const submitForm = async () => {
         },
         onFinish: () => {
             submitLoad.value = false;
+            nprogress.done();
         }
     })
 };
@@ -176,6 +179,7 @@ const deleteForm = useForm({
 const deleteLoad = ref(false);
 const deleteSuccess = ref(false);
 function deleteCharacter(id) {
+    nprogress.start();
     deleteLoad.value = true;
 
     deleteForm.id = id;
@@ -195,6 +199,7 @@ function deleteCharacter(id) {
         },
         onFinish: () => {
             deleteLoad.value = false;
+            nprogress.done();
         }
     })
 }

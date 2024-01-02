@@ -1,6 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    font-family: 'Outfit', sans-serif;
+}
 
 .hoverEffect {
     @apply hover:brightness-[0.98] active:brightness-[0.96] transition-all duration-100;

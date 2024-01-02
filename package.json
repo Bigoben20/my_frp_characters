@@ -19,6 +19,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "nprogress": "^0.2.0",
         "v-mask": "^2.3.0",
         "vue-i18n": "^9.8.0"
     }

@@ -6,9 +6,17 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
+import nprogress from 'nprogress';
 
 const showingNavigationDropdown = ref(false);
+
+router.on('start', () => {
+    nprogress.start();
+})
+router.on('finish', () => {
+    nprogress.done();
+})
 </script>
 
 <template>
