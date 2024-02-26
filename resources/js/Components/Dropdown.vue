@@ -26,9 +26,16 @@ onMounted(() => document.addEventListener('keydown', closeOnEscape));
 onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
 
 const widthClass = computed(() => {
-    return {
-        48: 'w-48',
-    }[props.width.toString()];
+    switch (props.width) {
+        case '48':
+            return "w-48";
+            break;
+    
+        default:
+            return props.width;
+            break;
+    }
+   
 });
 
 const alignmentClasses = computed(() => {
@@ -36,6 +43,8 @@ const alignmentClasses = computed(() => {
         return 'ltr:origin-top-left rtl:origin-top-right start-0';
     } else if (props.align === 'right') {
         return 'ltr:origin-top-right rtl:origin-top-left end-0';
+    } else if (props.align === 'bottom-left') {
+        return 'ltr:origin-bottom-right rtl:origin-bottom-left start-0 bottom-[calc(100%+8px)]';
     } else {
         return 'origin-top';
     }
@@ -45,7 +54,7 @@ const open = ref(false);
 </script>
 
 <template>
-    <div class="relative">
+    <div class="relative" @click.self="open = false">
         <div @click="open = !open">
             <slot name="trigger" />
         </div>
@@ -54,19 +63,18 @@ const open = ref(false);
         <div v-show="open" class="fixed inset-0 z-40" @click="open = false"></div>
 
         <Transition
-            enter-active-class="transition ease-out duration-200"
-            enter-from-class="opacity-0 scale-95"
-            enter-to-class="opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75"
-            leave-from-class="opacity-100 scale-100"
-            leave-to-class="opacity-0 scale-95"
+            enter-active-class="transition duration-200 ease-out"
+            enter-from-class="scale-95 opacity-0"
+            enter-to-class="scale-100 opacity-100"
+            leave-active-class="transition duration-75 ease-in"
+            leave-from-class="scale-100 opacity-100"
+            leave-to-class="scale-95 opacity-0"
         >
             <div
                 v-show="open"
                 class="absolute z-50 mt-2 rounded-md shadow-lg"
-                :class="[widthClass, alignmentClasses]"
-                style="display: none"
-                @click="open = false"
+                :class="[widthClass,alignmentClasses]"
+                :style="['display:none; width:'+widthClass+';']"
             >
                 <div class="rounded-md ring-1 ring-black ring-opacity-5" :class="contentClasses">
                     <slot name="content" />

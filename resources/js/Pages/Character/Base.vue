@@ -148,7 +148,29 @@
         </div>
         <div class="fixed left-0 w-full px-2 bottom-2" v-if="$page.props.auth.user">
             <div class="flex justify-between gap-2 p-4 bg-white border border-gray-300 rounded-lg dark:bg-opacity-10 dark:border-gray-800 backdrop-blur-md">
-                <div></div>
+                <div class="relative">
+                    <Dropdown align="bottom-left" width="500px">
+                        <template #trigger>
+                            <span class="inline-flex rounded-md">
+                                <button type="button"
+                                    class=" text-amber-600 bg-amber-100 generalButton">
+                                    <span>Notlar</span>
+
+                                    <svg class="ms-2 -me-0.5 h-4 w-4 rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </span>
+                        </template>
+
+                        <template #content>
+                            <div class="flex flex-col items-start m-2">
+                                <TextAreainput :disabled="!$page.props.auth.user" v-model="character.characterData.stunts" class="w-full" rows="15" />
+                            </div>
+                        </template>
+                    </Dropdown>
+                </div>
                 <button class="w-1/3 text-green-600 bg-green-100 generalButton" type="submit">
                     <span>Kaydet</span>
                     <MiniLoader :show="saveLoading" radius="4" />
@@ -165,6 +187,7 @@ import { ref } from 'vue'
 import { router, useForm } from '@inertiajs/vue3';
 import MiniLoader from '@/Components/MiniLoader.vue';
 import NProgress from 'nprogress'
+import Dropdown from '@/Components/Dropdown.vue';
 
 const props = defineProps({
     character: {
