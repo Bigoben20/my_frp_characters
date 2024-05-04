@@ -136,7 +136,7 @@
                         </div>
                         <div class="flex flex-col items-stretch gap-4">
                             <div v-for="(skill, index) in skills" :key="index" class="flex items-center gap-2 text-xl tracking-wide dark:text-gray-100">
-                                <input :disabled="!$page.props.auth.user" type="number" v-model="skills_data[index]"
+                                <input :disabled="!$page.props.auth.user" type="number" v-mask="'#'" min="0" v-model="skills_data[index]"
                                     class="w-16 h-16 p-2 text-center bg-transparent border border-gray-300 rounded-full dark:border-gray-600">
                                 <span>
                                     {{ $t(`skills.${skill}`) }}
