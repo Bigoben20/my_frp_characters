@@ -147,9 +147,9 @@
                 </div>
             </div>
         </div>
-        <div class="fixed left-0 w-full px-2 bottom-2" v-if="$page.props.auth.user">
+        <div class="fixed left-0 w-full px-2 bottom-2 z-[1000]" v-if="$page.props.auth.user">
             <div class="flex justify-between gap-2 p-4 bg-white border border-gray-300 rounded-lg dark:bg-opacity-10 dark:border-gray-800 backdrop-blur-md">
-                <button type="button" class=" text-amber-600 bg-amber-100 generalButton" @click="openMore = true">
+                <button type="button" class=" text-amber-600 bg-amber-100 generalButton" @click="openMore = !openMore">
                     <span>Notlar</span>
 
                     <svg class="ms-2 -me-0.5 h-4 w-4 rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
