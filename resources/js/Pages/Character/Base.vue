@@ -164,12 +164,17 @@
         </div>
     </form>
 
-    <div class="fixed top-0 left-0 w-full h-full bg-gray-800/30" v-show="openMore" @click.self="openMore = false">
+    <div class="fixed top-0 left-0 w-full h-full bg-gray-800/30 dark:bg-gray-900/50" v-show="openMore" @click.self="openMore = false">
         <transition name="slide-fade">
-            <div class="absolute top-0 right-0 w-4/5 h-full transition-all duration-300 ease-in bg-white lg:w-1/3" v-show="openMore">
+            <div class="absolute top-0 right-0 w-4/5 h-full transition-all duration-300 ease-in bg-white shadow-xl dark:bg-gray-800 lg:w-1/3" v-show="openMore">
                 <div class="h-full p-4">
-                    <label for="notes">Notes</label>
-                    <TextAreainput id="notes" :disabled="!$page.props.auth.user" v-model="character.characterData.notes" class="w-full" rows="15" />
+                    <button type="button" class="absolute flex items-center justify-center w-6 h-6 rounded-full text-sky-600 bg-sky-100 right-2 top-2" @click="openMore = false">
+                        <i class="text-[11px] fa-solid fa-x"></i>
+                    </button>
+                    <div class="mt-4">
+                        <label for="notes" class="">Notes</label>
+                        <TextAreainput id="notes" :disabled="!$page.props.auth.user" v-model="character.characterData.notes" class="w-full" rows="15" />
+                    </div>
                 </div>
             </div>
         </transition>
