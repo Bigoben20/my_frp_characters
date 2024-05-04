@@ -80,6 +80,9 @@ class DashboardController extends Controller
         if (!$characterDB) {
             return redirect()->back()->with('error','Karakter bulunamadı!');
         }
+        else if ($characterDB->user_id != Auth::user()->id) {
+            return redirect()->back()->with('error','Buna yetkiniz bulunmamaktadır!');
+        }
         $skillsDB = Skills::where("character_id",$character->id)->first();
 
         try {

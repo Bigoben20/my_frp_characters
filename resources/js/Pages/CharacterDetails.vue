@@ -1,7 +1,7 @@
 <template>
     <Head title="Karakter Detayı" />
     
-    <AuthenticatedLayout v-if="$page.props.auth.user == props.character.user_id">
+    <AuthenticatedLayout v-if="$page.props.auth.user">
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Karakter Detayı</h2>
         </template>

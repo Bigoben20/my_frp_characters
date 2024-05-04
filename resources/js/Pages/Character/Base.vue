@@ -6,7 +6,7 @@
                 <!-- Names -->
                 <div class="flex flex-col items-start p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 col-span-full">
                     <label for="name">İsim</label>
-                    <Textinput :disabled="!$page.props.auth.user" id="name" v-model="character.characterData.name" class="w-full" />
+                    <Textinput :auth="checkUser" id="name" v-model="character.characterData.name" class="w-full" />
                 </div>
                 <div class="flex flex-col gap-6">
                     <!-- Aspects -->
@@ -16,23 +16,23 @@
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="high_concept">High Concept</label>
-                            <Textinput :disabled="!$page.props.auth.user" id="high_concept" v-model="character.characterData.high_concept" class="w-full" />
+                            <Textinput :auth="checkUser" id="high_concept" v-model="character.characterData.high_concept" class="w-full" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="trouble">Trouble</label>
-                            <Textinput :disabled="!$page.props.auth.user" id="trouble" v-model="character.characterData.trouble" class="w-full" />
+                            <Textinput :auth="checkUser" id="trouble" v-model="character.characterData.trouble" class="w-full" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="relationship">Relationships</label>
-                            <Textinput :disabled="!$page.props.auth.user" id="relationship" v-model="character.characterData.relationship" class="w-full" />
+                            <Textinput :auth="checkUser" id="relationship" v-model="character.characterData.relationship" class="w-full" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect">Serbest Aspect</label>
-                            <Textinput :disabled="!$page.props.auth.user" id="aspect" v-model="character.characterData.aspect" class="w-full" />
+                            <Textinput :auth="checkUser" id="aspect" v-model="character.characterData.aspect" class="w-full" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect2">Serbest Aspect</label>
-                            <Textinput :disabled="!$page.props.auth.user" id="aspect2" v-model="character.characterData.aspect2" class="w-full" />
+                            <Textinput :auth="checkUser" id="aspect2" v-model="character.characterData.aspect2" class="w-full" />
                         </div>
                     </div>
 
@@ -43,17 +43,17 @@
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect">Stuntlar</label>
-                            <TextAreainput :disabled="!$page.props.auth.user" v-model="character.characterData.stunts" class="w-full" rows="15" />
+                            <TextAreainput :auth="checkUser" v-model="character.characterData.stunts" class="w-full" rows="15" />
                         </div>
                         <div class="flex justify-between gap-2">
                             <div class="flex flex-col-reverse items-center justify-between md:flex-row">
-                                <input :disabled="!$page.props.auth.user" type="number" id="refresh" v-mask="'#'" v-model="character.characterData.refresh"
+                                <input :disabled="!checkUser" type="number" id="refresh" v-mask="'#'" v-model="character.characterData.refresh"
                                     class="w-20 h-20 p-4 text-4xl bg-transparent border border-gray-300 rounded-full focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-300">
                                 <label for="refresh" class="ml-2 text-3xl">Refresh</label>
                             </div>
                             <div class="flex flex-col items-center justify-between md:flex-row">
                                 <label for="fp" class="mr-2 text-3xl">Fate Point</label>
-                                <input :disabled="!$page.props.auth.user" type="number" id="fp" v-mask="'#'" v-model="character.characterData.fate_point"
+                                <input :disabled="!checkUser" type="number" id="fp" v-mask="'#'" v-model="character.characterData.fate_point"
                                     class="w-20 h-20 p-4 text-4xl bg-transparent border border-gray-300 rounded-full focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-300">
                             </div>
                         </div>
@@ -70,7 +70,7 @@
                             <label>Fiziksel</label>
                             <div class="flex justify-between w-full gap-2 sm:justify-start">
                                 <div v-for="(checkbox, index) in physicalBoxes" :key="index">
-                                    <input :disabled="!$page.props.auth.user" :id="'physical-' + (index + 1)" type="checkbox" v-model="checkbox.checked" @change="countChecked" class="hidden peer">
+                                    <input :disabled="!checkUser" :id="'physical-' + (index + 1)" type="checkbox" v-model="checkbox.checked" @change="countChecked" class="hidden peer">
                                     <label :for="'physical-' + (index + 1)"
                                         class="inline-flex items-center justify-center w-10 h-10 text-transparent bg-white border-2 border-gray-300 rounded-lg cursor-pointer sm:w-12 sm:h-12 dark:bg-gray-800 dark:border-gray-700 peer-checked:border-pink-600 dark:peer-checked:text-pink-300 peer-checked:text-pink-600 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <i class="text-2xl fa-solid fa-check"></i>
@@ -82,7 +82,8 @@
                             <label>Zihinsel</label>
                             <div class="flex justify-between w-full gap-2 sm:justify-start">
                                 <div v-for="(checkbox, index) in mentalBoxes" :key="index">
-                                    <input :disabled="!$page.props.auth.user" :id="'mental-' + (index + 1)" type="checkbox" v-model="checkbox.checked" @change="countChecked" class="hidden peer">
+                                    <input :disabled="!checkUser" :id="'mental-' + (index + 1)" type="checkbox" v-model="checkbox.checked" @change="countChecked" class="hidden peer">
+                                    
                                     <label :for="'mental-' + (index + 1)"
                                         class="inline-flex items-center justify-center w-10 h-10 text-transparent bg-white border-2 border-gray-300 rounded-lg cursor-pointer sm:w-12 sm:h-12 dark:bg-gray-800 dark:border-gray-700 peer-checked:border-cyan-600 dark:peer-checked:text-cyan-300 peer-checked:text-cyan-600 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <i class="text-2xl fa-solid fa-check"></i>
@@ -97,47 +98,50 @@
                             <label for="mild">Hafif</label>
                             <div class="flex w-full gap-1">
                                 <div class="h-[42px] max-w-[42px] w-full text-center p-2 border border-gray-300 dark:border-gray-700 rounded font-semibold text-gray-400">2</div>
-                                <Textinput :disabled="!$page.props.auth.user" id="mild" v-model="character.characterData.mild" class="w-full" />
+                                <Textinput :auth="checkUser" id="mild" v-model="character.characterData.mild" class="w-full" />
                             </div>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="moderate">Orta</label>
                             <div class="flex w-full gap-1">
                                 <div class="h-[42px] max-w-[42px] w-full text-center p-2 border border-gray-300 dark:border-gray-700 rounded font-semibold text-gray-400">4</div>
-                                <Textinput :disabled="!$page.props.auth.user" id="moderate" v-model="character.characterData.moderate" class="w-full" />
+                                <Textinput :auth="checkUser" id="moderate" v-model="character.characterData.moderate" class="w-full" />
                             </div>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="severe">Ağır</label>
                             <div class="flex w-full gap-1">
                                 <div class="h-[42px] max-w-[42px] w-full text-center p-2 border border-gray-300 dark:border-gray-700 rounded font-semibold text-gray-400">6</div>
-                                <Textinput :disabled="!$page.props.auth.user" id="severe" v-model="character.characterData.severe" class="w-full" />
+                                <Textinput :auth="checkUser" id="severe" v-model="character.characterData.severe" class="w-full" />
                             </div>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="extreme">Kritik</label>
                             <div class="flex w-full gap-1">
                                 <div class="h-[42px] max-w-[42px] w-full text-center p-2 border border-gray-300 dark:border-gray-700 rounded font-semibold text-gray-400">8</div>
-                                <Textinput :disabled="!$page.props.auth.user" id="extreme" v-model="character.characterData.extreme" class="w-full" />
+                                <Textinput :auth="checkUser" id="extreme" v-model="character.characterData.extreme" class="w-full" />
                             </div>
                         </div>
                         <div class="flex flex-col items-start opacity-50">
                             <label for="mild2">Hafif</label>
                             <div class="flex w-full gap-1">
                                 <div class="h-[42px] max-w-[42px] w-full text-center p-2 border border-gray-300 dark:border-gray-700 rounded font-semibold text-gray-400">2</div>
-                                <Textinput :disabled="!$page.props.auth.user" id="mild2" v-model="character.characterData.mild2" class="w-full" />
+                                <Textinput :auth="checkUser" id="mild2" v-model="character.characterData.mild2" class="w-full" />
                             </div>
                         </div>
                     </div>
                     <!-- Skills -->
                     <div class="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
                         <div class="-mb-4">
-                            <span class="header dark:text-gray-200">Stunts</span>
+                            <span class="header dark:text-gray-200">Skills</span>
                         </div>
                         <div class="flex flex-col items-stretch gap-4">
                             <div v-for="(skill, index) in skills" :key="index" class="flex items-center gap-2 text-xl tracking-wide dark:text-gray-100">
-                                <input :disabled="!$page.props.auth.user" type="number" v-mask="'#'" min="0" v-model="skills_data[index]"
+                                <input v-if="checkUser" type="number" v-mask="'#'" min="0" v-model="skills_data[index]"
                                     class="w-16 h-16 p-2 text-center bg-transparent border border-gray-300 rounded-full dark:border-gray-600">
+                                <div v-else class="flex items-center justify-center w-16 h-16 p-2 text-center bg-transparent border border-gray-300 rounded-full dark:border-gray-600">
+                                    {{ skills_data[index] }}
+                                </div>
                                 <span>
                                     {{ $t(`skills.${skill}`) }}
                                 </span>
@@ -147,7 +151,7 @@
                 </div>
             </div>
         </div>
-        <div class="fixed left-0 w-full px-2 bottom-2 z-[1000]" v-if="$page.props.auth.user">
+        <div class="fixed left-0 w-full px-2 bottom-2 z-[1000]" v-if="checkUser">
             <div class="flex justify-between gap-2 p-4 bg-white border border-gray-300 rounded-lg dark:bg-opacity-10 dark:border-gray-800 backdrop-blur-md">
                 <button type="button" class=" text-amber-600 bg-amber-100 generalButton" @click="openMore = !openMore">
                     <span>Notlar</span>
@@ -173,7 +177,7 @@
                     </button>
                     <div class="mt-4">
                         <label for="notes" class="">Notes</label>
-                        <TextAreainput id="notes" :disabled="!$page.props.auth.user" v-model="character.characterData.notes" class="w-full" rows="15" />
+                        <TextAreainput id="notes" :auth="checkUser" v-model="character.characterData.notes" class="w-full" rows="15" />
                     </div>
                 </div>
             </div>
@@ -184,8 +188,8 @@
 <script setup>
 import Textinput from '@/Components/TextInput.vue';
 import TextAreainput from '@/Components/TextAreaInput.vue';
-import { ref } from 'vue'
-import { router, useForm } from '@inertiajs/vue3';
+import { computed, ref } from 'vue'
+import { router, useForm, usePage } from '@inertiajs/vue3';
 import MiniLoader from '@/Components/MiniLoader.vue';
 import NProgress from 'nprogress'
 import Dropdown from '@/Components/Dropdown.vue';
@@ -199,8 +203,10 @@ const props = defineProps({
     }
 })
 
+const page = usePage();
+const checkUser = ref(page.props.auth.user.id == props.character.user_id);
 const character = useForm({ characterData: props.character, skills: props.skills });
-console.log(character);
+// console.log(character);
 const physicalBoxes = ref([
     { checked: false },
     { checked: false },
@@ -241,7 +247,7 @@ function countChecked() {
 
 const skills = ref(JSON.parse(props.skills.skills));
 const skills_data = ref(JSON.parse(props.skills.skills_data));
-console.log(JSON.parse(props.skills.skills));
+// console.log(JSON.parse(props.skills.skills));
 
 const updateCharacter = async () => {
     NProgress.start()
