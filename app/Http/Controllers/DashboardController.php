@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Character;
 use App\Models\Skills;
+use App\Models\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -58,7 +59,7 @@ class DashboardController extends Controller
     }
 
     public function detailsCharacter($id) {
-        $character = Character::find($id);
+        $character = Character::join('notes', 'characters.id', '=', 'notes.character_id')->where("characters.id",$id)->first();
         $skills = Skills::where("character_id",$id)->first();
         return Inertia::render('CharacterDetails',compact("character","skills"));
     }
@@ -90,10 +91,15 @@ class DashboardController extends Controller
             $characterDB->refresh = $character->refresh;
             
             $skillsDB->skills = $skills->skills; 
-            $skillsDB->skills_data = $skills->skills_data; 
+            $skillsDB->skills_data = $skills->skills_data;
             
             $characterDB->save();
             $skillsDB->save();
+
+            $notes = Note::updateOrCreate(
+                ['character_id' => $character->id],
+                ['notes' => $character->notes]
+            );
             return redirect()->back()->with('success','Karakter başarıyla güncellendi');;
         } catch (\Exception $e) {
             return redirect()->back()->with('error','Karakter güncellenemedi; '.$e->getMessage());;

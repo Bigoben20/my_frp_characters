@@ -136,7 +136,8 @@
                         </div>
                         <div class="flex flex-col items-stretch gap-4">
                             <div v-for="(skill, index) in skills" :key="index" class="flex items-center gap-2 text-xl tracking-wide dark:text-gray-100">
-                                <input :disabled="!$page.props.auth.user" type="number" v-model="skills_data[index]" class="w-16 h-16 p-2 text-center bg-transparent border border-gray-300 rounded-full dark:border-gray-600">
+                                <input :disabled="!$page.props.auth.user" type="number" v-model="skills_data[index]"
+                                    class="w-16 h-16 p-2 text-center bg-transparent border border-gray-300 rounded-full dark:border-gray-600">
                                 <span>
                                     {{ $t(`skills.${skill}`) }}
                                 </span>
@@ -148,29 +149,13 @@
         </div>
         <div class="fixed left-0 w-full px-2 bottom-2" v-if="$page.props.auth.user">
             <div class="flex justify-between gap-2 p-4 bg-white border border-gray-300 rounded-lg dark:bg-opacity-10 dark:border-gray-800 backdrop-blur-md">
-                <div class="relative">
-                    <Dropdown align="bottom-left" width="500px">
-                        <template #trigger>
-                            <span class="inline-flex rounded-md">
-                                <button type="button"
-                                    class=" text-amber-600 bg-amber-100 generalButton">
-                                    <span>Notlar</span>
+                <button type="button" class=" text-amber-600 bg-amber-100 generalButton" @click="openMore = true">
+                    <span>Notlar</span>
 
-                                    <svg class="ms-2 -me-0.5 h-4 w-4 rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </span>
-                        </template>
-
-                        <template #content>
-                            <div class="flex flex-col items-start m-2">
-                                <TextAreainput :disabled="!$page.props.auth.user" v-model="character.characterData.stunts" class="w-full" rows="15" />
-                            </div>
-                        </template>
-                    </Dropdown>
-                </div>
+                    <svg class="ms-2 -me-0.5 h-4 w-4 rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
                 <button class="w-1/3 text-green-600 bg-green-100 generalButton" type="submit">
                     <span>Kaydet</span>
                     <MiniLoader :show="saveLoading" radius="4" />
@@ -178,6 +163,17 @@
             </div>
         </div>
     </form>
+
+    <div class="fixed top-0 left-0 w-full h-full bg-gray-800/30" v-show="openMore" @click.self="openMore = false">
+        <transition name="slide-fade">
+            <div class="absolute top-0 right-0 w-4/5 h-full transition-all duration-300 ease-in bg-white lg:w-1/3" v-show="openMore">
+                <div class="h-full p-4">
+                    <label for="notes">Notes</label>
+                    <TextAreainput id="notes" :disabled="!$page.props.auth.user" v-model="character.characterData.notes" class="w-full" rows="15" />
+                </div>
+            </div>
+        </transition>
+    </div>
 </template>
 
 <script setup>
@@ -198,7 +194,7 @@ const props = defineProps({
     }
 })
 
-const character = useForm({characterData:props.character, skills:props.skills});
+const character = useForm({ characterData: props.character, skills: props.skills });
 console.log(character);
 const physicalBoxes = ref([
     { checked: false },
@@ -259,6 +255,8 @@ const updateCharacter = async () => {
         }
     });
 }
+
+const openMore = ref(false);
 </script>
 
 <style setup>
