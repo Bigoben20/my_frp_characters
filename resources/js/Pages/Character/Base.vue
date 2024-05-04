@@ -217,11 +217,16 @@ const mentalBoxes = ref([
     { checked: false },
     { checked: false }
 ]);
-for (let index = 0; index < character.characterData.physical_stress; index++) {
-    physicalBoxes.value[index].checked = true;
+
+if (character.characterData.physical_stress != null) {
+    for (let index = 0; index < character.characterData.physical_stress; index++) {
+        physicalBoxes.value[index].checked = true;
+    }
 }
-for (let index = 0; index < character.characterData.mental_stress; index++) {
-    mentalBoxes.value[index].checked = true;
+if (character.characterData.mental_stress != null) {
+    for (let index = 0; index < character.characterData.mental_stress; index++) {
+        mentalBoxes.value[index].checked = true;
+    }
 }
 
 const saveLoading = ref(false);

@@ -35,6 +35,11 @@ class DashboardController extends Controller
             $skills = new Skills();
             $skills->character_id = $character->id;
             $skills->save();
+
+            $notes = new Note();
+            $notes->character_id = $character->id;
+            $notes->save();
+            
             return redirect()->back()->with('success','Karakter başarıyla oluşturuldu');;
         } catch (\Exception $e) {
             return redirect()->back()->with('error','Karakter oluşturulamadı; '.$e->getMessage());;
