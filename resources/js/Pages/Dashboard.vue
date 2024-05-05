@@ -19,24 +19,28 @@
                         </button> -->
 
                     </div>
-                    <div class="w-full overflow-x-auto">
-                        <table class="w-full text-left table-auto">
+                    <div class="w-full">
+                        <table class="w-full text-left table-fixed">
                             <thead class="dark:text-gray-300">
                                 <tr class="bg-gray-100 dark:bg-gray-700">
-                                    <th class="px-3 py-1.5 rounded-l">ID</th>
+                                    <th class="px-3 py-1.5 rounded-l w-10">ID</th>
                                     <th class="px-3 py-1.5">Name</th>
-                                    <th class="px-3 py-1.5">High Concept</th>
-                                    <th class="px-3 py-1.5 rounded-r">
+                                    <th class="px-3 py-1.5 rounded-r">High Concept</th>
+                                    <!-- <th class="px-3 py-1.5 rounded-r">
                                         <span>Actions</span>
-                                    </th>
+                                    </th> -->
                                 </tr>
                             </thead>
                             <tbody class="dark:text-gray-100">
-                                <tr v-for="character in characters" :key="character.id">
+                                <tr v-for="character in characters" :key="character.id" @click="goToChar(character.id)" class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
                                     <td class="px-3 py-1.5">{{ character.id }}</td>
                                     <td class="px-3 py-1.5 whitespace-nowrap">{{ character.name }}</td>
-                                    <td class="px-3 py-1.5 whitespace-nowrap">{{ character.high_concept }}</td>
-                                    <td class="px-3 py-1.5 w-[168px]">
+                                    <td class="px-3 py-1.5">
+                                        <div class="overflow-hidden text-ellipsis whitespace-nowrap">
+                                            {{ character.high_concept }}
+                                        </div>
+                                    </td>
+                                    <!-- <td class="px-3 py-1.5 w-[168px]">
                                         <div class="flex items-center gap-2 w-fit">
                                             <Link :href="route('character.details',[id=character.id])" type="button" class="px-4 py-2 rounded bg-sky-200 text-sky-700 hoverEffect">
                                                 Detaylar
@@ -45,7 +49,7 @@
                                                 Sil
                                             </button>
                                         </div>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             </tbody>
                         </table>
@@ -74,11 +78,11 @@
             </div>
             <form @submit.prevent="submitForm" class="grid justify-between grid-cols-1 gap-5 mt-4 md:grid-cols-3 md:items-end">
                 <div class="flex flex-col">
-                    <label for="name">İsim:</label>
+                    <label for="name" class="dark:text-gray-200">İsim:</label>
                     <TextInput id="name" v-model="form.name" />
                 </div>
                 <div class="flex flex-col">
-                    <label for="high_concept">High Concept:</label>
+                    <label for="high_concept" class="dark:text-gray-200">High Concept:</label>
                     <TextInput id="high_concept" v-model="form.high_concept" />
                 </div>
                 <button class="px-4 py-2 rounded bg-indigo-200 text-indigo-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" type="submit" :disabled="submitLoad || successMessage">
@@ -212,4 +216,7 @@ function resetCreate() {
     createModalShow.value = false;
 }
 
+function goToChar(id) {
+    window.location.href="/character-detail/"+id
+}
 </script>

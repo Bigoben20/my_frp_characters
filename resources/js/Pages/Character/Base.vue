@@ -83,7 +83,7 @@
                             <div class="flex justify-between w-full gap-2 sm:justify-start">
                                 <div v-for="(checkbox, index) in mentalBoxes" :key="index">
                                     <input :disabled="!checkUser" :id="'mental-' + (index + 1)" type="checkbox" v-model="checkbox.checked" @change="countChecked" class="hidden peer">
-                                    
+
                                     <label :for="'mental-' + (index + 1)"
                                         class="inline-flex items-center justify-center w-10 h-10 text-transparent bg-white border-2 border-gray-300 rounded-lg cursor-pointer sm:w-12 sm:h-12 dark:bg-gray-800 dark:border-gray-700 peer-checked:border-cyan-600 dark:peer-checked:text-cyan-300 peer-checked:text-cyan-600 hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <i class="text-2xl fa-solid fa-check"></i>
@@ -151,22 +151,31 @@
                 </div>
             </div>
         </div>
-        <div class="fixed left-0 w-full px-2 bottom-2 z-[1000]" v-if="checkUser">
+        <div class="fixed left-0 z-40 w-full px-2 bottom-2" v-if="checkUser">
             <div class="flex justify-between gap-2 p-4 bg-white border border-gray-300 rounded-lg dark:bg-opacity-10 dark:border-gray-800 backdrop-blur-md">
-                <button type="button" class=" text-amber-600 bg-amber-100 generalButton" @click="openMore = !openMore">
-                    <span>Notlar</span>
+                <div class="flex gap-2">
+                    <button type="button" class=" text-amber-600 bg-amber-100 generalButton" @click="openMore = !openMore">
+                        <span>Notlar</span>
 
-                    <svg class="ms-2 -me-0.5 h-4 w-4 rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
+                        <svg class="ms-2 -me-0.5 h-4 w-4 rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <button type="button" class="text-red-600 bg-red-100 generalButton" @click="deleteModalShow = true;">
+                        <span>Sil</span>
+
+                        <i class="text-xs fa-solid fa-trash"></i>
+                    </button>
+                </div>
                 <button class="w-1/3 text-green-600 bg-green-100 generalButton" type="submit">
                     <span>Kaydet</span>
                     <MiniLoader :show="saveLoading" radius="4" />
                 </button>
             </div>
         </div>
+
     </form>
+
 
     <div class="fixed top-0 left-0 w-full h-full bg-gray-800/30 dark:bg-gray-900/50" v-show="openMore" @click.self="openMore = false">
         <transition name="slide-fade">
@@ -183,6 +192,33 @@
             </div>
         </transition>
     </div>
+
+    <!-- Delete Modal -->
+    <Modal :show="deleteModalShow">
+        <div class="p-6">
+            <div class="relative mb-2">
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    Karakteri Sil
+                </h2>
+                <button class="absolute top-0 right-0 flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-900 dark:text-white hoverEffect" @click="deleteModalShow = false;">
+                    <i class="text-sm fa-solid fa-x"></i>
+                </button>
+            </div>
+            <div class="my-6 dark:text-gray-200">
+                "{{ character.characterData.name }}" karakterini silmek istediğinize emin misiniz?
+            </div>
+            <div class="flex items-center justify-between">
+
+                <button class="px-4 py-2 rounded bg-sky-200 text-sky-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click="deleteModalShow = false;">
+                    <span>Vazgeç</span>
+                </button>
+                <button class="px-4 py-2 rounded bg-red-200 text-red-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click="deleteCharacter(character.characterData.character_id)">
+                    <span>Sil</span>
+                    <MiniLoader :show="deleteLoad" radius="4" />
+                </button>
+            </div>
+        </div>
+    </Modal>
 </template>
 
 <script setup>
@@ -193,6 +229,8 @@ import { router, useForm, usePage } from '@inertiajs/vue3';
 import MiniLoader from '@/Components/MiniLoader.vue';
 import NProgress from 'nprogress'
 import Dropdown from '@/Components/Dropdown.vue';
+import nprogress from 'nprogress';
+import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
     character: {
@@ -273,6 +311,41 @@ const updateCharacter = async () => {
 }
 
 const openMore = ref(false);
+
+const deleteModalShow = ref(false);
+const deleteForm = useForm({
+    id: ''
+});
+const deleteLoad = ref(false);
+const deleteSuccess = ref(false);
+function deleteCharacter(id) {
+    nprogress.start();
+    deleteLoad.value = true;
+
+    deleteForm.id = id;
+
+    deleteForm.post('/character-delete', {
+        preserveScroll: true,
+        onSuccess: (success) => {
+            // console.log(success);
+            deleteModalShow.value = false;
+            setTimeout(() => {
+                router.visit("/dashboard");
+            }, 100);
+        },
+        onError: (error) => {
+            // console.log(error);
+            let keys = Object.keys(error)
+            for (let index = 0; index < keys.length; index++) {
+                errors.value.push(error[keys[index]]);
+            }
+        },
+        onFinish: () => {
+            deleteLoad.value = false;
+            nprogress.done();
+        }
+    })
+}
 </script>
 
 <style setup>

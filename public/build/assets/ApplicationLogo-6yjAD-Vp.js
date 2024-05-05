@@ -1,0 +1,1 @@
+import{o,f as s,u as e}from"./app--ItQHSRx.js";const t="/build/assets/dice-TbZ7KRPQ.png",c=["src"],l={__name:"ApplicationLogo",setup(n){return(r,a)=>(o(),s("img",{src:e(t),alt:""},null,8,c))}};export{l as _};
