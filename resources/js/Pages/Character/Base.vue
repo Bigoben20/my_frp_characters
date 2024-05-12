@@ -5,8 +5,8 @@
 
                 <!-- Names -->
                 <div class="flex flex-col items-start p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 col-span-full">
-                    <label for="name">İsim</label>
-                    <Textinput :auth="checkUser" id="name" v-model="character.characterData.name" class="w-full" />
+                    <label for="name">Name</label>
+                    <TextAreainput rows="2" :auth="checkUser" id="name" v-model="character.characterData.name" class="w-full" />
                 </div>
                 <div class="flex flex-col gap-6">
                     <!-- Aspects -->
@@ -16,23 +16,23 @@
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="high_concept">High Concept</label>
-                            <Textinput :auth="checkUser" id="high_concept" v-model="character.characterData.high_concept" class="w-full" />
+                            <TextAreainput rows="2" :auth="checkUser" id="high_concept" v-model="character.characterData.high_concept" class="w-full" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="trouble">Trouble</label>
-                            <Textinput :auth="checkUser" id="trouble" v-model="character.characterData.trouble" class="w-full" />
+                            <TextAreainput rows="2" :auth="checkUser" id="trouble" v-model="character.characterData.trouble" class="w-full" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="relationship">Relationships</label>
-                            <Textinput :auth="checkUser" id="relationship" v-model="character.characterData.relationship" class="w-full" />
+                            <TextAreainput rows="2" :auth="checkUser" id="relationship" v-model="character.characterData.relationship" class="w-full" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect">Serbest Aspect</label>
-                            <Textinput :auth="checkUser" id="aspect" v-model="character.characterData.aspect" class="w-full" />
+                            <TextAreainput rows="2" :auth="checkUser" id="aspect" v-model="character.characterData.aspect" class="w-full" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect2">Serbest Aspect</label>
-                            <Textinput :auth="checkUser" id="aspect2" v-model="character.characterData.aspect2" class="w-full" />
+                            <TextAreainput rows="2" :auth="checkUser" id="aspect2" v-model="character.characterData.aspect2" class="w-full" />
                         </div>
                     </div>
 
@@ -135,7 +135,7 @@
                         <div class="-mb-4">
                             <span class="header dark:text-gray-200">Skills</span>
                         </div>
-                        <div class="flex flex-col items-stretch gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-2">
                             <div v-for="(skill, index) in skills" :key="index" class="flex items-center gap-2 text-xl tracking-wide dark:text-gray-100">
                                 <input v-if="checkUser" type="number" v-mask="'#'" min="0" v-model="skills_data[index]"
                                     class="w-16 h-16 p-2 text-center bg-transparent border border-gray-300 rounded-full dark:border-gray-600">
@@ -179,7 +179,7 @@
 
     <div class="fixed top-0 left-0 w-full h-full bg-gray-800/30 dark:bg-gray-900/50" v-show="openMore" @click.self="openMore = false">
         <transition name="slide-fade">
-            <div class="absolute top-0 right-0 w-4/5 h-full transition-all duration-300 ease-in bg-white shadow-xl dark:bg-gray-800 lg:w-1/3" v-show="openMore">
+            <div class="absolute top-0 right-0 w-4/5 h-full overflow-scroll transition-all duration-300 ease-in bg-white shadow-xl dark:bg-gray-800 lg:w-1/3" v-show="openMore">
                 <div class="h-full p-4">
                     <button type="button" class="absolute flex items-center justify-center w-6 h-6 rounded-full text-sky-600 bg-sky-100 right-2 top-2" @click="openMore = false">
                         <i class="text-[11px] fa-solid fa-x"></i>
@@ -187,6 +187,9 @@
                     <div class="mt-4">
                         <label for="notes" class="">Notes</label>
                         <TextAreainput id="notes" :auth="checkUser" v-model="character.characterData.notes" class="w-full" rows="15" />
+                    </div>
+                    <div class="pb-40 mt-6">
+                        <Roll></Roll>
                     </div>
                 </div>
             </div>
@@ -231,6 +234,7 @@ import NProgress from 'nprogress'
 import Dropdown from '@/Components/Dropdown.vue';
 import nprogress from 'nprogress';
 import Modal from '@/Components/Modal.vue';
+import Roll from '@/Components/Roll.vue';
 
 const props = defineProps({
     character: {

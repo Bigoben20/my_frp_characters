@@ -9,10 +9,10 @@
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="p-4 overflow-hidden bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
-                    <div class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Karakterler <span>({{ characters.length }})</span></div>
+                    <div class="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">Characters <span class="text-blue-600 dark:text-blue-400">({{ characters.length }})</span></div>
                     <div class="mb-2">
                         <button type="button" class="px-4 py-2 rounded bg-sky-200 text-sky-700 hoverEffect" @click="createModalShow = true">
-                            Oluştur
+                            Create
                         </button>
                         <!-- <button type="button" class="px-4 py-2 ml-4 rounded bg-sky-100 text-sky-700 hoverEffect" @click="toast.add({type:'warning',message:'test'})">
                             + add toast
@@ -34,7 +34,7 @@
                             <tbody class="dark:text-gray-100">
                                 <tr v-for="character in characters" :key="character.id" @click="goToChar(character.id)" class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
                                     <td class="px-3 py-1.5">{{ character.id }}</td>
-                                    <td class="px-3 py-1.5 whitespace-nowrap">{{ character.name }}</td>
+                                    <td class="px-3 py-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{{ character.name }}</td>
                                     <td class="px-3 py-1.5">
                                         <div class="overflow-hidden text-ellipsis whitespace-nowrap">
                                             {{ character.high_concept }}
@@ -57,6 +57,15 @@
                 </div>
             </div>
         </div>
+
+        <div class="py-12">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div class="p-4 bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
+                    <Roll></Roll>
+                </div>
+            </div>
+        </div>
+
     </AuthenticatedLayout>
 
     <!-- Create Modal -->
@@ -76,17 +85,17 @@
                     {{ error }}
                 </div>
             </div>
-            <form @submit.prevent="submitForm" class="grid justify-between grid-cols-1 gap-5 mt-4 md:grid-cols-3 md:items-end">
+            <form @submit.prevent="submitForm" class="grid justify-between grid-cols-1 gap-5 mt-4 md:items-end">
                 <div class="flex flex-col">
-                    <label for="name" class="dark:text-gray-200">İsim:</label>
+                    <label for="name" class="dark:text-gray-200">Name:</label>
                     <TextInput id="name" v-model="form.name" />
                 </div>
                 <div class="flex flex-col">
                     <label for="high_concept" class="dark:text-gray-200">High Concept:</label>
-                    <TextInput id="high_concept" v-model="form.high_concept" />
+                    <TextAreainput rows="2" id="high_concept" v-model="form.high_concept" />
                 </div>
                 <button class="px-4 py-2 rounded bg-indigo-200 text-indigo-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" type="submit" :disabled="submitLoad || successMessage">
-                    <span>Kaydet</span>
+                    <span>Create</span>
                     <MiniLoader :show="submitLoad" radius="4" />
                     <i class="text-green-500 fa-solid fa-check-circle" v-if="successMessage"></i>
                 </button>
@@ -125,13 +134,17 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
-import Modal from '@/Components/Modal.vue';
 import { ref } from 'vue';
-import TextInput from '@/Components/TextInput.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import MiniLoader from '@/Components/MiniLoader.vue';
 import toast from '@/Stores/toast';
 import nprogress from 'nprogress';
+
+import Modal from '@/Components/Modal.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
+import MiniLoader from '@/Components/MiniLoader.vue';
+import TextAreainput from '@/Components/TextAreaInput.vue';
+import Roll from '@/Components/Roll.vue'
+
 
 defineProps({
     characters: {
