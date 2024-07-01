@@ -132,8 +132,12 @@
                     </div>
                     <!-- Skills -->
                     <div class="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
-                        <div class="-mb-4">
-                            <span class="header dark:text-gray-200">Skills</span>
+                        <div class="dark:text-gray-200">
+                            <span class="header">Skills</span>
+                            <div>
+                                <span class="">Total: </span>
+                                <span class="font-semibold text-pink-600 dark:text-pink-300">{{total}}</span>
+                            </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-2">
                             <div v-for="(skill, index) in skills" :key="index" class="flex items-center gap-2 text-xl tracking-wide dark:text-gray-100">
@@ -289,6 +293,9 @@ function countChecked() {
 
 const skills = ref(JSON.parse(props.skills.skills));
 const skills_data = ref(JSON.parse(props.skills.skills_data));
+const total = computed(() => {
+  return skills_data.value.reduce((acc, num) => acc + num, 0);
+});
 // console.log(JSON.parse(props.skills.skills));
 
 const updateCharacter = async () => {
