@@ -13,27 +13,7 @@ return new class extends Migration
     {
         
         Schema::create('skills', function (Blueprint $table) {
-            $skills = [
-              "Athletics",
-              "Burglary",
-              "Contacts",
-              "Crafts",
-              "Deceive",
-              "Drive",
-              "Empathy",
-              "Fight",
-              "Investigate",
-              "Lore",
-              "Notice",
-              "Physique",
-              "Provoke",
-              "Rapport",
-              "Resources",
-              "Shoot",
-              "Stealth",
-              "Will",
-              "Wisdom"
-            ];
+            $skills = ["Deceive","Investigate","Athletics","Lore","Wisdom","Physique","Crafts","Empathy","Fight","Provoke","Resources","Notice","Burglary","Contacts","Rapport","Stealth","Drive","Shoot","Will"];
             $skills_data = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
             $table->id();
             $table->unsignedBigInteger('character_id');
