@@ -6,6 +6,7 @@
 
 * {
     font-family: "Outfit", sans-serif;
+    @apply selection:bg-indigo-500 selection:text-white;
 }
 
 .hoverEffect {

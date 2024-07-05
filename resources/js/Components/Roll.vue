@@ -3,22 +3,22 @@
         <div class="flex w-full max-w-2xl gap-1 mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">
             <span>Roll</span>
             <div v-if="diceResults.length > 0" class="text-blue-600 dark:text-blue-400">
-                
-                ({{ (diceResults[4] > 0 ? '+':'') + diceResults[4] }})
+
+                ({{ (diceResults[4] > 0 ? '+' : '') + diceResults[4] }})
             </div>
         </div>
         <div class="grid grid-cols-[auto_auto] sm:grid-cols-[auto_100px] gap-4 max-w-2xl">
-            <div class="grid grid-cols-2 gap-2 sm:gap-6 hover:cursor-pointer" @click="rollFate">
-                <template v-for="(result, index) in diceResults.slice(0,4)" :key="index">
+            <div class="grid grid-cols-2 gap-2 sm:gap-6 hover:cursor-pointer" @click="rollFate"  ref="dynamicHeightElement">
+                <template v-for="(result, index) in diceResults.slice(0, 4)" :key="index">
                     <div class="overflow-hidden rounded-2xl">
-                        <img :src="diceImg(result)" alt="" class="w-full">
+                        <img :src="diceImg(result)" alt="" class="w-full invert dark:invert-0 hue-rotate-[160deg] grayscale-[0.4] dark:grayscale-0 dark:hue-rotate-[340deg] dark:brightness-125">
                     </div>
                 </template>
             </div>
-            <div>
+            <div class="overflow-y-scroll" :style="'max-height:'+elementHeight+'px;'">
                 <div class="w-full text-gray-900 border-b border-gray-300 dark:text-gray-100 dark:border-gray-600">History</div>
                 <div class="flex flex-col text-purple-600 dark:text-purple-500">
-                    <div v-for="(history,index) in resultHistory" :key="index">
+                    <div v-for="(history, index) in resultHistory" :key="index">
                         {{ history }}
                     </div>
                 </div>
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import plusDice from '@/assets/dices/positive.png'
 import minusDice from '@/assets/dices/negative.png'
 import neutralDice from '@/assets/dices/neutral.png'
@@ -45,7 +45,7 @@ function rollFate() {
             const roll = Math.floor(Math.random() * 3) - 1;
             diceResults.value.push(roll);
         }
-        
+
         diceResults.value.push(0);
         for (let index = 0; index < 4; index++) {
             diceResults.value[4] = diceResults.value[4] + diceResults.value[index];
@@ -54,7 +54,7 @@ function rollFate() {
 
     setTimeout(() => {
         clearInterval(interval);
-        resultHistory.value.length > 0 ? resultHistory.value.unshift(diceResults.value[4]) : resultHistory.value.push(diceResults.value[4]) ;
+        resultHistory.value.length > 0 ? resultHistory.value.unshift(diceResults.value[4]) : resultHistory.value.push(diceResults.value[4]);
     }, 1000);
 
 }
@@ -66,12 +66,28 @@ function diceImg(result) {
         case 1:
             return plusDice;
             break;
-    
+
         default:
             return neutralDice;
             break;
     }
 }
+
+// Elemanı referans almak için bir ref oluşturun
+const dynamicHeightElement = ref(null);
+
+// Elemanın yüksekliğini saklamak için bir reaktif değişken oluşturun
+const elementHeight = ref(0);
+
+// Bileşen monte edildiğinde elemanın yüksekliğini hesaplayın
+// ResizeObserver kullanarak elemanın yüksekliğini izleyin
+onMounted(() => {
+    elementHeight.value = dynamicHeightElement.value.offsetHeight;
+});
+
+watch(elementHeight, (newHeight) => {
+  console.log('Element yüksekliği değişti:', newHeight);
+});
 
 </script>
 
