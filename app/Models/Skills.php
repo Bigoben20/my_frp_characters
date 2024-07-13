@@ -12,8 +12,14 @@ class Skills extends Model
     protected $table = 'skills';
 
     protected $fillable = [
-        'skills',
         'skills_data',
         'character_id',
     ];
+
+    public function getSkillsData() {
+        $skillsData = $this->attributes['skills_data'];
+        strtr("[","{",$skillsData);
+        strtr("]","}",$skillsData);
+        return $skillsData;
+    }
 }

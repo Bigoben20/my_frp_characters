@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Character;
 use App\Models\Skills;
 use App\Models\Note;
+use App\Models\SkillLabel;
+use Collator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function dashboard() {
-        $characters = Character::where("user_id", Auth::user()->id)->orderBy("id","DESC")->get();
+    public function dashboard()
+    {
+        $characters = Character::where("user_id", Auth::user()->id)->orderBy("id", "DESC")->get();
 
-        return Inertia::render('Dashboard',compact("characters"));
+        return Inertia::render('Dashboard', compact("characters"));
     }
 
     public function storeCharacter(Request $request)
@@ -22,7 +25,7 @@ class DashboardController extends Controller
         $validateData = $request->validate([
             'name' => ['required', 'max:50'],
             'high_concept' => ['required', 'max:255'],
-        ],[
+        ], [
             'name.required' => 'Lütfen isim giriniz',
             'name.max' => 'İsim en fazla 50 karakter olabilir',
             'high_concept.required' => 'Lütfen high concept giriniz',
@@ -39,51 +42,57 @@ class DashboardController extends Controller
             $notes = new Note();
             $notes->character_id = $character->id;
             $notes->save();
-            
-            return redirect()->back()->with('success','Karakter başarıyla oluşturuldu');;
+
+            return redirect()->back()->with('success', 'Karakter başarıyla oluşturuldu');;
         } catch (\Exception $e) {
-            return redirect()->back()->with('error','Karakter oluşturulamadı; '.$e->getMessage());;
+            return redirect()->back()->with('error', 'Karakter oluşturulamadı; ' . $e->getMessage());;
         }
     }
 
-    public function deleteCharacter(Request $request) {
+    public function deleteCharacter(Request $request)
+    {
         $validateData = $request->validate([
             'id' => ['required']
         ]);
 
-        $character = Character::where([["user_id",Auth::id()],["id",$validateData["id"]]])->first();
+        $character = Character::where([["user_id", Auth::id()], ["id", $validateData["id"]]])->first();
         if (!$character) {
-            return redirect()->back()->with('warning','Karakter bulunamadı');
+            return redirect()->back()->with('warning', 'Karakter bulunamadı');
         }
         try {
             $character->delete();
-            return redirect()->back()->with('success','Karakter başarıyla silindi');;
+            return redirect()->back()->with('success', 'Karakter başarıyla silindi');;
         } catch (\Exception $e) {
-            return redirect()->back()->with('error','Karakter silinemedi; '.$e->getMessage());;
+            return redirect()->back()->with('error', 'Karakter silinemedi; ' . $e->getMessage());;
         }
     }
 
-    public function detailsCharacter($id) {
-        $character = Character::join('notes', 'characters.id', '=', 'notes.character_id')->where("characters.id",$id)->first();
-        $skills = Skills::where("character_id",$id)->first();
-        return Inertia::render('CharacterDetails',compact("character","skills"));
+    public function detailsCharacter($id)
+    {
+        $character = Character::join('notes', 'characters.id', '=', 'notes.character_id')->where("characters.id", $id)->first();
+        $skills = Skills::where("character_id", $id)->first();
+        $skillLabels = SkillLabel::pluck('title');
+
+        return Inertia::render('CharacterDetails', compact("character", "skills", "skillLabels"));
     }
 
-    public function updateCharacter(Request $request) {
+    public function updateCharacter(Request $request)
+    {
         if (!Auth::user()) {
-            return redirect()->back()->with('warning','Üye girişi yapılmamış!');
+            return redirect()->back()->with('warning', 'Üye girişi yapılmamış!');
         }
 
         $character = (object) $request->characterData;
         $skills = (object) $request->skills;
         $characterDB = Character::find($character->id);
         if (!$characterDB) {
-            return redirect()->back()->with('error','Karakter bulunamadı!');
+            return redirect()->back()->with('error', 'Karakter bulunamadı!');
+        } else if ($characterDB->user_id != Auth::user()->id) {
+            return redirect()->back()->with('error', 'Buna yetkiniz bulunmamaktadır!');
         }
-        else if ($characterDB->user_id != Auth::user()->id) {
-            return redirect()->back()->with('error','Buna yetkiniz bulunmamaktadır!');
-        }
-        $skillsDB = Skills::where("character_id",$character->id)->first();
+        $skillsDB = Skills::where("character_id", $character->id)->first();
+
+        
 
         try {
             $characterDB->name = $character->name;
@@ -97,20 +106,19 @@ class DashboardController extends Controller
             $characterDB->mental_stress = $character->mental_stress;
             $characterDB->fate_point = $character->fate_point;
             $characterDB->refresh = $character->refresh;
-            
-            $skillsDB->skills = $skills->skills; 
-            $skillsDB->skills_data = $skills->skills_data;
-            
             $characterDB->save();
+
+            $skillsDB->skills_data = $skills->skills_data;
             $skillsDB->save();
+
 
             $notes = Note::updateOrCreate(
                 ['character_id' => $character->id],
                 ['notes' => $character->notes]
             );
-            return redirect()->back()->with('success','Karakter başarıyla güncellendi');;
+            return redirect()->back()->with('success', 'Karakter başarıyla güncellendi');;
         } catch (\Exception $e) {
-            return redirect()->back()->with('error','Karakter güncellenemedi; '.$e->getMessage());;
+            return redirect()->back()->with('error', 'Karakter güncellenemedi; ' . $e->getMessage());;
         }
     }
 }
