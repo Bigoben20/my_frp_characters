@@ -13,11 +13,9 @@ return new class extends Migration
     {
         
         Schema::create('skills', function (Blueprint $table) {
-            $skills = ["Deceive","Investigate","Athletics","Lore","Wisdom","Physique","Crafts","Empathy","Fight","Provoke","Resources","Notice","Burglary","Contacts","Rapport","Stealth","Drive","Shoot","Will"];
             $skills_data = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
             $table->id();
             $table->unsignedBigInteger('character_id');
-            $table->string("skills")->nullable()->default(json_encode($skills));
             $table->string("skills_data")->nullable()->default(json_encode($skills_data));
             $table->timestamps();
             

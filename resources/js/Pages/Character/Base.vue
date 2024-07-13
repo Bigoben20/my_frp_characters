@@ -140,14 +140,15 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-2">
-                            <div v-for="(skill, index) in skills" :key="index" class="flex items-center gap-2 text-xl tracking-wide dark:text-gray-100">
+                            <div v-for="(skillLabel, index) in skillLabels" :key="index" class="flex items-center gap-2 text-xl tracking-wide dark:text-gray-100">
                                 <input v-if="checkUser" type="number" v-mask="'##'" min="0" v-model="skills_data[index]"
                                     class="w-16 h-16 p-2 text-center bg-transparent border border-gray-300 rounded-full dark:border-gray-600">
                                 <div v-else class="flex items-center justify-center w-16 h-16 p-2 text-center bg-transparent border border-gray-300 rounded-full dark:border-gray-600">
                                     {{ skills_data[index] }}
                                 </div>
                                 <span>
-                                    {{ $t(`skills.${skill}`) }}
+                                    {{ skillLabel }}
+                                    <!-- {{ $t(`skills.${skillLabel}`) }} -->
                                 </span>
                             </div>
                         </div>
@@ -246,6 +247,9 @@ const props = defineProps({
     },
     skills: {
         type: Object,
+    },
+    skillLabels: {
+        type: Array,
     }
 })
 
@@ -291,8 +295,10 @@ function countChecked() {
     console.log(character.characterData);
 }
 
-const skills = ref(JSON.parse(props.skills.skills));
+// const skills = ref(JSON.parse(props.skills.skills));
 const skills_data = ref(JSON.parse(props.skills.skills_data));
+const skillLabels = ref(props.skillLabels);
+
 const total = computed(() => {
   return skills_data.value.reduce((acc, num) => acc + num, 0);
 });
@@ -357,9 +363,10 @@ function deleteCharacter(id) {
         }
     })
 }
+
 </script>
 
-<style setup>
+<style scoped>
 label {
     @apply text-gray-700 dark:text-gray-300;
 }

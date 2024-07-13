@@ -23,4 +23,17 @@ class Character extends Model
         'user_id',
     ];
 
+    public function skills()
+    {
+        return $this->hasOne(Skills::class, 'character_id', 'id');
+    }
+    public function notes()
+    {
+        return $this->hasOne(Note::class, 'character_id', 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'user_id');
+    }
+
 }
