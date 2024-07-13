@@ -7,7 +7,7 @@
                 <div class="flex flex-col items-start p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 col-span-full">
                     <label for="name">Name</label>
                     <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="name" v-model="character.characterData.name" class="w-full" />
-                    <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.name.length"/>
+                    <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.name)"/>
                 </div>
                 <div class="flex flex-col gap-6">
                     <!-- Aspects -->
@@ -18,27 +18,27 @@
                         <div class="flex flex-col items-start">
                             <label for="high_concept">High Concept</label>
                             <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="high_concept" v-model="character.characterData.high_concept" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.high_concept.length"/>
+                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.high_concept)"/>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="trouble">Trouble</label>
                             <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="trouble" v-model="character.characterData.trouble" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.trouble.length"/>
+                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.trouble)"/>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="relationship">Relationships</label>
                             <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="relationship" v-model="character.characterData.relationship" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.relationship.length"/>
+                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.relationship)"/>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect">Serbest Aspect</label>
                             <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="aspect" v-model="character.characterData.aspect" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.aspect.length"/>
+                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.aspect)"/>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect2">Serbest Aspect</label>
                             <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="aspect2" v-model="character.characterData.aspect2" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.aspect2.length"/>
+                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.aspect2)"/>
                         </div>
                     </div>
 
@@ -50,7 +50,7 @@
                         <div class="flex flex-col items-start">
                             <label for="aspect">Stuntlar</label>
                             <TextAreainput maxlength="2000" :auth="checkUser" v-model="character.characterData.stunts" class="w-full" rows="15" />
-                            <TextCounter v-if="checkUser" maxlength="2000" :value="character.characterData.stunts.length"/>
+                            <TextCounter v-if="checkUser" maxlength="2000" :value="getLength(character.characterData.stunts)"/>
                         </div>
                         <div class="flex justify-between gap-2">
                             <div class="flex flex-col-reverse items-center justify-between md:flex-row">
@@ -394,7 +394,12 @@ function deleteCharacter(id) {
         }
     })
 }
-
+function getLength(data) {
+    if (data == null) {
+        return 0;
+    }
+    return data.length;
+}
 </script>
 
 <style scoped>
