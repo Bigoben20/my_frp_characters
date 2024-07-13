@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('characters', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->string("high_concept");
-            $table->string("trouble")->nullable()->default(null);
-            $table->string("relationship")->nullable()->default(null);
-            $table->string("aspect")->nullable()->default(null);
-            $table->string("aspect2")->nullable()->default(null);
+            $table->string("name", 300);
+            $table->string("high_concept", 300);
+            $table->string("trouble", 300)->nullable()->default(null);
+            $table->string("relationship",300)->nullable()->default(null);
+            $table->string("aspect",300)->nullable()->default(null);
+            $table->string("aspect2",300)->nullable()->default(null);
             $table->longText("stunts")->nullable()->default(null);
             $table->tinyInteger("refresh")->default(0);
             $table->tinyInteger("fate_point")->default(0);

@@ -6,7 +6,8 @@
                 <!-- Names -->
                 <div class="flex flex-col items-start p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 col-span-full">
                     <label for="name">Name</label>
-                    <TextAreainput rows="2" :auth="checkUser" id="name" v-model="character.characterData.name" class="w-full" />
+                    <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="name" v-model="character.characterData.name" class="w-full" />
+                    <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.name.length"/>
                 </div>
                 <div class="flex flex-col gap-6">
                     <!-- Aspects -->
@@ -16,23 +17,28 @@
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="high_concept">High Concept</label>
-                            <TextAreainput rows="2" :auth="checkUser" id="high_concept" v-model="character.characterData.high_concept" class="w-full" />
+                            <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="high_concept" v-model="character.characterData.high_concept" class="w-full" />
+                            <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.high_concept.length"/>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="trouble">Trouble</label>
-                            <TextAreainput rows="2" :auth="checkUser" id="trouble" v-model="character.characterData.trouble" class="w-full" />
+                            <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="trouble" v-model="character.characterData.trouble" class="w-full" />
+                            <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.trouble.length"/>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="relationship">Relationships</label>
-                            <TextAreainput rows="2" :auth="checkUser" id="relationship" v-model="character.characterData.relationship" class="w-full" />
+                            <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="relationship" v-model="character.characterData.relationship" class="w-full" />
+                            <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.relationship.length"/>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect">Serbest Aspect</label>
-                            <TextAreainput rows="2" :auth="checkUser" id="aspect" v-model="character.characterData.aspect" class="w-full" />
+                            <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="aspect" v-model="character.characterData.aspect" class="w-full" />
+                            <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.aspect.length"/>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect2">Serbest Aspect</label>
-                            <TextAreainput rows="2" :auth="checkUser" id="aspect2" v-model="character.characterData.aspect2" class="w-full" />
+                            <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="aspect2" v-model="character.characterData.aspect2" class="w-full" />
+                            <TextCounter v-if="checkUser" maxlength="300" :value="character.characterData.aspect2.length"/>
                         </div>
                     </div>
 
@@ -43,7 +49,8 @@
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect">Stuntlar</label>
-                            <TextAreainput :auth="checkUser" v-model="character.characterData.stunts" class="w-full" rows="15" />
+                            <TextAreainput maxlength="2000" :auth="checkUser" v-model="character.characterData.stunts" class="w-full" rows="15" />
+                            <TextCounter v-if="checkUser" maxlength="2000" :value="character.characterData.stunts.length"/>
                         </div>
                         <div class="flex justify-between gap-2">
                             <div class="flex flex-col-reverse items-center justify-between md:flex-row">
@@ -98,35 +105,35 @@
                             <label for="mild">Hafif</label>
                             <div class="flex w-full gap-1">
                                 <div class="h-[42px] max-w-[42px] w-full text-center p-2 border border-gray-300 dark:border-gray-700 rounded font-semibold text-gray-400">2</div>
-                                <Textinput :auth="checkUser" id="mild" v-model="character.characterData.mild" class="w-full" />
+                                <Textinput :auth="checkUser" maxlength="200" id="mild" v-model="character.characterData.mild" class="w-full" />
                             </div>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="moderate">Orta</label>
                             <div class="flex w-full gap-1">
                                 <div class="h-[42px] max-w-[42px] w-full text-center p-2 border border-gray-300 dark:border-gray-700 rounded font-semibold text-gray-400">4</div>
-                                <Textinput :auth="checkUser" id="moderate" v-model="character.characterData.moderate" class="w-full" />
+                                <Textinput :auth="checkUser" maxlength="200" id="moderate" v-model="character.characterData.moderate" class="w-full" />
                             </div>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="severe">Ağır</label>
                             <div class="flex w-full gap-1">
                                 <div class="h-[42px] max-w-[42px] w-full text-center p-2 border border-gray-300 dark:border-gray-700 rounded font-semibold text-gray-400">6</div>
-                                <Textinput :auth="checkUser" id="severe" v-model="character.characterData.severe" class="w-full" />
+                                <Textinput :auth="checkUser" maxlength="200" id="severe" v-model="character.characterData.severe" class="w-full" />
                             </div>
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="extreme">Kritik</label>
                             <div class="flex w-full gap-1">
                                 <div class="h-[42px] max-w-[42px] w-full text-center p-2 border border-gray-300 dark:border-gray-700 rounded font-semibold text-gray-400">8</div>
-                                <Textinput :auth="checkUser" id="extreme" v-model="character.characterData.extreme" class="w-full" />
+                                <Textinput :auth="checkUser" maxlength="200" id="extreme" v-model="character.characterData.extreme" class="w-full" />
                             </div>
                         </div>
                         <div class="flex flex-col items-start opacity-50">
                             <label for="mild2">Hafif</label>
                             <div class="flex w-full gap-1">
                                 <div class="h-[42px] max-w-[42px] w-full text-center p-2 border border-gray-300 dark:border-gray-700 rounded font-semibold text-gray-400">2</div>
-                                <Textinput :auth="checkUser" id="mild2" v-model="character.characterData.mild2" class="w-full" />
+                                <Textinput :auth="checkUser" maxlength="200" id="mild2" v-model="character.characterData.mild2" class="w-full" />
                             </div>
                         </div>
                     </div>
@@ -157,22 +164,27 @@
             </div>
         </div>
         <div class="fixed left-0 z-40 w-full px-2 bottom-2" v-if="checkUser">
-            <div class="flex justify-between gap-2 p-4 bg-white border border-gray-300 rounded-lg dark:bg-opacity-10 dark:border-gray-800 backdrop-blur-md">
-                <div class="flex gap-2">
-                    <button type="button" class=" text-amber-600 bg-amber-100 generalButton" @click="openMore = !openMore">
+            <div class="flex flex-col-reverse justify-between gap-2 p-4 bg-white border border-gray-300 rounded-lg sm:flex-row dark:bg-opacity-10 dark:border-gray-800 backdrop-blur-md">
+                <div class="grid w-full grid-cols-6 gap-2 sm:w-1/2">
+                    <button type="button" class="text-red-600 bg-red-100 generalButton" @click="deleteModalShow = true;">
+                        <span>Sil</span>
+
+                        <i class="text-xs fa-solid fa-trash"></i>
+                    </button>
+                    <button type="button" class="col-span-2 col-start-3 text-amber-600 bg-amber-100 generalButton" @click="openMore = !openMore">
                         <span>Notlar</span>
 
                         <svg class="ms-2 -me-0.5 h-4 w-4 rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                         </svg>
                     </button>
-                    <button type="button" class="text-red-600 bg-red-100 generalButton" @click="deleteModalShow = true;">
-                        <span>Sil</span>
+                    <button type="button" class="col-span-2 col-start-5 text-indigo-600 bg-indigo-100 generalButton" @click="zarModalShow = true;">
+                        <span>Zar</span>
 
-                        <i class="text-xs fa-solid fa-trash"></i>
+                        <i class="text-xs fa-solid fa-dice"></i>
                     </button>
                 </div>
-                <button class="w-1/3 text-green-600 bg-green-100 generalButton" type="submit">
+                <button class="w-full text-green-600 bg-green-100 sm:w-1/3 generalButton" type="submit">
                     <span>Kaydet</span>
                     <MiniLoader :show="saveLoading" radius="4" />
                 </button>
@@ -189,13 +201,13 @@
                     <button type="button" class="absolute flex items-center justify-center w-6 h-6 rounded-full text-sky-600 bg-sky-100 right-2 top-2" @click="openMore = false">
                         <i class="text-[11px] fa-solid fa-x"></i>
                     </button>
-                    <div class="mt-4">
+                    <div class="h-full mt-4">
                         <label for="notes" class="">Notes</label>
-                        <TextAreainput id="notes" :auth="checkUser" v-model="character.characterData.notes" class="w-full" rows="15" />
+                        <TextAreainput id="notes" :auth="checkUser" v-model="character.characterData.notes" class="w-full h-[calc(100%-124px)]" rows="15" />
                     </div>
-                    <div class="pb-40 mt-6">
+                    <!-- <div class="pb-40 mt-6">
                         <Roll></Roll>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </transition>
@@ -227,11 +239,29 @@
             </div>
         </div>
     </Modal>
+    
+    <!-- Zar Modal -->
+    <Modal :show="zarModalShow">
+        <div class="p-6">
+            <div class="relative mb-2">
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    Zar At
+                </h2>
+                <button class="absolute top-0 right-0 flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-900 dark:text-white hoverEffect" @click="zarModalShow = false;">
+                    <i class="text-sm fa-solid fa-x"></i>
+                </button>
+            </div>
+            <div class="my-6 dark:text-gray-200">
+                <Roll type="2"></Roll>
+            </div>
+        </div>
+    </Modal>
 </template>
 
 <script setup>
 import Textinput from '@/Components/TextInput.vue';
 import TextAreainput from '@/Components/TextAreaInput.vue';
+import TextCounter from '@/Components/TextCounter.vue';
 import { computed, ref } from 'vue'
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import MiniLoader from '@/Components/MiniLoader.vue';
@@ -329,6 +359,7 @@ const updateCharacter = async () => {
 
 const openMore = ref(false);
 
+const zarModalShow = ref(false);
 const deleteModalShow = ref(false);
 const deleteForm = useForm({
     id: ''

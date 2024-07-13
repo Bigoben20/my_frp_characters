@@ -88,11 +88,13 @@
             <form @submit.prevent="submitForm" class="grid justify-between grid-cols-1 gap-5 mt-4 md:items-end">
                 <div class="flex flex-col">
                     <label for="name" class="dark:text-gray-200">Name:</label>
-                    <TextInput id="name" v-model="form.name" />
+                    <TextInput maxlength="100" id="name" v-model="form.name" />
+                    <TextCounter maxlength="100" :value="form.name.length"/>
                 </div>
                 <div class="flex flex-col">
                     <label for="high_concept" class="dark:text-gray-200">High Concept:</label>
-                    <TextAreainput rows="2" id="high_concept" v-model="form.high_concept" />
+                    <TextAreainput maxlength="300" rows="2" id="high_concept" v-model="form.high_concept" />
+                    <TextCounter maxlength="300" :value="form.high_concept.length"/>
                 </div>
                 <button class="px-4 py-2 rounded bg-indigo-200 text-indigo-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" type="submit" :disabled="submitLoad || successMessage">
                     <span>Create</span>
@@ -141,6 +143,7 @@ import nprogress from 'nprogress';
 import Modal from '@/Components/Modal.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import TextCounter from '@/Components/TextCounter.vue';
 import MiniLoader from '@/Components/MiniLoader.vue';
 import TextAreainput from '@/Components/TextAreaInput.vue';
 import Roll from '@/Components/Roll.vue'
