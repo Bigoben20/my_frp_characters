@@ -7,7 +7,7 @@
                 <div class="flex flex-col items-start p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 col-span-full">
                     <label for="name">Name</label>
                     <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="name" v-model="character.characterData.name" class="w-full" />
-                    <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.name)"/>
+                    <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.name)" />
                 </div>
                 <div class="flex flex-col gap-6">
                     <!-- Aspects -->
@@ -18,27 +18,27 @@
                         <div class="flex flex-col items-start">
                             <label for="high_concept">High Concept</label>
                             <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="high_concept" v-model="character.characterData.high_concept" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.high_concept)"/>
+                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.high_concept)" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="trouble">Trouble</label>
                             <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="trouble" v-model="character.characterData.trouble" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.trouble)"/>
+                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.trouble)" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="relationship">Relationships</label>
                             <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="relationship" v-model="character.characterData.relationship" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.relationship)"/>
+                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.relationship)" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect">Serbest Aspect</label>
                             <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="aspect" v-model="character.characterData.aspect" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.aspect)"/>
+                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.aspect)" />
                         </div>
                         <div class="flex flex-col items-start">
                             <label for="aspect2">Serbest Aspect</label>
                             <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="aspect2" v-model="character.characterData.aspect2" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.aspect2)"/>
+                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.aspect2)" />
                         </div>
                     </div>
 
@@ -50,7 +50,7 @@
                         <div class="flex flex-col items-start">
                             <label for="aspect">Stuntlar</label>
                             <TextAreainput maxlength="2000" :auth="checkUser" v-model="character.characterData.stunts" class="w-full" rows="15" />
-                            <TextCounter v-if="checkUser" maxlength="2000" :value="getLength(character.characterData.stunts)"/>
+                            <TextCounter v-if="checkUser" maxlength="2000" :value="getLength(character.characterData.stunts)" />
                         </div>
                         <div class="flex justify-between gap-2">
                             <div class="flex flex-col-reverse items-center justify-between md:flex-row">
@@ -143,7 +143,7 @@
                             <span class="header">Skills</span>
                             <div>
                                 <span class="">Total: </span>
-                                <span class="font-semibold text-pink-600 dark:text-pink-300">{{total}}</span>
+                                <span class="font-semibold text-pink-600 dark:text-pink-300">{{ total }}</span>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-2">
@@ -163,37 +163,39 @@
                 </div>
             </div>
         </div>
-        <div class="fixed left-0 z-40 w-full px-2 bottom-2" v-if="checkUser">
-            <div class="flex flex-col-reverse justify-between gap-2 p-4 bg-white border border-gray-300 rounded-lg sm:flex-row dark:bg-opacity-10 dark:border-gray-800 backdrop-blur-md">
-                <div class="grid w-full grid-cols-6 gap-2 sm:w-1/2">
-                    <button type="button" class="text-red-600 bg-red-100 generalButton" @click="deleteModalShow = true;">
-                        <span>Sil</span>
 
+        <!-- Bottom -->
+        <div class="fixed left-0 z-40 w-full px-2 bottom-2" v-if="checkUser">
+            <div class="flex gap-2 p-4 bg-white bg-opacity-50 border border-gray-300 rounded-lg dark:bg-opacity-10 dark:border-gray-800 backdrop-blur-md">
+                <div class="grid w-full grid-cols-6 gap-2 sm:grid-cols-12">
+                    <button type="button" class="text-red-600 bg-red-100 generalButton" @click="deleteModalShow = true;">
                         <i class="text-xs fa-solid fa-trash"></i>
+                        <span class="hidden sm:block">Sil</span>
                     </button>
                     <button type="button" class="col-span-2 col-start-3 text-amber-600 bg-amber-100 generalButton" @click="openMore = !openMore">
-                        <span>Notlar</span>
-
-                        <svg class="ms-2 -me-0.5 h-4 w-4 rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
+                        <i class="fa-solid fa-note-sticky"></i>
+                        <span class="hidden sm:block">Notlar</span>
                     </button>
                     <button type="button" class="col-span-2 col-start-5 text-indigo-600 bg-indigo-100 generalButton" @click="zarModalShow = true;">
-                        <span>Zar</span>
-
                         <i class="text-xs fa-solid fa-dice"></i>
+                        <span class="hidden sm:block">Zar</span>
+                    </button>
+                    <button type="button" class="col-start-2 row-start-2 sm:row-start-1 sm:col-start-8 text-neutral-600 bg-neutral-100 generalButton" @click="copyUrl">
+                        <i class="text-xs fa-solid fa-share" v-show="!copied"></i>
+                        <i class="text-xs fa-solid fa-check" v-show="copied"></i>
+                    </button>
+                    <button class="w-full col-span-6 col-start-1 row-start-1 text-green-600 bg-green-100 sm:col-start-9 sm:col-span-4 generalButton" type="submit">
+                        <MiniLoader :show="saveLoading" radius="4" />
+                        <i class="fa-solid fa-save" v-show="!saveLoading"></i>
+                        <span class="hidden sm:block">Kaydet</span>
                     </button>
                 </div>
-                <button class="w-full text-green-600 bg-green-100 sm:w-1/3 generalButton" type="submit">
-                    <span>Kaydet</span>
-                    <MiniLoader :show="saveLoading" radius="4" />
-                </button>
             </div>
         </div>
 
     </form>
 
-
+    <!-- Notes -->
     <div class="fixed top-0 left-0 w-full h-full bg-gray-800/30 dark:bg-gray-900/50" v-show="openMore" @click.self="openMore = false">
         <transition name="slide-fade">
             <div class="absolute top-0 right-0 w-4/5 h-full overflow-scroll transition-all duration-300 ease-in bg-white shadow-xl dark:bg-gray-800 lg:w-1/3" v-show="openMore">
@@ -239,7 +241,7 @@
             </div>
         </div>
     </Modal>
-    
+
     <!-- Zar Modal -->
     <Modal :show="zarModalShow">
         <div class="p-6">
@@ -270,6 +272,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import nprogress from 'nprogress';
 import Modal from '@/Components/Modal.vue';
 import Roll from '@/Components/Roll.vue';
+import toast from '@/Stores/toast';
 
 const props = defineProps({
     character: {
@@ -330,7 +333,7 @@ const skills_data = ref(JSON.parse(props.skills.skills_data));
 const skillLabels = ref(props.skillLabels);
 
 const total = computed(() => {
-  return skills_data.value.reduce((acc, num) => acc + num, 0);
+    return skills_data.value.reduce((acc, num) => acc + num, 0);
 });
 // console.log(JSON.parse(props.skills.skills));
 
@@ -400,6 +403,25 @@ function getLength(data) {
     }
     return data.length;
 }
+
+// Kopyalama
+const copied = ref(false);
+
+const copyUrl = async () => {
+    try {
+        const currentUrl = window.location.href;
+        await navigator.clipboard.writeText(currentUrl);
+        copied.value = true;
+        toast.add({
+            type: 'success', message: "Panoya Kopyalandı!"
+        });
+        setTimeout(() => {
+            copied.value = false;
+        }, 2000);
+    } catch (err) {
+        console.error('Failed to copy: ', err);
+    }
+};
 </script>
 
 <style scoped>
