@@ -6,10 +6,11 @@
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Dashboard</h2>
         </template>
 
+        <!-- My Characters -->
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="p-4 overflow-hidden bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
-                    <div class="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">Characters <span class="text-blue-600 dark:text-blue-400">({{ characters.length }})</span></div>
+                    <div class="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">My Characters <span class="text-blue-600 dark:text-blue-400">({{ characters.length }})</span></div>
                     <div class="mb-2">
                         <button type="button" class="px-4 py-2 rounded bg-sky-200 text-sky-700 hoverEffect" @click="createModalShow = true">
                             Create
@@ -58,7 +59,7 @@
             </div>
         </div>
 
-        <div class="py-12">
+        <div class="pb-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="p-4 bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
                     <Roll></Roll>
@@ -66,6 +67,39 @@
             </div>
         </div>
 
+        <!-- Other Characters -->
+        <div class="pb-12">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div class="p-4 overflow-hidden bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
+                    <div class="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">Other Characters <span class="text-blue-600 dark:text-blue-400">({{ allCharacters.total }})</span></div>
+                    <div class="w-full">
+                        <table class="w-full text-left table-fixed">
+                            <thead class="dark:text-gray-300">
+                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                    <th class="px-3 py-1.5 rounded-l w-10">ID</th>
+                                    <th class="px-3 py-1.5">Name</th>
+                                    <th class="px-3 py-1.5 rounded-r">High Concept</th>
+                                </tr>
+                            </thead>
+                            <tbody class="dark:text-gray-100">
+                                <tr v-for="character in allCharacters.data" :key="character.id" @click="goToChar(character.id)" class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
+                                    <td class="px-3 py-1.5">{{ character.id }}</td>
+                                    <td class="px-3 py-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{{ character.name }}</td>
+                                    <td class="px-3 py-1.5">
+                                        <div class="overflow-hidden text-ellipsis whitespace-nowrap">
+                                            {{ character.high_concept }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="mt-4">
+                            <Pagination :links="allCharacters.links" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </AuthenticatedLayout>
 
     <!-- Create Modal -->
@@ -147,14 +181,18 @@ import TextCounter from '@/Components/TextCounter.vue';
 import MiniLoader from '@/Components/MiniLoader.vue';
 import TextAreainput from '@/Components/TextAreaInput.vue';
 import Roll from '@/Components/Roll.vue'
+import Pagination from '@/Components/Pagination.vue'
 
 
-defineProps({
+const props = defineProps({
     characters: {
         type: Object,
     },
+    allCharacters: {
+        type: Object,
+    },
 })
-
+console.log(props.allCharacters);
 const page = usePage();
 
 const selectedCharacter = ref(null);
