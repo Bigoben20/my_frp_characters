@@ -120,7 +120,7 @@ onMounted(() => {
 
 watch(dynamicHeightElement, (newHeight) => {
     elementHeight.value = newHeight.offsetHeight;
-  console.log('Element yüksekliği değişti:', newHeight.offsetHeight);
+//   console.log('Element yüksekliği değişti:', newHeight.offsetHeight);
 });
 
 </script>
