@@ -122,4 +122,31 @@ class DashboardController extends Controller
             return redirect()->back()->with('error', 'Karakter güncellenemedi; ' . $e->getMessage());;
         }
     }
+    
+    public function updateCharacterImg(Request $request)
+    {
+        if (!Auth::user()) {
+            return redirect()->back()->with('warning', 'Üye girişi yapılmamış!');
+        }
+
+        $image_url = $request->imgUrl;
+        $characterId = $request->id;
+
+        $characterDB = Character::find($characterId);
+        if (!$characterDB) {
+            return redirect()->back()->with('error', 'Karakter bulunamadı!');
+        } else if ($characterDB->user_id != Auth::user()->id) {
+            return redirect()->back()->with('error', 'Buna yetkiniz bulunmamaktadır!');
+        }
+
+    
+        try {
+            $characterDB->img_url = $image_url;
+            $characterDB->save();
+
+            return redirect()->back()->with('success', 'Resim başarıyla güncellendi');;
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Resim güncellenemedi; ' . $e->getMessage());;
+        }
+    }
 }

@@ -6,9 +6,13 @@
                 <!-- Names -->
                 <div class="grid grid-cols-[110px_auto] items-center gap-4 p-4 bg-white rounded-lg shadow-md col-span-full dark:bg-gray-800">
                     <div class="w-[110px] h-[110px]">
-                        <div class="w-full h-full border rounded">
-                            <div class="flex items-center justify-center w-full h-full bg-gray-100">
-                                <i class="text-5xl text-gray-500 fa-solid fa-user"></i>
+                        <div class="w-full h-full overflow-hidden border rounded dark:border-gray-600">
+                            <div class="relative flex items-center justify-center w-full h-full bg-gray-100 dark:bg-gray-900 group">
+                                <i class="text-5xl text-gray-500 fa-solid fa-user" v-if="!character.characterData.img_url"></i>
+                                <img :src="character.characterData.img_url" v-else>
+                                <div class="absolute invisible bottom-1 right-2 group-hover:visible">
+                                    <CharacterImageModal :auth="auth" :character="character.characterData"/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -273,6 +277,7 @@
 import Textinput from '@/Components/TextInput.vue';
 import TextAreainput from '@/Components/TextAreaInput.vue';
 import TextCounter from '@/Components/TextCounter.vue';
+import CharacterImageModal from '@/Includes/CharacterImageModal.vue';
 import { computed, ref } from 'vue'
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import MiniLoader from '@/Components/MiniLoader.vue';

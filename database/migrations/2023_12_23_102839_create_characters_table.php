@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string("severe")->nullable()->default(null);
             $table->string("extreme")->nullable()->default(null);
             $table->string("mid2")->nullable()->default(null);
+            $table->string("img_url",300)->nullable()->default(null);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
             

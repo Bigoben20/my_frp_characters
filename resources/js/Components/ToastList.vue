@@ -4,7 +4,7 @@
     enter-active-class="duration-500"
     leave-active-class="duration-500"
     leave-to-class="translate-x-full opacity-0"
-    class="fixed z-20 max-w-xs space-y-4 right-2 top-2 md:right-6 md:top-6">
+    class="fixed z-[90] max-w-xs space-y-4 right-2 top-2 md:right-6 md:top-6">
         <ToastListItem 
         v-for="(item, index) in toast.items" :key="item.key"
         :toaster="item.type" :message="item.message"

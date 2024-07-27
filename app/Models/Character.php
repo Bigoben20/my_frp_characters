@@ -21,6 +21,7 @@ class Character extends Model
         'physical_stress',
         'mental_stress',
         'user_id',
+        'img_url',
     ];
 
     public function skills()

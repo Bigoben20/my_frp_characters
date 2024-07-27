@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/character-create', [DashboardController::class, 'storeCharacter'])->name('character.create');
     Route::post('/character-delete', [DashboardController::class, 'deleteCharacter'])->name('character.delete');
     Route::post('/character-update', [DashboardController::class, 'updateCharacter'])->name('character.update');
+    Route::post('/character-img-update', [DashboardController::class, 'updateCharacterImg'])->name('character.update-img');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
