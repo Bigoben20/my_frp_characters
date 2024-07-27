@@ -4,10 +4,19 @@
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 
                 <!-- Names -->
-                <div class="flex flex-col items-start p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 col-span-full">
-                    <label for="name">Name</label>
-                    <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="name" v-model="character.characterData.name" class="w-full" />
-                    <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.name)" />
+                <div class="grid grid-cols-[110px_auto] items-center gap-4 p-4 bg-white rounded-lg shadow-md col-span-full dark:bg-gray-800">
+                    <div class="w-[110px] h-[110px]">
+                        <div class="w-full h-full border rounded">
+                            <div class="flex items-center justify-center w-full h-full bg-gray-100">
+                                <i class="text-5xl text-gray-500 fa-solid fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-start w-full">
+                        <label for="name">Name</label>
+                        <TextAreainput maxlength="300" rows="2" :auth="checkUser" id="name" v-model="character.characterData.name" class="w-full" />
+                        <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.name)" />
+                    </div>
                 </div>
                 <div class="flex flex-col gap-6">
                     <!-- Aspects -->
