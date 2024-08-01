@@ -88,7 +88,7 @@ function rollFate() {
     setTimeout(() => {
         clearInterval(interval);
         resultHistory.value.length > 0 ? resultHistory.value.unshift(diceResults.value[4]) : resultHistory.value.push(diceResults.value[4]);
-    }, 1000);
+    }, 300);
 
 }
 function diceImg(result) {
