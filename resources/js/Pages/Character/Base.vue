@@ -11,7 +11,7 @@
                                 <i class="text-5xl text-gray-500 fa-solid fa-user" v-if="!character.characterData.img_url"></i>
                                 <img :src="character.characterData.img_url" v-else>
                                 <div class="absolute invisible bottom-1 right-2 group-hover:visible">
-                                    <CharacterImageModal :auth="auth" :character="character.characterData"/>
+                                    <CharacterImageModal :auth="checkUser" :character="character.characterData"/>
                                 </div>
                             </div>
                         </div>
