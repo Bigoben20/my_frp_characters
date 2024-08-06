@@ -15,7 +15,7 @@
                 </button>
             </div>
             <div class="flex justify-start gap-2 my-6 dark:text-gray-200" v-if="auth">
-                <Textinput :auth="auth" maxlength="200" id="image" v-model="image.imgUrl" class="w-full" placeholder="Url giriniz."/>
+                <Textinput :auth="auth" maxlength="300" id="image" v-model="image.imgUrl" class="w-full" placeholder="Url giriniz."/>
                 <button class="px-4 py-2 text-green-600 bg-green-200 rounded-md" @click="saveImg">
                     <i class="fa-solid fa-save"></i>
                 </button>
