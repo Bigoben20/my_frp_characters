@@ -16,7 +16,7 @@ class DashboardController extends Controller
     public function dashboard()
     {
         $characters = Character::where("user_id", Auth::user()->id)->orderBy("id", "DESC")->get();
-        $allCharacters = Character::where("user_id", "<>" ,Auth::user()->id)->paginate(15);
+        $allCharacters = Character::with('user')->where("user_id", "<>" ,Auth::user()->id)->paginate(15);
 
         return Inertia::render('Dashboard', compact("characters","allCharacters"));
     }

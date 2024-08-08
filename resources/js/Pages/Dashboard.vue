@@ -77,6 +77,7 @@
                             <thead class="dark:text-gray-300">
                                 <tr class="bg-gray-100 dark:bg-gray-700">
                                     <th class="px-3 py-1.5 rounded-l w-10">ID</th>
+                                    <th class="px-3 py-1.5">User</th>
                                     <th class="px-3 py-1.5">Name</th>
                                     <th class="px-3 py-1.5 rounded-r">High Concept</th>
                                 </tr>
@@ -84,6 +85,7 @@
                             <tbody class="dark:text-gray-100">
                                 <tr v-for="character in allCharacters.data" :key="character.id" @click="goToChar(character.id)" class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
                                     <td class="px-3 py-1.5">{{ character.id }}</td>
+                                    <td class="px-3 py-1.5 whitespace-nowrap">{{ character.user.name }}</td>
                                     <td class="px-3 py-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{{ character.name }}</td>
                                     <td class="px-3 py-1.5">
                                         <div class="overflow-hidden text-ellipsis whitespace-nowrap">
