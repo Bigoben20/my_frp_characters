@@ -21,6 +21,10 @@ import Base from '@/Pages/Character/Base.vue';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
+const page = usePage();
+console.log(page.props.auth.user);
+ 
+
 const props = defineProps({
     character: {
         type: Object,

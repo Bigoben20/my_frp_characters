@@ -301,7 +301,7 @@ const props = defineProps({
 })
 
 const page = usePage();
-const checkUser = ref(page.props.auth.user.id == props.character.user_id);
+const checkUser = ref(page.props.auth.user && page.props.auth.user.id == props.character.user_id);
 const character = useForm({ characterData: props.character, skills: props.skills });
 // console.log(character);
 const physicalBoxes = ref([
