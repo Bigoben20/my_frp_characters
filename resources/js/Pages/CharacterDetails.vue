@@ -22,7 +22,7 @@ import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const page = usePage();
-console.log(page.props.auth.user);
+// console.log(page.props.auth.user);
  
 
 const props = defineProps({

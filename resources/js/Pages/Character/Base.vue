@@ -377,7 +377,7 @@ const updateCharacter = async () => {
 // AutoSaves
 const autoSaveInfo = setInterval(() => {
     toast.add({
-            type: 'info', message: "Kardeş bayadır kaydete basmadın!"
+            type: 'warning', message: "Kardeş bayadır kaydete basmadın!"
         });
 }, 290000);
 
