@@ -4,6 +4,7 @@ import ditto from '@/assets/icons/ditto.png';
 import Logo from '@/Components/ApplicationLogo.vue';
 import postIt from '@/assets/icons/post-it.png';
 import Roll from '@/Components/Roll.vue';
+import Galeri from '@/Components/Galeri.vue';
 
 defineProps({
     canLogin: {
@@ -28,20 +29,20 @@ defineProps({
     <Head title="Welcome" />
 
     <div class="relative min-h-screen bg-gray-100 bg-center sm:flex sm:justify-center sm:items-center bg-dots-darker dark:bg-dots-lighter dark:bg-gray-900">
-        <div class="flex justify-between w-full p-6 sm:fixed sm:top-0 sm:right-0 text-end">
-            <div class="font-semibold dark:text-gray-400">
+        <div class="flex items-center justify-between">
+            <div class="w-1/2 p-6 font-semibold dark:text-gray-400 sm:fixed sm:top-0 sm:left-0 sm:w-fit">
                 My Frp Characters
             </div>
-            <div v-if="canLogin">
+            <div v-if="canLogin" class="w-1/2 p-6 sm:fixed sm:top-0 sm:right-0 text-end sm:w-fit">
                 <Link v-if="$page.props.auth.user" :href="route('dashboard')"
                     class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">Dashboard
                 </Link>
-
+    
                 <template v-else>
                     <Link :href="route('login')"
                         class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">Log in
                     </Link>
-
+    
                     <Link v-if="canRegister" :href="route('register')"
                         class="font-semibold text-gray-600 ms-4 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">
                     Register
@@ -50,11 +51,11 @@ defineProps({
             </div>
         </div>
 
-        <div class="p-6 mx-auto max-w-7xl lg:p-8">
+        <div class="p-6 mx-auto max-w-7xl lg:p-8 sm:mt-[72px]">
             <div class="flex items-center justify-center">
                 <div class="sm:w-1/2">
                     <!-- <Logo class="w-40 h-40" /> -->
-                    <Roll></Roll>
+                    <Roll type="1"></Roll>
                 </div>
             </div>
 
@@ -98,6 +99,8 @@ defineProps({
                     </div>
                 </div>
             </div>
+            
+            <!-- <Galeri/> -->
 
             <div class="flex justify-center px-6 mt-16 sm:items-center sm:justify-between">
                 <div class="text-sm text-center text-gray-500 dark:text-gray-400 sm:text-start">
@@ -108,6 +111,7 @@ defineProps({
                         </a>
                     </div>
                 </div>
+
 
                 <div class="text-sm text-center text-gray-500 ms-4 dark:text-gray-400 sm:text-end sm:ms-0">
                     Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }})

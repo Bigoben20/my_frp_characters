@@ -15,6 +15,15 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            keyframes: {
+                rolling: {
+                  '0%': { transform: 'rotate(0deg)' },
+                  '100%': {transform: 'rotate(360deg)'}
+                }
+            },
+            animation: {
+            'rolld20': 'rolling 0.7s ease-in-out infinite',
+            }
         },
     },
 

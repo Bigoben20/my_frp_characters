@@ -374,6 +374,18 @@ const updateCharacter = async () => {
     });
 }
 
+// AutoSaves
+const autoSaveInfo = setInterval(() => {
+    toast.add({
+            type: 'info', message: "Kardeş bayadır kaydete basmadın!"
+        });
+}, 290000);
+
+const autoSave = setInterval(() => {
+    updateCharacter();
+}, 600000);
+
+
 const openMore = ref(false);
 
 const zarModalShow = ref(false);

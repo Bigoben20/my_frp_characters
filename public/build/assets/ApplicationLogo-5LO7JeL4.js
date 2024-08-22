@@ -1,1 +1,0 @@
-import{o as s,f as o,u as c}from"./app-Bj624y40.js";const e="/build/assets/dice-cQWsfllZ.png",t=["src"],_={__name:"ApplicationLogo",setup(n){return(r,a)=>(s(),o("img",{src:c(e),alt:"",class:"dark:invert"},null,8,t))}};export{_};
