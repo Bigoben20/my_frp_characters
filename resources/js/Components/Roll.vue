@@ -1,15 +1,15 @@
 <template>
-    <div class="flex items-center w-full gap-4">
+    <div class="flex items-center w-full gap-4 mb-1">
         <select class="generalInput" v-model="diceType">
             <option value="" selected disabled>Zar Tipi</option>
             <option value="fate">Fate</option>
             <option value="d20">D20</option>
         </select>
 
-        <div class="" v-if="diceType == 'd20'">
+        <div class="p-2 border border-gray-300 rounded-md dark:border-gray-700 dark:text-gray-300" v-if="diceType == 'd20'">
             <label for="flip">
                 <input class="mr-2 rounded" type="checkbox" checked id="flip" v-model="flipAll">
-                <span>Çıldır</span>
+                <span class="dark:text-white">Çıldır</span>
             </label>
         </div>
     </div>
