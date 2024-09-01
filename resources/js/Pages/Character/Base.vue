@@ -339,7 +339,7 @@ function countChecked() {
     // Herhangi bir değişiklikte seçili checkbox sayısını hesaplar
     character.characterData.physical_stress = physicalBoxes.value.filter(checkbox => checkbox.checked).length;
     character.characterData.mental_stress = mentalBoxes.value.filter(checkbox => checkbox.checked).length;
-    console.log(character.characterData);
+    // console.log(character.characterData);
 }
 
 // const skills = ref(JSON.parse(props.skills.skills));
