@@ -7,44 +7,49 @@
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">DND GPT</h2>
         </template>
         <div class="py-4 sm:py-12">
-            <div class="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="mb-4 header">
-                    Sohbet Başlat
-                </div>
-                <div>
-                    <div class="flex flex-col gap-4 pb-4">
-                        <div class="-mb-3 text-xs text-red-500">
-                            * Tek mesajlık sohbet şeklinde çalışmaktadır
-                        </div>
-                        <textarea class="generalInput" v-model="message" placeholder="Sorun nedir?"></textarea>
-                        <button type="button" @click="sendMessage" class="flex items-center justify-center gap-1 px-4 py-2 text-indigo-700 bg-indigo-200 rounded hoverEffect" :disabled="messageLoading">
-                            <span>
-                                Gönder
-                            </span>
-                            <i class="fa-regular fa-paper-plane" v-show="!messageLoading"></i>
-                            <MiniLoader :show="messageLoading" radius="4" />
-                        </button>
+            <div class="mx-auto max-w-7xl">
+                <div class="p-4 sm:rounded-lg md:p-8 dark:bg-gray-800">
+                    <div class="mb-4 header">
+                        Sohbet Başlat
                     </div>
-                    <div v-if="responses.length > 0" class="px-2 mt-4 border-t border-gray-400">
-                        <div class="flex justify-end w-full">
-                            <div class="flex flex-col items-end">
-                                <div>
-                                    Siz:
-                                </div>
-                                <div class="max-w-4xl px-3 py-2 bg-stone-200  rounded-[0.75rem_0.75rem_0px_0.75rem]">
-                                    {{ willSendMsg }}
+                    <div>
+                        <div class="flex flex-col gap-4 pb-4">
+                            <div class="-mb-3 text-xs text-red-500">
+                                * Tek mesajlık sohbet şeklinde çalışmaktadır
+                            </div>
+                            <div class="flex flex-col items-stretch">
+                                <textarea class="generalInput" maxlength="300" v-model="message" placeholder="Sorun nedir?"></textarea>
+                                <TextCounter maxlength="300" :value="message.length" />
+                            </div>
+                            <button type="button" @click="sendMessage" class="flex items-center justify-center gap-1 px-4 py-2 text-indigo-700 bg-indigo-200 rounded hoverEffect" :disabled="messageLoading">
+                                <span>
+                                    Gönder
+                                </span>
+                                <i class="fa-regular fa-paper-plane" v-show="!messageLoading"></i>
+                                <MiniLoader :show="messageLoading" radius="4" />
+                            </button>
+                        </div>
+                        <div v-if="responses.length > 0" class="px-2 mt-4 border-t border-gray-400">
+                            <div class="flex justify-end w-full">
+                                <div class="flex flex-col items-end">
+                                    <div class="dark:text-gray-300">
+                                        Siz:
+                                    </div>
+                                    <div class="max-w-4xl px-3 py-2 bg-stone-200 dark:bg-opacity-85 rounded-[0.75rem_0.75rem_0px_0.75rem]">
+                                        {{ willSendMsg }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            D&D GPT:
-                        </div>
-                        <div class="flex flex-col gap-4 ">
-                            <template v-for="text in responses" :key="text.index">
-                                <div class="max-w-4xl px-3 py-2 bg-indigo-100 rounded-[0.75rem_0.75rem_0.75rem_0px]">
-                                    {{ text.message.content }}
-                                </div>
-                            </template>
+                            <div class="dark:text-gray-300">
+                                D&D GPT:
+                            </div>
+                            <div class="flex flex-col gap-4 ">
+                                <template v-for="text in responses" :key="text.index">
+                                    <div class="max-w-4xl px-3 py-2 bg-indigo-100 dark:bg-indigo-200/90 rounded-[0.75rem_0.75rem_0.75rem_0px]">
+                                        {{ text.message.content }}
+                                    </div>
+                                </template>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -61,6 +66,7 @@ import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import { ref } from 'vue';
 import MiniLoader from '@/Components/MiniLoader.vue';
+import TextCounter from '@/Components/TextCounter.vue';
 
 const page = usePage();
 // console.log(page.props.auth.user);
