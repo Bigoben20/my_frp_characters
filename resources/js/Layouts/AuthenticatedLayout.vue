@@ -100,6 +100,9 @@ router.on('finish', () => {
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('gptChat')" :active="route().current('gptChat')">
+                            D&D GPT
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
