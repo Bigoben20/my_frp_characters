@@ -41,6 +41,9 @@ router.on('finish', () => {
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
+                                <NavLink :href="route('gptChat')" :active="route().current('gptChat')">
+                                    D&D GPT
+                                </NavLink>
                             </div>
                         </div>
 
