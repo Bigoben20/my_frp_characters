@@ -21,11 +21,13 @@ class ChatGPTService
             $body = [
                 'model' => 'gpt-4o', // Kullandığınız modele göre değişiklik yapın
                 'messages' => [
-                    ['role' => 'system', 'content' => 'You are a helpful assistant that answers dnd questions in the style of a DM'],
-                    ['role' => 'user', 'content' => $request->message]
+                    ['role' => 'system', 'content' => 'You are a helpful assistant that answers dnd questions in the style of a DM']
                 ],
                 'temperature' => $request->creativeness,
             ];
+            foreach ($request->message as $value) {
+                $body["messages"][] = $value;
+            }
 
             $curl = curl_init();
 
@@ -48,8 +50,8 @@ class ChatGPTService
             if ($httpCode !== 200) {
                 ["success" => false, "error" => 'API isteği başarısız oldu. HTTP Kodu: ' . $httpCode];
             }
-    
-            return ["success" => true, "data" => $response['choices']];
+
+            return ["success" => !array_key_exists('error',$response), "data" => $response];
         } catch (\Exception $e) {
             return ["success" => false, "error" => $e->getMessage()];
         }
