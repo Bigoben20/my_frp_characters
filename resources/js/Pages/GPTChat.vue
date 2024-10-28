@@ -13,8 +13,8 @@
                         Sohbet Başlat
                     </div>
                     <div>
-                        <div class="flex flex-col gap-4 pb-4">
-                            <div class="-mb-3 text-xs text-red-500" v-if="hataMesaji.length > 0">
+                        <div class="flex flex-col gap-3 pb-4">
+                            <div class="p-2 text-xs text-red-500 rounded bg-red-500/50" v-if="hataMesaji.length > 0">
                                 {{ hataMesaji }}
                             </div>
                             <div class="flex flex-col items-stretch">
@@ -29,7 +29,7 @@
                                 <i class="fa-regular fa-paper-plane" v-show="!messageLoading"></i>
                                 <MiniLoader :show="messageLoading" radius="4" />
                             </button>
-                            <div class="space-x">
+                            <div class="space-x dark:text-gray-400">
                                 <span>
                                     Kalan Hakkınız:
                                 </span>
