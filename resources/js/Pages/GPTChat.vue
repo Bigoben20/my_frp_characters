@@ -103,7 +103,7 @@ const sendMessage = async () => {
             console.log(response.data);
             const respData = response.data;
             if (!respData.success) {
-                hataMesaji.value = respData.data.error;
+                hataMesaji.value = respData.data.error.message;
             }
             conversation.value.push(response.data.data.choices[0].message);
         }).catch((error) => {
