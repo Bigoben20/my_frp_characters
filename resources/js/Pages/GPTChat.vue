@@ -14,7 +14,7 @@
                     </div>
                     <div>
                         <div class="flex flex-col gap-3 pb-4">
-                            <div class="p-2 text-xs text-red-500 rounded bg-red-500/50" v-if="hataMesaji.length > 0">
+                            <div class="p-2 text-xs text-red-500 rounded bg-red-500/20" v-if="hataMesaji.length > 0">
                                 {{ hataMesaji }}
                             </div>
                             <div class="flex flex-col items-stretch">
