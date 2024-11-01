@@ -29,11 +29,18 @@ Route::get('/character-detail/{id}', [DashboardController::class, 'detailsCharac
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    
+    // GPT
+    Route::get('/dnd-gpt', [DashboardController::class, 'gptChat'])->name('gptChat');
+    Route::post('/send-dnd-gpt', [DashboardController::class, 'sendGptChat'])->name('gptChat.send');
+
+    // Character
     Route::post('/character-create', [DashboardController::class, 'storeCharacter'])->name('character.create');
     Route::post('/character-delete', [DashboardController::class, 'deleteCharacter'])->name('character.delete');
     Route::post('/character-update', [DashboardController::class, 'updateCharacter'])->name('character.update');
     Route::post('/character-img-update', [DashboardController::class, 'updateCharacterImg'])->name('character.update-img');
 
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

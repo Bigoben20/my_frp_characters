@@ -6,6 +6,7 @@ use App\Models\Character;
 use App\Models\Skills;
 use App\Models\Note;
 use App\Models\SkillLabel;
+use App\Services\ChatGPTService;
 use Collator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,16 @@ class DashboardController extends Controller
         $allCharacters = Character::with('user')->where("user_id", "<>" ,Auth::user()->id)->orderBy("id","Desc")->paginate(15);
 
         return Inertia::render('Dashboard', compact("characters","allCharacters"));
+    }
+    
+    public function gptChat()
+    {
+        return Inertia::render('GPTChat');
+    }
+    public function sendGptChat(Request $request, ChatGPTService $chatGPTService)
+    {
+        $response = $chatGPTService->getChatResponse($request);
+        return response()->json($response);
     }
 
     public function storeCharacter(Request $request)
