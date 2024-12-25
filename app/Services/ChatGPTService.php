@@ -12,14 +12,14 @@ class ChatGPTService
     public function __construct()
     {
         $this->client = new Client();
-        $this->apiKey = env('OPENAI_API_KEY'); // .env dosyanıza API anahtarını eklemelisiniz
+        $this->apiKey = config('services.gpt.OPENAI_API_KEY'); // .env dosyanıza API anahtarını eklemelisiniz
     }
 
     public function getChatResponse($request)
     {
         try {
             $body = [
-                'model' => 'gpt-4o', // Kullandığınız modele göre değişiklik yapın
+                'model' => config('services.gpt.model'), // Kullandığınız modele göre değişiklik yapın
                 'messages' => [
                     ['role' => 'system', 'content' => 'You are a helpful assistant that answers dnd questions in the style of a DM']
                 ],
