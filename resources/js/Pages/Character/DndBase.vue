@@ -1,10 +1,13 @@
 <template>
-    <form @submit.prevent="updateCharacter" class="grid grid-cols-1 gap-4 px-2 pt-6 pb-32 md:px-6 md:grid-cols-2 dark:text-gray-100">
-        <div class="flex flex-col gap-1 col-span-full">
+    <form @submit.prevent="updateCharacter" class="grid grid-cols-1 gap-8 px-2 pt-6 pb-32 md:px-6 md:grid-cols-2 dark:text-gray-100">
+        <div class="flex flex-col gap-1 -mb-4 col-span-full">
             <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 Tabs
             </span>
             <div class="flex gap-2 overflow-x-auto">
+                <button type="button" @click="tabs.forEach(t => t.active = true)" :class="tabs.every(t => t.active == true) ? 'bg-indigo-500 dark:bg-indigo-200 text-white dark:text-indigo-600' : 'bg-gray-200 text-gray-800' " class="px-4 py-1 rounded-full whitespace-nowrap">
+                    All
+                </button>
                 <template v-for="tab in tabs" :key="tab.id">
                     <button type="button" @click="tabs.forEach(t => t.active = t.id == tab.id)" :class="tab.active ? 'bg-indigo-500 dark:bg-indigo-200 text-white dark:text-indigo-600' : 'bg-gray-200 text-gray-800' " class="px-4 py-1 rounded-full whitespace-nowrap">
                         {{ tab.name }}
@@ -16,29 +19,29 @@
             <div class="flex flex-col gap-8 col-span-full" v-show="tabs[0].active" :key="tabs[0].id">
                 <!-- Character Name -->
                 <div class="grid grid-cols-2 p-4 bg-white rounded-lg gap-y-1 gap-x-4 dark:bg-gray-800">
-                    <div class="grid items-start w-full grid-cols-2 col-span-full">
-                        <TextInput maxlength="255" :auth="checkUser" id="name" v-model="character.characterData.name" class="w-full col-span-full" />
+                    <div class="flex flex-col items-start w-full col-span-full">
                         <label for="name" class="ml-1">Name</label>
+                        <TextInput maxlength="255" :auth="checkUser" id="name" v-model="character.characterData.name" class="w-full col-span-full" />
                         <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.name)" />
                     </div>
-                    <div class="grid items-start w-full grid-cols-2">
-                        <TextInput maxlength="100" :auth="checkUser" id="background" v-model="character.characterData.background" class="w-full col-span-full" />
+                    <div class="flex flex-col items-start w-full ">
                         <label for="background" class="ml-1">Background</label>
+                        <TextInput maxlength="100" :auth="checkUser" id="background" v-model="character.characterData.background" class="w-full col-span-full" />
                         <TextCounter v-if="checkUser" maxlength="100" :value="getLength(character.characterData.background)" />
                     </div>
-                    <div class="grid items-start w-full grid-cols-2">
-                        <TextInput maxlength="100" :auth="checkUser" id="class" v-model="character.characterData.class" class="w-full col-span-full" />
+                    <div class="flex flex-col items-start w-full ">
                         <label for="class" class="ml-1">Class</label>
+                        <TextInput maxlength="100" :auth="checkUser" id="class" v-model="character.characterData.class" class="w-full col-span-full" />
                         <TextCounter v-if="checkUser" maxlength="100" :value="getLength(character.characterData.class)" />
                     </div>
-                    <div class="grid items-start w-full grid-cols-2">
-                        <TextInput maxlength="100" :auth="checkUser" id="species" v-model="character.characterData.species" class="w-full col-span-full" />
+                    <div class="flex flex-col items-start w-full ">
                         <label for="species" class="ml-1">Species</label>
+                        <TextInput maxlength="100" :auth="checkUser" id="species" v-model="character.characterData.species" class="w-full col-span-full" />
                         <TextCounter v-if="checkUser" maxlength="100" :value="getLength(character.characterData.species)" />
                     </div>
-                    <div class="grid items-start w-full grid-cols-2">
-                        <TextInput maxlength="100" :auth="checkUser" id="subclass" v-model="character.characterData.subclass" class="w-full col-span-full" />
+                    <div class="flex flex-col items-start w-full">
                         <label for="subclass" class="ml-1">Subclass</label>
+                        <TextInput maxlength="100" :auth="checkUser" id="subclass" v-model="character.characterData.subclass" class="w-full col-span-full" />
                         <TextCounter v-if="checkUser" maxlength="100" :value="getLength(character.characterData.subclass)" />
                     </div>
                 </div>
@@ -108,13 +111,33 @@
                         <div class="-mb-2 font-semibold tracking-wide text-center col-span-full">
                             <span>Death Saves</span>
                         </div>
-                        <div class="flex flex-col items-start w-full">
-                            <label for="success_death_save" class="ml-1">Success</label>
-                            <TextInput type="tel" v-mask="'#'" maxlength="1" :auth="checkUser" id="success_death_save" v-model="character.characterData.success_death_save" class="w-full" />
+                        <div>
+                            <div class="">
+                                <span>Successes</span>
+                            </div>
+                            <div class="flex justify-between w-full gap-4 sm:justify-start">
+                                <div v-for="(checkbox, index) in successDeathSaves" :key="index">
+                                    <input :disabled="!checkUser" :id="'success-' + (index + 1)" type="checkbox" v-model="checkbox.checked" @change="countChecked" class="hidden peer">
+                                    <label :for="'success-' + (index + 1)"
+                                        class="inline-flex items-center justify-center w-5 h-5 text-transparent rotate-45 bg-white border border-gray-300 cursor-pointer dark:bg-gray-800 dark:border-gray-700 peer-checked:border-green-600 dark:peer-checked:text-green-300 peer-checked:text-green-600 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                        <i class="text-2xl -rotate-45 fa-solid fa-x"></i>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex flex-col items-start w-full">
-                            <label for="fail_death_save" class="ml-1">Fail</label>
-                            <TextInput type="tel" v-mask="'#'" maxlength="1" :auth="checkUser" id="fail_death_save" v-model="character.characterData.fail_death_save" class="w-full" />
+                        <div>
+                            <div class="">
+                                <span>Failures</span>
+                            </div>
+                            <div class="flex justify-between w-full gap-4 sm:justify-start">
+                                <div v-for="(checkbox, index) in failDeathSaves" :key="index">
+                                    <input :disabled="!checkUser" :id="'fail-' + (index + 1)" type="checkbox" v-model="checkbox.checked" @change="countChecked" class="hidden peer">
+                                    <label :for="'fail-' + (index + 1)"
+                                        class="inline-flex items-center justify-center w-5 h-5 text-transparent rotate-45 bg-white border border-gray-300 cursor-pointer dark:bg-gray-800 dark:border-gray-700 peer-checked:border-red-600 dark:peer-checked:text-red-300 peer-checked:text-red-600 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                        <i class="text-2xl -rotate-45 fa-solid fa-x"></i>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -163,7 +186,59 @@
             </div>
 
             <!-- Abilities -->
-            <div class="flex flex-col gap-8 col-span-full" v-show="tabs[1].active" :key="tabs[1].id">
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 col-span-full" v-show="tabs[1].active" :key="tabs[1].id">
+                <div class="flex gap-4 col-span-full">
+                    <div class="flex flex-col items-center gap-1 p-4 bg-white rounded-lg dark:bg-gray-800 h-fit">
+                        <span class="text-sm font-semibold">Proficiency Bonus</span>
+                        <TextInput maxlength="3" type="tel" v-mask="'+#'" :auth="checkUser" id="proficiency_bonus" v-model="character.characterData.abilities.proficiency_bonus" class="w-12" />
+                    </div>
+                    <div class="flex flex-col items-center h-full gap-1 p-4 bg-white rounded-lg dark:bg-gray-800">
+                        <span class="text-sm font-semibold">Heroic Inspiration</span>
+                        <div>
+                            <input :disabled="!checkUser" id="heroic_inspiration" type="checkbox" v-model="character.characterData.abilities.heroic_inspiration" class="hidden peer">
+                            <label :for="'heroic_inspiration'"
+                                class="inline-flex items-center justify-center w-10 h-10 text-transparent rotate-45 bg-white border border-gray-300 rounded-full cursor-pointer dark:border-gray-700 peer-checked:border-green-600 dark:peer-checked:text-green-300 peer-checked:text-green-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900">
+                                <i class="text-xl -rotate-45 fa-solid fa-star"></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg dark:bg-gray-800" v-for="(ability, index) in character.abilities" :key="index">
+                    <div class="flex flex-col justify-center p-4 text-center border-b border-gray-300 dark:border-gray-700">
+                        <span class="text-sm font-semibold">{{ ability.ability_name }}</span>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <div class="flex items-center justify-center h-10 px-2 border border-gray-300 rounded-full min-w-10 dark:border-gray-700 dark:bg-gray-900">
+                                {{ ability.ability_modifier }}
+                            </div>
+                            <div>
+                                <TextInput maxlength="3" type="tel" v-mask="'###'" :auth="checkUser" id="ability_score" v-model="ability.ability_score" @input="ability.ability_modifier = getModifier(ability.ability_score)" class="w-full" placeholder="Score" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 px-4 py-2 border-b dark:border-gray-700">
+                        <div>
+                            <input :disabled="!checkUser" :id="ability.ability_name+'_savingthrow'" type="checkbox" v-model="ability.saving_throw" class="hidden peer">
+                            <label :for="ability.ability_name+'_savingthrow'"
+                                class="inline-flex items-center justify-center w-5 h-5 text-transparent rotate-45 bg-white border border-gray-300 rounded-full cursor-pointer dark:bg-gray-800 dark:border-gray-700 peer-checked:border-green-600 dark:peer-checked:text-green-300 peer-checked:text-green-600 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <i class="text-xl -rotate-45 fa-solid fa-x"></i>
+                            </label>
+                        </div>
+                        <span class="text-xs">Saving Throw</span>
+                    </div>
+                    <div class="flex flex-col gap-1 px-4 py-2">
+                        <div class="flex items-center gap-2" v-for="(sub_ability,index) in ability.sub_abilities" :key="index">
+                            <div>
+                                <input :disabled="!checkUser" :id="sub_ability.name+'_savingthrow'" type="checkbox" v-model="ability.sub_abilities[index].saving_throw_check" class="hidden peer">
+                                <label :for="sub_ability.name+'_savingthrow'"
+                                    class="inline-flex items-center justify-center w-4 h-4 text-transparent rotate-45 bg-white border border-gray-300 rounded-full cursor-pointer dark:bg-gray-800 dark:border-gray-700 peer-checked:border-green-600 dark:peer-checked:text-green-300 peer-checked:text-green-600 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <i class="text-xl -rotate-45 fa-solid fa-x"></i>
+                                </label>
+                            </div>
+                            <input class="lineInput" maxlength="3" :disabled="!checkUser" id="sub_ability_modifier" v-model="sub_ability.sub_ability_modifier" placeholder="Mod"/>
+                            <span class="text-[11px] whitespace-nowrap">{{ sub_ability.name }}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             
         </transition-group>
@@ -287,6 +362,21 @@ console.log(props.character);
 onMounted(() => {
     abilities.value = JSON.parse(props.character.abilities.abilities);
     proficiencies.value = JSON.parse(props.character.abilities.proficiencies);
+    character.characterData.abilities.heroic_inspiration = props.character.abilities.heroic_inspiration == 1 ? true : false;
+    
+    console.log(abilities.value);
+    console.log(proficiencies.value);
+    
+    if (props.character.success_death_save > 0) {
+        for (let index = 0; index < props.character.success_death_save; index++) {
+            successDeathSaves.value[index].checked = true;
+        }
+    }
+    if (props.character.fail_death_save > 0) {
+        for (let index = 0; index < props.character.fail_death_save; index++) {
+            failDeathSaves.value[index].checked = true;
+        }
+    }
 })
 
 const checkUser = computed(() => {
@@ -296,10 +386,11 @@ const checkUser = computed(() => {
 const saveLoading = ref(false);
 const copied = ref(false);
 
-const character = useForm({ characterData: props.character });
+const character = useForm({ characterData: props.character, abilities: JSON.parse(props.character.abilities.abilities), proficiencies: JSON.parse(props.character.abilities.proficiencies)});
 const updateCharacter = async () => {
     nProgress.start()
     saveLoading.value = true;
+
     // character.skills.skills_data = JSON.stringify(skills_data.value);
     character.post('/dnd/character-update', {
         preserveScroll: true,
@@ -336,6 +427,60 @@ const deleteLoad = ref(false);
 const zarLoad = ref(false);
 const errors = ref([]);
 
+
+const successDeathSaves = ref([
+    { checked: false },
+    { checked: false },
+    { checked: false }
+]);
+const failDeathSaves = ref([
+    { checked: false },
+    { checked: false },
+    { checked: false }
+]);
+function countChecked() {
+    // Herhangi bir değişiklikte seçili checkbox sayısını hesaplar
+    character.characterData.success_death_save = successDeathSaves.value.filter(checkbox => checkbox.checked).length;
+    character.characterData.fail_death_save = failDeathSaves.value.filter(checkbox => checkbox.checked).length;
+    // console.log(character.characterData);
+}
+
+function getModifier(score) {
+    switch (true) {
+        case (score == 3):
+            return "-4";
+        case (score >= 4 && score <= 5):
+            return "-3";
+        case (score >= 6 && score <= 7):
+            return "-2";
+        case (score >= 8 && score <= 9):
+            return "-1";
+        case (score >= 10 && score <= 11):
+            return "0";
+        case (score >= 12 && score <= 13):
+            return "+1";
+        case (score >= 14 && score <= 15):
+            return "+2";
+        case (score >= 16 && score <= 17):
+            return "+3";
+        case (score >= 18 && score <= 19):
+            return "+4";
+        case (score >= 20 && score <= 21):
+            return "+5";
+        case (score >= 22 && score <= 23):
+            return "+6";
+        case (score >= 24 && score <= 25):
+            return "+7";
+        case (score >= 26 && score <= 27):
+            return "+8";
+        case (score >= 28 && score <= 29):
+            return "+9";
+        case (score >= 30):
+            return "+10";
+        default:
+            return "+0";
+    }
+}
 
 function getLength(data) {
     if (data == null) {
@@ -393,4 +538,8 @@ function deleteCharacter(id) {
 }
 </script>
 
-<style></style>
+<style>
+.lineInput {
+    @apply bg-transparent w-full p-0 text-sm border-t-transparent border-x-transparent border-b-gray-300 focus:outline-none focus:ring-0 focus:border-x-transparent focus:border-t-transparent focus:border-b-indigo-500;
+}
+</style>

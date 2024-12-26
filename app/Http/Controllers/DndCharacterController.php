@@ -85,15 +85,15 @@ class DndCharacterController extends Controller
         $character->alignment = $characterData["alignment"];
         $character->languages = $characterData["languages"];
 
-        // DndAbility::updateOrCreate(
-        //     ['character_id' => $character->id],
-        //     [
-        //         'abilities' => $request->abilities,
-        //         'proficiencies' => $request->proficiencies,
-        //         'heroic_inspiration' => $request->heroic_inspiration,
-        //         'proficiency_bonus' => $request->proficiency_bonus,
-        //     ]
-        // );
+        DndAbility::updateOrCreate(
+            ['character_id' => $character->id],
+            [
+                'abilities' => $request->abilities,
+                'proficiencies' => $characterData["abilities"]["proficiencies"],
+                'heroic_inspiration' => $characterData["abilities"]["heroic_inspiration"],
+                'proficiency_bonus' => $characterData["abilities"]["proficiency_bonus"],
+            ]
+        );
 
         try {
             $character->save();
