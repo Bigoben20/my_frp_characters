@@ -42,3 +42,21 @@
     transform: translateX(100%);
     opacity: 0;
 }
+
+/* transition tab */
+.tab-fade-enter-active {
+    transition: all 0.3s ease-out;
+}
+.tab-fade-leave-active {
+    transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.tab-fade-enter-from,
+.tab-fade-leave-to {
+    opacity: 0;
+}
+.tab-fade-enter-from {
+    transform: translateX(-50px);
+}
+.tab-fade-leave-to {
+    transform: translateX(100px);
+}

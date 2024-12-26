@@ -3,12 +3,16 @@ import { onMounted, ref } from 'vue';
 
 defineProps({
     modelValue: {
-        type: null,
+        type: String,
         required: false,
     },
     auth: {
         type: Boolean,
         default: true
+    },
+    options: {
+        type: Array,
+        required: false
     }
 });
 
@@ -26,12 +30,13 @@ defineExpose({ focus: () => input.value.focus() });
 </script>
 
 <template>
-    <input v-if="auth"
+    <select v-if="auth"
         class="transition-all duration-100 border-gray-300 rounded-md shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
-        ref="input"
-    />
+        ref="input">
+        <slot></slot>
+    </select>
     <div v-else class="px-3 py-2 transition-all duration-100 border min-h-[42px] border-gray-300 rounded-md shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600">
         {{ modelValue }}
     </div>

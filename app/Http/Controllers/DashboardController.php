@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Character;
+use App\Models\DndCharacter;
 use App\Models\Skills;
 use App\Models\Note;
 use App\Models\SkillLabel;
@@ -16,12 +17,14 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        $characters = Character::where("user_id", Auth::user()->id)->orderBy("id", "DESC")->get();
-        $allCharacters = Character::with('user')->where("user_id", "<>" ,Auth::user()->id)->orderBy("id","Desc")->paginate(15);
+        $characters = Character::where("user_id", Auth::user()->id)->orderBy("id", "DESC")->paginate("15", ["*"], "characters");
+        $allCharacters = Character::with('user')->where("user_id", "<>", Auth::user()->id)->orderBy("id", "Desc")->paginate(15);
 
-        return Inertia::render('Dashboard', compact("characters","allCharacters"));
+        $dndCharacters = DndCharacter::where("user_id", Auth::user()->id)->orderBy("id", "DESC")->paginate("15", ["*"], "dndCharacters");
+
+        return Inertia::render('Dashboard', compact("characters", "allCharacters", "dndCharacters"));
     }
-    
+
     public function gptChat()
     {
         return Inertia::render('GPTChat');
@@ -104,7 +107,7 @@ class DashboardController extends Controller
         }
         $skillsDB = Skills::where("character_id", $character->id)->first();
 
-        
+
 
         try {
             $characterDB->name = $character->name;
@@ -133,7 +136,7 @@ class DashboardController extends Controller
             return redirect()->back()->with('error', 'Karakter güncellenemedi; ' . $e->getMessage());;
         }
     }
-    
+
     public function updateCharacterImg(Request $request)
     {
         if (!Auth::user()) {
@@ -150,7 +153,7 @@ class DashboardController extends Controller
             return redirect()->back()->with('error', 'Buna yetkiniz bulunmamaktadır!');
         }
 
-    
+
         try {
             $characterDB->img_url = $image_url;
             $characterDB->save();
@@ -160,4 +163,6 @@ class DashboardController extends Controller
             return redirect()->back()->with('error', 'Resim güncellenemedi; ' . $e->getMessage());;
         }
     }
+
+
 }

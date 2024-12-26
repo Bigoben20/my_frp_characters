@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DndCharacterController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,7 @@ Route::get('/', function () {
     ]);
 });
 Route::get('/character-detail/{id}', [DashboardController::class, 'detailsCharacter'])->name('character.details');
+Route::get('/dnd/character-detail/{id}', [DndCharacterController::class, 'dndCharacterDetail'])->name('dnd.character.detail');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
@@ -39,6 +41,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/character-delete', [DashboardController::class, 'deleteCharacter'])->name('character.delete');
     Route::post('/character-update', [DashboardController::class, 'updateCharacter'])->name('character.update');
     Route::post('/character-img-update', [DashboardController::class, 'updateCharacterImg'])->name('character.update-img');
+    
+    // DND Character
+    Route::prefix('dnd')->group(function () {
+        Route::post('/character-create', [DndCharacterController::class, 'dndCharacterStore'])->name('dnd.character.store');
+        Route::post('/character-update', [DndCharacterController::class, 'dndCharacterUpdate'])->name('dnd.character.update');
+        Route::post('/character-delete', [DndCharacterController::class, 'dndCharacterDelete'])->name('dnd.character.delete');
+        Route::post('/character-spell-add', [DndCharacterController::class, 'dndCharacterSpellAdd'])->name('dnd.character.spell.add');
+        Route::post('/character-spell-delete', [DndCharacterController::class, 'dndCharacterSpellDelete'])->name('dnd.character.spell.delete');
+        Route::post('/character-weapon-add', [DndCharacterController::class, 'dndCharacterWeaponAdd'])->name('dnd.character.weapon.add');
+        Route::post('/character-weapon-delete', [DndCharacterController::class, 'dndCharacterWeaponDelete'])->name('dnd.character.weapon.delete');
+        Route::post('/character-equipment-add', [DndCharacterController::class, 'dndCharacterEquipmentAdd'])->name('dnd.character.equipment.add');
+        Route::post('/character-equipment-delete', [DndCharacterController::class, 'dndCharacterEquipmentDelete'])->name('dnd.character.equipment.delete');
+        Route::post('/character-feature-update', [DndCharacterController::class, 'dndCharacterFeatureUpdate'])->name('dnd.character.feature.update');
+    });
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
