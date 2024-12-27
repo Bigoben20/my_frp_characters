@@ -379,31 +379,26 @@
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-2" v-show="tabs[3].active" :key="tabs[3].id">
                 <DndWeapons v-if="checkUser" @weaponSelected="handleWeaponSelected"  class="col-span-full"/>
 
-                <div class="p-4 overflow-scroll bg-white rounded-lg dark:bg-gray-800 col-span-full">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Character Weapons</h3>
-                    <table class="w-full mt-4 text-sm text-left table-auto whitespace-nowrap">
-                        <thead class="bg-gray-100 dark:bg-gray-700">
-                            <tr>
-                                <th class="py-1 pl-2 pr-6">Weapon Name</th>
-                                <th class="px-2 py-1 pr-6">Attack/Damage Bonus</th>
-                                <th class="px-2 py-1 pr-6">Damage and Type</th>
-                                <th class="px-2 py-1 pr-6">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="weapon in character.characterData.weapons" :key="weapon.id">
-                                <td class="px-2 py-1">{{ weapon.name }}</td>
-                                <td class="px-2 py-1">{{ weapon.atk_bonus }}/{{ weapon.dc }}</td>
-                                <td class="px-2 py-1">{{ weapon.damage_and_type }}</td>
-                                <td class="px-2 py-1">
-                                    <button type="button" @click="removeWeapon(weapon.id)" class="text-red-600">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <DndCharacterWeapons
+                    v-if="checkUser"
+                    :weapons="character.characterData.weapons"
+                    :character-id="character.characterData.id"
+                    @weaponRemoved="handleWeaponRemoved"
+                    class="col-span-full"
+                />
+            </div>
+
+            <!-- Spells -->
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2" v-show="tabs[4].active" :key="tabs[4].id">
+                <DndSpells v-if="checkUser" @spellSelected="handleSpellSelected" class="col-span-full"/>
+
+                <DndCharacterSpells
+                    v-if="checkUser"
+                    :spells="character.characterData.spells"
+                    :character-id="character.characterData.id"
+                    @spellRemoved="handleSpellRemoved"
+                    class="col-span-full"
+                />
             </div>
             
         </transition-group>
@@ -504,6 +499,9 @@
 
 <script setup>
 import DndWeapons from '@/Components/DndWeapons.vue';
+import DndCharacterWeapons from '@/Components/DndCharacterWeapons.vue';
+import DndSpells from '@/Components/DndSpells.vue';
+import DndCharacterSpells from '@/Components/DndCharacterSpells.vue';
 import MiniLoader from '@/Components/MiniLoader.vue';
 import Modal from '@/Components/Modal.vue';
 import Roll from '@/Components/Roll.vue';
@@ -763,16 +761,37 @@ const removeSpeciesTrait = (index) => {
 };
 
 const handleWeaponSelected = async (weapon) => {
-    try {
-        await axios.post('/dnd/character-weapon-add', {
-            character_id: character.characterData.id,
-            weapon_id: weapon.id
-        });
-        toast.add({ type: 'success', message: 'Weapon added successfully' });
-        character.characterData.weapons.push(weapon);
-    } catch (error) {
-        toast.add({ type: 'error', message: 'Failed to add weapon' });
-    }
+  try {
+    await axios.post('/dnd/character/weapon/add', {
+      character_id: character.characterData.id,
+      weapon_id: weapon.id
+    });
+    toast.add({ type: 'success', message: 'Weapon added successfully' });
+    character.characterData.weapons.push(weapon);
+  } catch (error) {
+    toast.add({ type: 'error', message: 'Failed to add weapon' });
+  }
+};
+
+const handleWeaponRemoved = (weaponId) => {
+  character.characterData.weapons = character.characterData.weapons.filter(weapon => weapon.id !== weaponId);
+};
+
+const handleSpellSelected = async (spell) => {
+  try {
+    await axios.post('/dnd/character-spell-add', {
+      character_id: character.characterData.id,
+      spell_id: spell.id
+    });
+    toast.add({ type: 'success', message: 'Spell added successfully' });
+    character.characterData.spells.push(spell);
+  } catch (error) {
+    toast.add({ type: 'error', message: 'Failed to add spell' });
+  }
+};
+
+const handleSpellRemoved = (spellId) => {
+  character.characterData.spells = character.characterData.spells.filter(spell => spell.id !== spellId);
 };
 
 const removeWeapon = async (weaponId) => {
@@ -787,6 +806,25 @@ const removeWeapon = async (weaponId) => {
         toast.add({ type: 'error', message: 'Failed to remove weapon' });
     }
 };
+
+const properties = ref([]);
+
+const fetchProperties = async () => {
+  try {
+    const response = await axios.get('/dnd/weapon-properties');
+    properties.value = response.data;
+  } catch (error) {
+    toast.add({ type: 'error', message: 'Failed to fetch properties' });
+  }
+};
+
+const getPropertyById = (id) => {
+  return properties.value.find(property => property.id === id) || {};
+};
+
+onMounted(() => {
+  fetchProperties();
+});
 
 </script>
 

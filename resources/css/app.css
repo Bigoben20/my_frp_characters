@@ -60,3 +60,30 @@
 .tab-fade-leave-to {
     transform: translateX(100px);
 }
+
+/* Mobile Slide */
+.mobile-slide-enter-active .outer {
+    transition: all 0.1s ease-in;
+}
+
+.mobile-slide-enter-from .outer,
+.mobile-slide-leave-to .outer {
+    transform: translateY(20px);
+    opacity: 0;
+}
+
+/* rules that target mobile-slide elements */
+.mobile-slide-enter-active .inner,
+.mobile-slide-leave-active .inner {
+    transition: all 0.2s ease-in-out;
+}
+
+.mobile-slide-enter-from .inner,
+.mobile-slide-leave-to .inner {
+    transform: translateY(100%);
+    opacity: 0;
+}
+
+.mobile-slide-enter-active .inner {
+    transition-delay: 0.1s;
+}

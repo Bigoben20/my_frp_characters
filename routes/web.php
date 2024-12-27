@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DndCharacterController;
+use App\Http\Controllers\DndSpellController;
 use App\Http\Controllers\DndWeaponController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -59,6 +60,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/weapons', [DndWeaponController::class, 'index']);
         Route::post('/weapons', [DndWeaponController::class, 'store']);
         Route::delete('/weapons/{id}', [DndWeaponController::class, 'destroy']);    
+        Route::get('/weapon-properties', [DndWeaponController::class, 'weaponProperties']);
+
+        Route::get('/spells', [DndSpellController::class, 'index']);
+        Route::post('/spells', [DndSpellController::class, 'store']);
+        Route::delete('/spells/{id}', [DndSpellController::class, 'destroy']);
     });
 
     // Profile

@@ -15,10 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string("name", 100);
             $table->string("notes", 255)->nullable();
-            $table->string("atk_bonus", 4);
-            $table->string("dc", 4);
+            $table->json("properties")->nullable();
+            $table->unsignedBigInteger("mastery")->nullable();
+            $table->string("weight", 100)->nullable();
+            $table->string("cost", 100)->nullable();
             $table->string("damage_and_type", 255);
             $table->timestamps();
+
+            $table->foreign("mastery")->references("id")->on("dnd_weapon_properties")->onDelete("cascade");
         });
     }
 
