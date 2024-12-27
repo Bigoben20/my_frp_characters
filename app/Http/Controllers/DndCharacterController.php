@@ -95,6 +95,15 @@ class DndCharacterController extends Controller
             ]
         );
 
+        DndFeature::updateOrCreate(
+            ['character_id' => $character->id],
+            [
+                'class_features' => $characterData["features"]["class_features"],
+                'species_traits' => $characterData["features"]["species_traits"],
+                'feats' => $characterData["features"]["feats"],
+            ]
+        );
+
         try {
             $character->save();
             return redirect()->back()->with('success', 'Karakter başarıyla güncellendi');;

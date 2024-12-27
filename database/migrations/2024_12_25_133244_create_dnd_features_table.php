@@ -9,6 +9,7 @@ return new class extends Migration
 
     private $template = [
         [
+            "id" => 1,
             "name" => "",
             "description" => ""
         ]

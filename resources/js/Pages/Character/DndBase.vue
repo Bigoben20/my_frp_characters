@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="updateCharacter" class="grid grid-cols-1 gap-8 px-2 pt-6 pb-32 md:px-6 md:grid-cols-2 dark:text-gray-100">
+    <form @submit.prevent="updateCharacter" class="grid grid-cols-1 gap-8 px-2 pt-6 pb-32 md:px-6 dark:text-gray-100">
         <div class="flex flex-col gap-1 -mb-4 col-span-full">
             <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 Tabs
@@ -16,7 +16,7 @@
             </div>
         </div>
         <transition-group name="tab-fade">
-            <div class="flex flex-col gap-8 col-span-full" v-show="tabs[0].active" :key="tabs[0].id">
+            <div class="flex flex-col gap-8" v-show="tabs[0].active" :key="tabs[0].id">
                 <!-- Character Name -->
                 <div class="grid grid-cols-2 p-4 bg-white rounded-lg gap-y-1 gap-x-4 dark:bg-gray-800">
                     <div class="flex flex-col items-start w-full col-span-full">
@@ -186,7 +186,7 @@
             </div>
 
             <!-- Abilities -->
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 col-span-full" v-show="tabs[1].active" :key="tabs[1].id">
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6" v-show="tabs[1].active" :key="tabs[1].id">
                 <div class="flex flex-wrap gap-4 col-span-full">
                     <div class="flex flex-col items-center gap-1 p-4 bg-white rounded-lg dark:bg-gray-800 h-fit">
                         <span class="text-sm font-semibold">Proficiency Bonus</span>
@@ -256,10 +256,122 @@
                                     <i class="text-xl -rotate-45 fa-solid fa-x"></i>
                                 </label>
                             </div>
-                            <input class="lineInput" maxlength="3" :disabled="!checkUser" id="sub_ability_modifier" v-model="sub_ability.sub_ability_modifier" placeholder="Mod"/>
+                            <input class="text-sm lineInput" maxlength="3" :disabled="!checkUser" id="sub_ability_modifier" v-model="sub_ability.sub_ability_modifier" placeholder="Mod"/>
                             <span class="text-[11px] whitespace-nowrap">{{ sub_ability.name }}</span>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Feats -->
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-3" v-show="tabs[2].active" :key="tabs[2].id">
+                <div class="flex flex-col items-start gap-1 p-4 bg-white rounded-lg dark:bg-gray-800">
+                    <span class="text-sm font-semibold">Feats</span>
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th class="px-2 py-1">Feat Name</th>
+                                <th class="px-2 py-1">Description</th>
+                                <th class="px-2 py-1">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                            <tr v-for="(feat, index) in character.characterData.features.feats" :key="index">
+                                <td class="px-2 py-1">
+                                    <div class="flex items-end h-[42px]">
+                                        <input maxlength="20" v-model="feat.name" placeholder="Feat Name" class="text-sm lineInput" />
+                                    </div>
+                                </td>
+                                <td class="px-2 py-1">
+                                    <div class="flex items-end h-[42px]">
+                                        <textarea row="3" maxlength="255" v-model="feat.description" placeholder="Description" class="text-[11px] lineInput" />
+                                    </div>
+                                </td>
+                                <td class="px-2 py-1">
+                                    <div class="flex items-end h-[42px]">
+                                        <button type="button" @click="removeFeat(index)" class="text-red-600">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" @click="addFeat" class="mt-2 text-green-600">
+                        <i class="fa-solid fa-plus"></i> Add Feat
+                    </button>
+                </div>
+                <div class="flex flex-col items-start gap-1 p-4 bg-white rounded-lg dark:bg-gray-800">
+                    <span class="text-sm font-semibold">Class Features</span>
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th class="px-2 py-1">Feature Name</th>
+                                <th class="px-2 py-1">Description</th>
+                                <th class="px-2 py-1">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                            <tr v-for="(feature, index) in character.characterData.features.class_features" :key="index">
+                                <td class="px-2 py-1">
+                                    <div class="flex items-end h-[42px]">
+                                        <input maxlength="20" v-model="feature.name" placeholder="Feature Name" class="text-sm lineInput" />
+                                    </div>
+                                </td>
+                                <td class="px-2 py-1">
+                                    <div class="flex items-end h-[42px]">
+                                        <textarea row="3" maxlength="255" v-model="feature.description" placeholder="Description" class="text-[11px] lineInput" />
+                                    </div>
+                                </td>
+                                <td class="px-2 py-1">
+                                    <div class="flex items-end h-[42px]">
+                                        <button type="button" @click="removeClassFeature(index)" class="text-red-600">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" @click="addClassFeature" class="mt-2 text-green-600">
+                        <i class="fa-solid fa-plus"></i> Add Feature
+                    </button>
+                </div>
+                <div class="flex flex-col items-start gap-1 p-4 bg-white rounded-lg dark:bg-gray-800">
+                    <span class="text-sm font-semibold">Species Traits</span>
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th class="px-2 py-1">Trait Name</th>
+                                <th class="px-2 py-1">Description</th>
+                                <th class="px-2 py-1">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                            <tr v-for="(trait, index) in character.characterData.features.species_traits" :key="index">
+                                <td class="px-2 py-1">
+                                    <div class="flex items-end h-[42px]">
+                                        <input maxlength="20" v-model="trait.name" placeholder="Trait Name" class="text-sm lineInput" />
+                                    </div>
+                                </td>
+                                <td class="px-2 py-1">
+                                    <div class="flex items-end h-[42px]">
+                                        <textarea row="3" maxlength="255" v-model="trait.description" placeholder="Description" class="text-[11px] lineInput" />
+                                    </div>
+                                </td>
+                                <td class="px-2 py-1">
+                                    <div class="flex items-end h-[42px]">
+                                        <button type="button" @click="removeSpeciesTrait(index)" class="text-red-600">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" @click="addSpeciesTrait" class="mt-2 text-green-600">
+                        <i class="fa-solid fa-plus"></i> Add Trait
+                    </button>
                 </div>
             </div>
             
@@ -369,7 +481,7 @@ import TextInput from '@/Components/TextInput.vue';
 import toast from '@/Stores/toast';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import nProgress from 'nprogress';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { ref } from 'vue';
 
 const props = defineProps({
@@ -588,10 +700,38 @@ function deleteCharacter(id) {
         }
     })
 }
+
+const featIdCounter = ref(1);
+const classFeatureIdCounter = ref(1);
+const speciesTraitIdCounter = ref(1);
+
+const addFeat = () => {
+    character.characterData.features.feats.push({ id: featIdCounter.value++, name: "", description: "" });
+};
+
+const removeFeat = (index) => {
+    character.characterData.features.feats.splice(index, 1);
+};
+
+const addClassFeature = () => {
+    character.characterData.features.class_features.push({ id: classFeatureIdCounter.value++, name: "", description: "" });
+};
+
+const removeClassFeature = (index) => {
+    character.characterData.features.class_features.splice(index, 1);
+};
+
+const addSpeciesTrait = () => {
+    character.characterData.features.species_traits.push({ id: speciesTraitIdCounter.value++, name: "", description: "" });
+};
+
+const removeSpeciesTrait = (index) => {
+    character.characterData.features.species_traits.splice(index, 1);
+};
 </script>
 
 <style>
 .lineInput {
-    @apply bg-transparent w-full p-0 text-sm border-t-transparent border-x-transparent border-b-gray-300 focus:outline-none focus:ring-0 focus:border-x-transparent focus:border-t-transparent focus:border-b-indigo-500;
+    @apply bg-transparent w-full p-0 border-t-transparent border-x-transparent border-b-gray-300 focus:outline-none focus:ring-0 focus:border-x-transparent focus:border-t-transparent focus:border-b-indigo-500 leading-none;
 }
 </style>
