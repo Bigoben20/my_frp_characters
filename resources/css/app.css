@@ -48,7 +48,7 @@
     transition: all 0.3s ease-out;
 }
 .tab-fade-leave-active {
-    transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+    transition: all 50ms cubic-bezier(1, 0.5, 0.8, 1);
 }
 .tab-fade-enter-from,
 .tab-fade-leave-to {
@@ -58,7 +58,7 @@
     transform: translateX(-50px);
 }
 .tab-fade-leave-to {
-    transform: translateX(100px);
+    transform: translateX(10px);
 }
 
 /* Mobile Slide */
