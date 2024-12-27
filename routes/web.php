@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DndCharacterController;
+use App\Http\Controllers\DndWeaponController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/character-equipment-add', [DndCharacterController::class, 'dndCharacterEquipmentAdd'])->name('dnd.character.equipment.add');
         Route::post('/character-equipment-delete', [DndCharacterController::class, 'dndCharacterEquipmentDelete'])->name('dnd.character.equipment.delete');
         Route::post('/character-feature-update', [DndCharacterController::class, 'dndCharacterFeatureUpdate'])->name('dnd.character.feature.update');
+
+        Route::get('/weapons', [DndWeaponController::class, 'index']);
+        Route::post('/weapons', [DndWeaponController::class, 'store']);
+        Route::delete('/weapons/{id}', [DndWeaponController::class, 'destroy']);    
     });
 
     // Profile

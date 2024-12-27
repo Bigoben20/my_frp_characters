@@ -374,6 +374,37 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Equipment -->
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2" v-show="tabs[3].active" :key="tabs[3].id">
+                <DndWeapons v-if="checkUser" @weaponSelected="handleWeaponSelected"  class="col-span-full"/>
+
+                <div class="p-4 overflow-scroll bg-white rounded-lg dark:bg-gray-800 col-span-full">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Character Weapons</h3>
+                    <table class="w-full mt-4 text-sm text-left table-auto whitespace-nowrap">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th class="py-1 pl-2 pr-6">Weapon Name</th>
+                                <th class="px-2 py-1 pr-6">Attack/Damage Bonus</th>
+                                <th class="px-2 py-1 pr-6">Damage and Type</th>
+                                <th class="px-2 py-1 pr-6">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="weapon in character.characterData.weapons" :key="weapon.id">
+                                <td class="px-2 py-1">{{ weapon.name }}</td>
+                                <td class="px-2 py-1">{{ weapon.atk_bonus }}/{{ weapon.dc }}</td>
+                                <td class="px-2 py-1">{{ weapon.damage_and_type }}</td>
+                                <td class="px-2 py-1">
+                                    <button type="button" @click="removeWeapon(weapon.id)" class="text-red-600">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             
         </transition-group>
 
@@ -385,10 +416,10 @@
                         <i class="text-xs fa-solid fa-trash"></i>
                         <span class="hidden sm:block">Sil</span>
                     </button>
-                    <button type="button" class="col-span-2 col-start-3 text-amber-600 bg-amber-100 generalButton" @click="openMore = !openMore">
+                    <!-- <button type="button" class="col-span-2 col-start-3 text-amber-600 bg-amber-100 generalButton" @click="openMore = !openMore">
                         <i class="fa-solid fa-note-sticky"></i>
                         <span class="hidden sm:block">Notlar</span>
-                    </button>
+                    </button> -->
                     <button type="button" class="col-span-2 col-start-5 text-indigo-600 bg-indigo-100 generalButton" @click="zarModalShow = true;">
                         <i class="text-xs fa-solid fa-dice"></i>
                         <span class="hidden sm:block">Zar</span>
@@ -472,6 +503,7 @@
 </template>
 
 <script setup>
+import DndWeapons from '@/Components/DndWeapons.vue';
 import MiniLoader from '@/Components/MiniLoader.vue';
 import Modal from '@/Components/Modal.vue';
 import Roll from '@/Components/Roll.vue';
@@ -480,6 +512,7 @@ import TextCounter from '@/Components/TextCounter.vue';
 import TextInput from '@/Components/TextInput.vue';
 import toast from '@/Stores/toast';
 import { router, useForm, usePage } from '@inertiajs/vue3';
+import axios from 'axios';
 import nProgress from 'nprogress';
 import { computed, onMounted, watch } from 'vue';
 import { ref } from 'vue';
@@ -728,6 +761,33 @@ const addSpeciesTrait = () => {
 const removeSpeciesTrait = (index) => {
     character.characterData.features.species_traits.splice(index, 1);
 };
+
+const handleWeaponSelected = async (weapon) => {
+    try {
+        await axios.post('/dnd/character-weapon-add', {
+            character_id: character.characterData.id,
+            weapon_id: weapon.id
+        });
+        toast.add({ type: 'success', message: 'Weapon added successfully' });
+        character.characterData.weapons.push(weapon);
+    } catch (error) {
+        toast.add({ type: 'error', message: 'Failed to add weapon' });
+    }
+};
+
+const removeWeapon = async (weaponId) => {
+    try {
+        await axios.post('/dnd/character-weapon-delete', {
+            character_id: character.characterData.id,
+            weapon_id: weaponId
+        });
+        toast.add({ type: 'success', message: 'Weapon removed successfully' });
+        character.characterData.weapons = character.characterData.weapons.filter(weapon => weapon.id !== weaponId);
+    } catch (error) {
+        toast.add({ type: 'error', message: 'Failed to remove weapon' });
+    }
+};
+
 </script>
 
 <style>
