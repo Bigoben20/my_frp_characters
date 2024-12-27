@@ -762,7 +762,7 @@ const removeSpeciesTrait = (index) => {
 
 const handleWeaponSelected = async (weapon) => {
   try {
-    await axios.post('/dnd/character/weapon/add', {
+    await axios.post('/dnd/character-weapon-add', {
       character_id: character.characterData.id,
       weapon_id: weapon.id
     });
@@ -794,19 +794,6 @@ const handleSpellRemoved = (spellId) => {
   character.characterData.spells = character.characterData.spells.filter(spell => spell.id !== spellId);
 };
 
-const removeWeapon = async (weaponId) => {
-    try {
-        await axios.post('/dnd/character-weapon-delete', {
-            character_id: character.characterData.id,
-            weapon_id: weaponId
-        });
-        toast.add({ type: 'success', message: 'Weapon removed successfully' });
-        character.characterData.weapons = character.characterData.weapons.filter(weapon => weapon.id !== weaponId);
-    } catch (error) {
-        toast.add({ type: 'error', message: 'Failed to remove weapon' });
-    }
-};
-
 const properties = ref([]);
 
 const fetchProperties = async () => {
@@ -816,10 +803,6 @@ const fetchProperties = async () => {
   } catch (error) {
     toast.add({ type: 'error', message: 'Failed to fetch properties' });
   }
-};
-
-const getPropertyById = (id) => {
-  return properties.value.find(property => property.id === id) || {};
 };
 
 onMounted(() => {
