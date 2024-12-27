@@ -89,7 +89,7 @@ class DndCharacterController extends Controller
             ['character_id' => $character->id],
             [
                 'abilities' => $request->abilities,
-                'proficiencies' => $characterData["abilities"]["proficiencies"],
+                'proficiencies' => $request->proficiencies,
                 'heroic_inspiration' => $characterData["abilities"]["heroic_inspiration"],
                 'proficiency_bonus' => $characterData["abilities"]["proficiency_bonus"],
             ]

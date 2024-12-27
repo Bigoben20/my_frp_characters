@@ -187,12 +187,12 @@
 
             <!-- Abilities -->
             <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 col-span-full" v-show="tabs[1].active" :key="tabs[1].id">
-                <div class="flex gap-4 col-span-full">
+                <div class="flex flex-wrap gap-4 col-span-full">
                     <div class="flex flex-col items-center gap-1 p-4 bg-white rounded-lg dark:bg-gray-800 h-fit">
                         <span class="text-sm font-semibold">Proficiency Bonus</span>
                         <TextInput maxlength="3" type="tel" v-mask="'+#'" :auth="checkUser" id="proficiency_bonus" v-model="character.characterData.abilities.proficiency_bonus" class="w-12" />
                     </div>
-                    <div class="flex flex-col items-center h-full gap-1 p-4 bg-white rounded-lg dark:bg-gray-800">
+                    <div class="flex flex-col items-center gap-1 p-4 bg-white rounded-lg dark:bg-gray-800 h-fit">
                         <span class="text-sm font-semibold">Heroic Inspiration</span>
                         <div>
                             <input :disabled="!checkUser" id="heroic_inspiration" type="checkbox" v-model="character.characterData.abilities.heroic_inspiration" class="hidden peer">
@@ -200,6 +200,28 @@
                                 class="inline-flex items-center justify-center w-10 h-10 text-transparent rotate-45 bg-white border border-gray-300 rounded-full cursor-pointer dark:border-gray-700 peer-checked:border-green-600 dark:peer-checked:text-green-300 peer-checked:text-green-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900">
                                 <i class="text-xl -rotate-45 fa-solid fa-star"></i>
                             </label>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-start gap-1 p-4 bg-white rounded-lg dark:bg-gray-800">
+                        <span class="text-sm font-semibold">Equipment Trainng & Proficiencies</span>
+                        <div class="flex items-center gap-4">
+                            <span for="armor_training" class="text-xs">Armor Training</span>
+                            <div v-for="(proficiency, index) in ['light', 'medium', 'heavy', 'shield']" :key="index">
+                                <label :for="proficiency">
+                                    <input :disabled="!checkUser" :id="proficiency" type="checkbox" v-model="armorTrainings[proficiency]" class="inline-flex items-center justify-center w-3 h-3 mr-1 text-indigo-500 bg-white border border-gray-300 rounded-[2px] cursor-pointer dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900">
+                                    <span class="text-xs capitalize">{{ proficiency }}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label for="weapons_profs" class="text-xs">Weapons</label>
+                                <TextAreaInput placeholder="Weapons" maxlength="1000" :auth="checkUser" id="weapons_profs" v-model="proficiencies.weapons.proficiencies" class="w-full text-sm col-span-full" />
+                            </div>
+                            <div>
+                                <label for="tools_profs" class="text-xs">Tools</label>
+                                <TextAreaInput placeholder="Tools" maxlength="1000" :auth="checkUser" id="tools_profs" v-model="proficiencies.tools.proficiencies" class="w-full text-sm col-span-full" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -357,15 +379,37 @@ const props = defineProps({
 })
 const page = usePage();
 const abilities = ref([]);
-const proficiencies = ref([]);
+
+const proficiencies = ref({
+    armor: {},
+    weapons: {},
+    tools: {}
+});
+const armorTrainings = ref({
+    light: false,
+    medium: false,
+    heavy: false,
+    shield: false
+})
 console.log(props.character);
 onMounted(() => {
     abilities.value = JSON.parse(props.character.abilities.abilities);
-    proficiencies.value = JSON.parse(props.character.abilities.proficiencies);
-    character.characterData.abilities.heroic_inspiration = props.character.abilities.heroic_inspiration == 1 ? true : false;
-    
+    const parsedProficiencies = JSON.parse(props.character.abilities.proficiencies);
+    proficiencies.value.armor = parsedProficiencies.find(proficiency => proficiency.name == 'Armor');
+    proficiencies.value.weapons = parsedProficiencies.find(proficiency => proficiency.name == 'Weapons');
+    proficiencies.value.tools = parsedProficiencies.find(proficiency => proficiency.name == 'Tools');
     console.log(abilities.value);
     console.log(proficiencies.value);
+    
+    armorTrainings.value = {
+        light: proficiencies.value.armor.proficiencies.includes('light'),
+        medium: proficiencies.value.armor.proficiencies.includes('medium'),
+        heavy: proficiencies.value.armor.proficiencies.includes('heavy'),
+        shield: proficiencies.value.armor.proficiencies.includes('shield')
+    }
+    
+    character.characterData.abilities.heroic_inspiration = props.character.abilities.heroic_inspiration == 1 ? true : false;
+    
     
     if (props.character.success_death_save > 0) {
         for (let index = 0; index < props.character.success_death_save; index++) {
@@ -390,7 +434,7 @@ const character = useForm({ characterData: props.character, abilities: JSON.pars
 const updateCharacter = async () => {
     nProgress.start()
     saveLoading.value = true;
-
+    updateArmorTraining();
     // character.skills.skills_data = JSON.stringify(skills_data.value);
     character.post('/dnd/character-update', {
         preserveScroll: true,
@@ -480,6 +524,14 @@ function getModifier(score) {
         default:
             return "+0";
     }
+}
+
+function updateArmorTraining() {
+    // Herhangi bir değişiklikte seçili checkbox sayısını hesaplar
+    proficiencies.value.armor.proficiencies = Object.keys(armorTrainings.value)
+        .filter(key => armorTrainings.value[key])
+        .join(', ');
+    character.proficiencies = JSON.stringify(Object.values(proficiencies.value));
 }
 
 function getLength(data) {
