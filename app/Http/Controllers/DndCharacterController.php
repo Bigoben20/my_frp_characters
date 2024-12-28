@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DndAbility;
 use App\Models\DndCharacter;
+use App\Models\DndClasses;
 use App\Models\DndFeature;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,8 +22,9 @@ class DndCharacterController extends Controller
         } else if ($character->user_id != Auth::user()->id) {
             return redirect()->back()->with('error', 'Buna yetkiniz bulunmamaktadır!');
         }
+        $classes = DndClasses::orderBy('name','asc')->get();
 
-        return Inertia::render('DNDCharacterDetails', compact("character"));
+        return Inertia::render('DNDCharacterDetails', compact("character","classes"));
     }
 
     public function dndCharacterStore(Request $request)

@@ -48,7 +48,7 @@
                         <i class="text-sm fa-solid fa-x"></i>
                     </button>
                 </div>
-                <div class="grid grid-cols-1 gap-4 my-6 overflow-y-auto max-h-96 dark:text-gray-200">
+                <div class="grid grid-cols-2 gap-4 py-6 overflow-y-auto max-h-[calc(60vh-24px)] dark:text-gray-200">
                     <div class="flex flex-col">
                         <strong class="text-sm text-gray-700 dark:text-gray-300">Name:</strong>
                         <span>{{ selectedSpell.name }}</span>
@@ -87,7 +87,7 @@
                     </div>
                     <div class="flex flex-col">
                         <strong class="text-sm text-gray-700 dark:text-gray-300">Classes:</strong>
-                        <span>{{ selectedSpell.classes }}</span>
+                        <span class="text-xs" v-for="classId in JSON.parse(selectedSpell.classes)" :key="classId">{{ getClassName(classId) }}</span>
                     </div>
                     <div class="flex flex-col col-span-2">
                         <strong class="text-sm text-gray-700 dark:text-gray-300">Description:</strong>
@@ -108,14 +108,16 @@ import { ref, defineEmits } from 'vue';
 import axios from 'axios';
 import toast from '@/Stores/toast';
 import Modal from './Modal.vue';
+import { usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
     spells: Array,
     characterId: Number
 });
-
+const page = usePage();
 const emit = defineEmits(['spellRemoved']);
 
+const classes = ref(page.props.classes);
 const detailsModalShow = ref(false);
 const selectedSpell = ref({});
 
@@ -136,6 +138,10 @@ const removeSpell = async (spellId) => {
         toast.add({ type: 'error', message: 'Failed to remove spell' });
     }
 };
+
+function getClassName(classId) {
+    return classes.value.find(classItem => classItem.id == classId).name;
+}
 </script>
 
 <style scoped>

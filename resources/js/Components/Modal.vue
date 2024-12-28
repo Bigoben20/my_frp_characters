@@ -73,7 +73,7 @@ const maxWidthClass = computed(() => {
     <Teleport to="body">
         <transition name="mobile-slide" :duration="400">
             <div v-if="isMobile" class="outer fixed top-0 left-0 z-50 flex items-end w-[100vw] h-[100svh] overflow-hidden bg-black/60" v-show="show" @click.self="close()">
-                <div class="w-full inner h-[60vh] px-8 pt-0 pb-6 overflow-y-scroll bg-white rounded-t-2xl">
+                <div class="w-full inner h-[70vh] pt-0 pb-6 overflow-y-hidden bg-white rounded-t-2xl">
                     <slot v-if="show" />
                 </div>
             </div>

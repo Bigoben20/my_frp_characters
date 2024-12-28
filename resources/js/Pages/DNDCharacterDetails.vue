@@ -28,9 +28,13 @@ const page = usePage();
 const props = defineProps({
     character: {
         type: Object,
-    }
+    },
+    classes: {
+        type: Object,
+    },
 })
 
+page.props.classes = props.classes;
 </script>
 
 <style>

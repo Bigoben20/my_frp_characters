@@ -521,6 +521,9 @@ const props = defineProps({
     }
 })
 const page = usePage();
+const classes = ref(page.props.classes);
+console.log(classes.value);
+
 const abilities = ref([]);
 
 const proficiencies = ref({
@@ -564,6 +567,8 @@ onMounted(() => {
             failDeathSaves.value[index].checked = true;
         }
     }
+
+    fetchProperties();
 })
 
 const checkUser = computed(() => {
@@ -804,11 +809,6 @@ const fetchProperties = async () => {
     toast.add({ type: 'error', message: 'Failed to fetch properties' });
   }
 };
-
-onMounted(() => {
-  fetchProperties();
-});
-
 </script>
 
 <style>
