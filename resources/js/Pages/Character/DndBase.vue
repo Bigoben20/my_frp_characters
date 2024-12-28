@@ -31,8 +31,10 @@
                     </div>
                     <div class="flex flex-col items-start w-full ">
                         <label for="class" class="ml-1">Class</label>
-                        <TextInput maxlength="100" :auth="checkUser" id="class" v-model="character.characterData.class" class="w-full col-span-full" />
-                        <TextCounter v-if="checkUser" maxlength="100" :value="getLength(character.characterData.class)" />
+                        <select :disabled="!checkUser" id="class" v-model="character.characterData.class" class="w-full col-span-full generalInput">
+                            <option value="" disabled selected>Select Class</option>
+                            <option v-for="dndClass in classes" :key="dndClass.id" :value="dndClass.id">{{ dndClass.name }}</option>
+                        </select>
                     </div>
                     <div class="flex flex-col items-start w-full ">
                         <label for="species" class="ml-1">Species</label>

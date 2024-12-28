@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string("name", 300);
-            $table->string("class", 100)->nullable();
+            $table->unsignedBigInteger("class_id")->nullable();
             $table->string("background", 100)->nullable();
             $table->string("species", 100)->nullable();
             $table->string("subclass", 100)->nullable();
@@ -40,6 +40,8 @@ return new class extends Migration
             $table->string("alignment",24)->nullable();
             $table->string("languages",255)->nullable();
             $table->timestamps();
+
+            $table->foreign('class_id')->references('id')->on('dnd_classes')->onDelete('set null');
         });
     }
 
