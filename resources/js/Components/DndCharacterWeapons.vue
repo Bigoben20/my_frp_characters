@@ -69,7 +69,7 @@
   
   const removeWeapon = async (weaponId) => {
     try {
-      await axios.post('/dnd/character/weapon/delete', {
+      await axios.post('/dnd/character-weapon-delete', {
         character_id: props.characterId,
         weapon_id: weaponId
       });
