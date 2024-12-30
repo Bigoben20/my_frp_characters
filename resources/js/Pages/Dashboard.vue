@@ -85,6 +85,7 @@
                                     <tr class="bg-gray-100 dark:bg-gray-700">
                                         <th class="px-3 py-1.5 rounded-l w-10">ID</th>
                                         <th class="px-3 py-1.5">Name</th>
+                                        <th class="px-3 py-1.5">Level</th>
                                         <th class="px-3 py-1.5">Class</th>
                                     </tr>
                                 </thead>
@@ -93,7 +94,10 @@
                                         <td class="px-3 py-1.5">{{ character.id }}</td>
                                         <td class="px-3 py-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{{ character.name }}</td>
                                         <td class="px-3 py-1.5">
-                                            {{ character.class?? 'Unknown' }}
+                                            {{ character.level?? '1' }}
+                                        </td>
+                                        <td class="px-3 py-1.5">
+                                            {{ character.class? getClassName(character.class) :'Unknown' }}
                                         </td>
                                         <!-- <td class="px-3 py-1.5 w-[168px]">
                                             <div class="flex items-center gap-2 w-fit">
@@ -279,6 +283,9 @@ const props = defineProps({
     allCharacters: {
         type: Object,
     },
+    dndClasses: {
+        type: object,
+    }
 })
 // console.log(props.characters);
 const page = usePage();
@@ -404,5 +411,9 @@ function goToChar(id,system) {
             break;
         }
         window.location.href= url;
+}
+
+function getClassName(classId) {
+    return props.dndClasses.find(classItem => classItem.id == classId).name;
 }
 </script>

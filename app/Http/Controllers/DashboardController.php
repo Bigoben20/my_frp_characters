@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Character;
 use App\Models\DndCharacter;
+use App\Models\DndClasses;
 use App\Models\Skills;
 use App\Models\Note;
 use App\Models\SkillLabel;
@@ -19,10 +20,10 @@ class DashboardController extends Controller
     {
         $characters = Character::where("user_id", Auth::user()->id)->orderBy("id", "DESC")->paginate("15", ["*"], "characters");
         $allCharacters = Character::with('user')->where("user_id", "<>", Auth::user()->id)->orderBy("id", "Desc")->paginate(15);
-
+        $dndClasses = DndClasses::orderBy('name', 'asc')->get();
         $dndCharacters = DndCharacter::where("user_id", Auth::user()->id)->orderBy("id", "DESC")->paginate("15", ["*"], "dndCharacters");
 
-        return Inertia::render('Dashboard', compact("characters", "allCharacters", "dndCharacters"));
+        return Inertia::render('Dashboard', compact("characters", "allCharacters", "dndCharacters","dndClasses"));
     }
 
     public function gptChat()

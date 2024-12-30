@@ -1,1 +1,0 @@
-import{o as s,f as o,u as e}from"./app-QMXdplb6.js";const t="/build/assets/dice-BxBax-WV.png",c=["src"],l={__name:"ApplicationLogo",setup(a){return(n,r)=>(s(),o("img",{src:e(t),alt:"",class:"dark:invert"},null,8,c))}};export{l as _};
