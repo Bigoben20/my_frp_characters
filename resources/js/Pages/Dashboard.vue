@@ -284,7 +284,7 @@ const props = defineProps({
         type: Object,
     },
     dndClasses: {
-        type: object,
+        type: Object,
     }
 })
 // console.log(props.characters);
