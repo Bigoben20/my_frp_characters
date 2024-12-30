@@ -605,6 +605,17 @@ const updateCharacter = async () => {
     });
 }
 
+// AutoSaves
+const autoSaveInfo = setInterval(() => {
+    toast.add({
+            type: 'warning', message: "Kardeş bayadır kaydete basmadın!"
+        });
+}, 300000);
+
+const autoSave = setInterval(() => {
+    updateCharacter();
+}, 500000);
+
 const tabs = ref([
     { id: 0, name:"Character Info", active: true },
     { id: 1, name:"Abilities", active: false },
