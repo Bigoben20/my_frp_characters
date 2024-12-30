@@ -86,27 +86,30 @@ class DndCharacterController extends Controller
         $character->backstory = $characterData["backstory"];
         $character->alignment = $characterData["alignment"];
         $character->languages = $characterData["languages"];
-
-        DndAbility::updateOrCreate(
-            ['character_id' => $character->id],
-            [
-                'abilities' => $request->abilities,
-                'proficiencies' => $request->proficiencies,
-                'heroic_inspiration' => $characterData["abilities"]["heroic_inspiration"],
-                'proficiency_bonus' => $characterData["abilities"]["proficiency_bonus"],
-            ]
-        );
-
-        DndFeature::updateOrCreate(
-            ['character_id' => $character->id],
-            [
-                'class_features' => $characterData["features"]["class_features"],
-                'species_traits' => $characterData["features"]["species_traits"],
-                'feats' => $characterData["features"]["feats"],
-            ]
-        );
-
+        $character->spellcasting_ability = $characterData["spellcasting_ability"];
+        $character->spell_slots = $characterData["spell_slots"];
+        $character->is_public = $characterData["is_public"];
+        
         try {
+            DndAbility::updateOrCreate(
+                ['character_id' => $character->id],
+                [
+                    'abilities' => $request->abilities,
+                    'proficiencies' => $request->proficiencies,
+                    'heroic_inspiration' => $characterData["abilities"]["heroic_inspiration"],
+                    'proficiency_bonus' => $characterData["abilities"]["proficiency_bonus"],
+                ]
+            );
+    
+            DndFeature::updateOrCreate(
+                ['character_id' => $character->id],
+                [
+                    'class_features' => $characterData["features"]["class_features"],
+                    'species_traits' => $characterData["features"]["species_traits"],
+                    'feats' => $characterData["features"]["feats"],
+                ]
+            );
+
             $character->save();
             return redirect()->back()->with('success', 'Karakter başarıyla güncellendi');;
         } catch (\Exception $e) {

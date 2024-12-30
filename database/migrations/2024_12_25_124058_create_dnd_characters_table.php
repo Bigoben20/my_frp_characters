@@ -6,6 +6,53 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    private $spell_slots = [
+        [
+            "level" => 1,
+            "total" => 0,
+            "expended" => 0
+        ],
+        [
+            "level" => 2,
+            "total" => 0,
+            "expended" => 0
+        ],
+        [
+            "level" => 3,
+            "total" => 0,
+            "expended" => 0
+        ],
+        [
+            "level" => 4,
+            "total" => 0,
+            "expended" => 0
+        ],
+        [
+            "level" => 5,
+            "total" => 0,
+            "expended" => 0
+        ],
+        [
+            "level" => 6,
+            "total" => 0,
+            "expended" => 0
+        ],
+        [
+            "level" => 7,
+            "total" => 0,
+            "expended" => 0
+        ],
+        [
+            "level" => 8,
+            "total" => 0,
+            "expended" => 0
+        ],
+        [
+            "level" => 9,
+            "total" => 0,
+            "expended" => 0
+        ],
+    ];
 
     /**
      * Run the migrations.
@@ -39,6 +86,9 @@ return new class extends Migration
             $table->longText("backstory")->nullable();
             $table->string("alignment",24)->nullable();
             $table->string("languages",255)->nullable();
+            $table->string("spellcasting_ability",50)->nullable();
+            $table->json("spell_slots")->default(json_encode($this->spell_slots));
+            $table->boolean("is_public")->default(0);
             $table->timestamps();
 
             $table->foreign('class_id')->references('id')->on('dnd_classes')->onDelete('set null');

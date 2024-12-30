@@ -5,11 +5,14 @@
                 Tabs
             </span>
             <div class="flex gap-2 overflow-x-auto">
-                <button type="button" @click="tabs.forEach(t => t.active = true)" :class="tabs.every(t => t.active == true) ? 'bg-indigo-500 dark:bg-indigo-200 text-white dark:text-indigo-600' : 'bg-gray-200 text-gray-800' " class="px-4 py-1 rounded-full whitespace-nowrap">
+                <button type="button" @click="tabs.forEach(t => t.active = true)"
+                    :class="tabs.every(t => t.active == true) ? 'bg-indigo-500 dark:bg-indigo-200 text-white dark:text-indigo-600' : 'bg-gray-200 text-gray-800'"
+                    class="px-4 py-1 rounded-full whitespace-nowrap">
                     All
                 </button>
                 <template v-for="tab in tabs" :key="tab.id">
-                    <button type="button" @click="tabs.forEach(t => t.active = t.id == tab.id)" :class="tab.active ? 'bg-indigo-500 dark:bg-indigo-200 text-white dark:text-indigo-600' : 'bg-gray-200 text-gray-800' " class="px-4 py-1 rounded-full whitespace-nowrap">
+                    <button type="button" @click="tabs.forEach(t => t.active = t.id == tab.id)"
+                        :class="tab.active ? 'bg-indigo-500 dark:bg-indigo-200 text-white dark:text-indigo-600' : 'bg-gray-200 text-gray-800'" class="px-4 py-1 rounded-full whitespace-nowrap">
                         {{ tab.name }}
                     </button>
                 </template>
@@ -145,7 +148,7 @@
                 </div>
 
                 <!-- Initiative, Speed, Size, Passive Perception -->
-                 <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
+                <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
                     <div class="flex flex-col items-start w-full p-4 bg-white rounded-lg dark:bg-gray-800">
                         <label for="initiative" class="w-full ml-1 font-semibold tracking-wide text-center">Initiative</label>
                         <TextInput maxlength="5" :auth="checkUser" id="initiative" v-model="character.characterData.initiative" class="w-full" />
@@ -162,29 +165,29 @@
                         <label for="passive_perception" class="w-full ml-1 font-semibold tracking-wide text-center">Passive Perception</label>
                         <TextInput maxlength="3" :auth="checkUser" id="passive_perception" v-model="character.characterData.passive_perception" class="w-full" />
                     </div>
-                 </div>
+                </div>
 
-                 <!-- Appearance, Backstory, Alignment, Languages -->
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div class="grid grid-cols-1 gap-2 p-4 bg-white rounded-lg dark:bg-gray-800">
-                            <label for="appearance" class="w-full ml-1 font-semibold tracking-wide text-center">Appearance</label>
-                            <TextAreaInput row="10" maxlength="1000" :auth="checkUser" id="appearance" v-model="character.characterData.appearance" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.appearance)" />
-                        </div>
-                        <div class="grid grid-cols-1 gap-2 p-4 bg-white rounded-lg dark:bg-gray-800">
-                            <label for="backstory" class="w-full ml-1 font-semibold tracking-wide text-center">Backstory</label>
-                            <TextAreaInput row="10" maxlength="1000" :auth="checkUser" id="backstory" v-model="character.characterData.backstory" class="w-full" />
-                            <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.backstory)" />
-                        </div>
-                        <div class="grid grid-cols-1 gap-2 p-4 bg-white rounded-lg dark:bg-gray-800">
-                            <label for="alignment" class="w-full ml-1 font-semibold tracking-wide text-center">Alignment</label>
-                            <TextInput maxlength="20" :auth="checkUser" id="alignment" v-model="character.characterData.alignment" class="w-full" />
-                        </div>
-                        <div class="grid grid-cols-1 gap-2 p-4 bg-white rounded-lg dark:bg-gray-800">
-                            <label for="languages" class="w-full ml-1 font-semibold tracking-wide text-center">Languages</label>
-                            <TextAreaInput maxlength="255" :auth="checkUser" id="languages" v-model="character.characterData.languages" class="w-full" />
-                        </div>
+                <!-- Appearance, Backstory, Alignment, Languages -->
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div class="grid grid-cols-1 gap-2 p-4 bg-white rounded-lg dark:bg-gray-800">
+                        <label for="appearance" class="w-full ml-1 font-semibold tracking-wide text-center">Appearance</label>
+                        <TextAreaInput row="10" maxlength="1000" :auth="checkUser" id="appearance" v-model="character.characterData.appearance" class="w-full" />
+                        <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.appearance)" />
                     </div>
+                    <div class="grid grid-cols-1 gap-2 p-4 bg-white rounded-lg dark:bg-gray-800">
+                        <label for="backstory" class="w-full ml-1 font-semibold tracking-wide text-center">Backstory</label>
+                        <TextAreaInput row="10" maxlength="1000" :auth="checkUser" id="backstory" v-model="character.characterData.backstory" class="w-full" />
+                        <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.backstory)" />
+                    </div>
+                    <div class="grid grid-cols-1 gap-2 p-4 bg-white rounded-lg dark:bg-gray-800">
+                        <label for="alignment" class="w-full ml-1 font-semibold tracking-wide text-center">Alignment</label>
+                        <TextInput maxlength="20" :auth="checkUser" id="alignment" v-model="character.characterData.alignment" class="w-full" />
+                    </div>
+                    <div class="grid grid-cols-1 gap-2 p-4 bg-white rounded-lg dark:bg-gray-800">
+                        <label for="languages" class="w-full ml-1 font-semibold tracking-wide text-center">Languages</label>
+                        <TextAreaInput maxlength="255" :auth="checkUser" id="languages" v-model="character.characterData.languages" class="w-full" />
+                    </div>
+                </div>
             </div>
 
             <!-- Abilities -->
@@ -210,7 +213,8 @@
                             <span for="armor_training" class="text-xs">Armor Training</span>
                             <div v-for="(proficiency, index) in ['light', 'medium', 'heavy', 'shield']" :key="index">
                                 <label :for="proficiency">
-                                    <input :disabled="!checkUser" :id="proficiency" type="checkbox" v-model="armorTrainings[proficiency]" class="inline-flex items-center justify-center w-3 h-3 mr-1 text-indigo-500 bg-white border border-gray-300 rounded-[2px] cursor-pointer dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900">
+                                    <input :disabled="!checkUser" :id="proficiency" type="checkbox" v-model="armorTrainings[proficiency]"
+                                        class="inline-flex items-center justify-center w-3 h-3 mr-1 text-indigo-500 bg-white border border-gray-300 rounded-[2px] cursor-pointer dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900">
                                     <span class="text-xs capitalize">{{ proficiency }}</span>
                                 </label>
                             </div>
@@ -218,11 +222,13 @@
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <label for="weapons_profs" class="text-xs">Weapons</label>
-                                <TextAreaInput placeholder="Weapons" maxlength="1000" :auth="checkUser" id="weapons_profs" v-model="proficiencies.weapons.proficiencies" class="w-full text-sm col-span-full" />
+                                <TextAreaInput placeholder="Weapons" maxlength="1000" :auth="checkUser" id="weapons_profs" v-model="proficiencies.weapons.proficiencies"
+                                    class="w-full text-sm col-span-full" />
                             </div>
                             <div>
                                 <label for="tools_profs" class="text-xs">Tools</label>
-                                <TextAreaInput placeholder="Tools" maxlength="1000" :auth="checkUser" id="tools_profs" v-model="proficiencies.tools.proficiencies" class="w-full text-sm col-span-full" />
+                                <TextAreaInput placeholder="Tools" maxlength="1000" :auth="checkUser" id="tools_profs" v-model="proficiencies.tools.proficiencies"
+                                    class="w-full text-sm col-span-full" />
                             </div>
                         </div>
                     </div>
@@ -235,14 +241,15 @@
                                 {{ ability.ability_modifier }}
                             </div>
                             <div>
-                                <TextInput maxlength="3" type="tel" v-mask="'###'" :auth="checkUser" id="ability_score" v-model="ability.ability_score" @input="ability.ability_modifier = getModifier(ability.ability_score)" class="w-full" placeholder="Score" />
+                                <TextInput maxlength="3" type="tel" v-mask="'###'" :auth="checkUser" id="ability_score" v-model="ability.ability_score"
+                                    @input="ability.ability_modifier = getModifier(ability.ability_score)" class="w-full" placeholder="Score" />
                             </div>
                         </div>
                     </div>
                     <div class="flex gap-2 px-4 py-2 border-b dark:border-gray-700">
                         <div>
-                            <input :disabled="!checkUser" :id="ability.ability_name+'_savingthrow'" type="checkbox" v-model="ability.saving_throw" class="hidden peer">
-                            <label :for="ability.ability_name+'_savingthrow'"
+                            <input :disabled="!checkUser" :id="ability.ability_name + '_savingthrow'" type="checkbox" v-model="ability.saving_throw" class="hidden peer">
+                            <label :for="ability.ability_name + '_savingthrow'"
                                 class="inline-flex items-center justify-center w-5 h-5 text-transparent rotate-45 bg-white border border-gray-300 rounded-full cursor-pointer dark:bg-gray-800 dark:border-gray-700 peer-checked:border-green-600 dark:peer-checked:text-green-300 peer-checked:text-green-600 hover:bg-gray-50 dark:hover:bg-gray-700">
                                 <i class="text-xl -rotate-45 fa-solid fa-x"></i>
                             </label>
@@ -250,15 +257,15 @@
                         <span class="text-xs">Saving Throw</span>
                     </div>
                     <div class="flex flex-col gap-1 px-4 py-2">
-                        <div class="flex items-center gap-2" v-for="(sub_ability,index) in ability.sub_abilities" :key="index">
+                        <div class="flex items-center gap-2" v-for="(sub_ability, index) in ability.sub_abilities" :key="index">
                             <div>
-                                <input :disabled="!checkUser" :id="sub_ability.name+'_savingthrow'" type="checkbox" v-model="ability.sub_abilities[index].saving_throw_check" class="hidden peer">
-                                <label :for="sub_ability.name+'_savingthrow'"
+                                <input :disabled="!checkUser" :id="sub_ability.name + '_savingthrow'" type="checkbox" v-model="ability.sub_abilities[index].saving_throw_check" class="hidden peer">
+                                <label :for="sub_ability.name + '_savingthrow'"
                                     class="inline-flex items-center justify-center w-4 h-4 text-transparent rotate-45 bg-white border border-gray-300 rounded-full cursor-pointer dark:bg-gray-800 dark:border-gray-700 peer-checked:border-green-600 dark:peer-checked:text-green-300 peer-checked:text-green-600 hover:bg-gray-50 dark:hover:bg-gray-700">
                                     <i class="text-xl -rotate-45 fa-solid fa-x"></i>
                                 </label>
                             </div>
-                            <input class="text-sm lineInput" maxlength="3" :disabled="!checkUser" id="sub_ability_modifier" v-model="sub_ability.sub_ability_modifier" placeholder="Mod"/>
+                            <input class="w-full text-sm lineInput" maxlength="3" :disabled="!checkUser" id="sub_ability_modifier" v-model="sub_ability.sub_ability_modifier" placeholder="Mod" />
                             <span class="text-[11px] whitespace-nowrap">{{ sub_ability.name }}</span>
                         </div>
                     </div>
@@ -379,34 +386,111 @@
 
             <!-- Equipment -->
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-2" v-show="tabs[3].active" :key="tabs[3].id">
-                <DndWeapons v-if="checkUser" @weaponSelected="handleWeaponSelected"  class="col-span-full"/>
+                <DndWeapons v-if="checkUser" @weaponSelected="handleWeaponSelected" class="col-span-full" />
 
-                <DndCharacterWeapons
-                    v-if="checkUser"
-                    :weapons="character.characterData.weapons"
-                    :character-id="character.characterData.id"
-                    @weaponRemoved="handleWeaponRemoved"
-                    class="col-span-full"
-                />
+                <DndCharacterWeapons v-if="checkUser" :weapons="character.characterData.weapons" :character-id="character.characterData.id" @weaponRemoved="handleWeaponRemoved"
+                    class="col-span-full" />
             </div>
 
             <!-- Spells -->
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-2" v-show="tabs[4].active" :key="tabs[4].id">
-                <DndSpells v-if="checkUser" @spellSelected="handleSpellSelected" class="col-span-full"/>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-3 col-span-full">
+                    <div class="flex flex-col p-4 bg-white rounded-lg dark:bg-gray-800">
+                        <div>
+                            <label for="spellcasting_ability" class="ml-1">Spellcasting Ability</label>
+                            <select :disabled="!checkUser" id="spellcasting_ability" v-model="character.characterData.spellcasting_ability" class="w-full generalInput">
+                                <option value="" selected>None</option>
+                                <option v-for="ability in abilities" :key="ability.ability_name" :value="ability.ability_name">{{ ability.ability_name }}</option>
+                            </select>
+                        </div>
+                        <hr class="mt-2 border-gray-300 dark:border-gray-700" />
+                        <div class="grid grid-cols-3 divide-x divide-gray-300 dark:divide-gray-700">
+                            <div class="p-2">
+                                {{ spellcastingAbility ? spellcastingAbility.ability_modifier : '+0' }}
+                            </div>
+                            <div class="col-span-2 p-2">
+                                Spellcasting Modifier
+                            </div>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-700" />
+                        <div class="grid grid-cols-3 divide-x divide-gray-300 dark:divide-gray-700">
+                            <div class="p-2">
+                                {{ spellcastingAbility ? 8 + parseInt(spellcastingAbility.ability_modifier) + parseInt(character.characterData.abilities.proficiency_bonus ?? "0") : '+0' }}
+                            </div>
+                            <div class="col-span-2 p-2">
+                                Spell Save DC
+                            </div>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-700" />
+                        <div class="grid grid-cols-3 divide-x divide-gray-300 dark:divide-gray-700">
+                            <div class="p-2">
+                                +{{ spellcastingAbility ? parseInt(spellcastingAbility.ability_modifier) + parseInt(character.characterData.abilities.proficiency_bonus ?? "0") : '0' }}
+                            </div>
+                            <div class="col-span-2 p-2">
+                                Spell Attack Bonus
+                            </div>
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-700" />
+                    </div>
+                    <div class="flex flex-col p-4 bg-white rounded-lg md:col-span-2 dark:bg-gray-800" v-if="checkUser">
+                        <div class="font-semibold tracking-wide text-center">
+                            Spell Slots
+                        </div>
+                        <hr class="border-gray-300 dark:border-gray-700" />
+                        <div class="grid grid-cols-3 gap-4 text-xs" v-if="spellSlots.length > 0">
+                            <div class="flex flex-col gap-4">
+                                <div class="flex flex-col px-1 py-2 bg-white rounded-lg dark:bg-gray-800" v-for="(slot, index) in spellSlots.slice(0, 3)" :key="index">
+                                    <span class="">Level {{ slot.level }}</span>
+                                    <div class="flex items-center">
+                                        <input class="mr-2 lineInput" max="4" min="0" type="number" :auth="checkUser" v-model="slot.total" />
+                                        <input type="checkbox" @change="slot.expanded += $event.target.checked ? 1 : -1" v-for="i in slot.total" :key="i" :checked="slot.expanded >= i"
+                                            class="inline-flex items-center justify-center w-3 h-3 mr-1 text-indigo-500 bg-white border border-gray-300 rounded-[2px] cursor-pointer dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-4">
+                                <div class="flex flex-col px-1 py-2 bg-white rounded-lg dark:bg-gray-800" v-for="(slot, index) in spellSlots.slice(3, 6)" :key="index">
+                                    <span class="">Level {{ slot.level }}</span>
+                                    <div class="flex items-center">
+                                        <input class="mr-2 lineInput" max="4" min="0" type="number" :auth="checkUser" v-model="slot.total" />
+                                        <input type="checkbox" @change="slot.expanded += $event.target.checked ? 1 : -1" v-for="i in slot.total" :key="i" :checked="slot.expanded >= i"
+                                            class="inline-flex items-center justify-center w-3 h-3 mr-1 text-indigo-500 bg-white border border-gray-300 rounded-[2px] cursor-pointer dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-4">
+                                <div class="flex flex-col px-1 py-2 bg-white rounded-lg dark:bg-gray-800" v-for="(slot, index) in spellSlots.slice(6, 9)" :key="index">
+                                    <span class="">Level {{ slot.level }}</span>
+                                    <div class="flex items-center">
+                                        <input class="mr-2 lineInput" max="4" min="0" type="number" :auth="checkUser" v-model="slot.total" />
+                                        <input type="checkbox" @change="slot.expanded += $event.target.checked ? 1 : -1" v-for="i in slot.total" :key="i" :checked="slot.expanded >= i"
+                                            class="inline-flex items-center justify-center w-3 h-3 mr-1 text-indigo-500 bg-white border border-gray-300 rounded-[2px] cursor-pointer dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900">
+                                    </div>
+                                </div>
+                            </div>
 
-                <DndCharacterSpells
-                    v-if="checkUser"
-                    :spells="character.characterData.spells"
-                    :character-id="character.characterData.id"
-                    @spellRemoved="handleSpellRemoved"
-                    class="col-span-full"
-                />
+                        </div>
+                    </div>
+                </div>
+                <DndSpells v-if="checkUser" @spellSelected="handleSpellSelected" class="col-span-full" />
+
+                <DndCharacterSpells v-if="checkUser" :spells="character.characterData.spells" :character-id="character.characterData.id" @spellRemoved="handleSpellRemoved" class="col-span-full" />
             </div>
-            
+
+            <!-- Settings -->
+             <div class="flex flex-col p-4 bg-white rounded-lg md:col-span-2 dark:bg-gray-800" v-show="tabs[5].active" :key="tabs[5].id">
+                <div class="flex flex-col items-start gap-1">
+                    <span class="font-semibold">Settings</span>
+                    <div class="flex items-center gap-2">
+                        <Switch v-model="character.characterData.is_public"/>
+                        <span class="text-xs">Public</span>
+                    </div>
+                </div>
+             </div>
         </transition-group>
 
-         <!-- Bottom -->
-         <div class="fixed left-0 z-40 w-full px-2 bottom-2" v-if="checkUser">
+        <!-- Bottom -->
+        <div class="fixed left-0 z-40 w-full px-2 bottom-2" v-if="checkUser">
             <div class="flex gap-2 p-4 bg-white bg-opacity-50 border border-gray-300 rounded-lg dark:bg-opacity-10 dark:border-gray-800 backdrop-blur-md">
                 <div class="grid w-full grid-cols-6 gap-2 sm:grid-cols-12">
                     <button type="button" class="text-red-600 bg-red-100 generalButton" @click="deleteModalShow = true;">
@@ -462,7 +546,8 @@
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     Karakteri Sil
                 </h2>
-                <button type="button" class="absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full top-6 right-6 dark:bg-gray-900 dark:text-white hoverEffect" @click="deleteModalShow = false;">
+                <button type="button" class="absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full top-6 right-6 dark:bg-gray-900 dark:text-white hoverEffect"
+                    @click="deleteModalShow = false;">
                     <i class="text-sm fa-solid fa-x"></i>
                 </button>
             </div>
@@ -473,7 +558,8 @@
                 <button type="button" class="px-4 py-2 rounded bg-sky-200 text-sky-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click="deleteModalShow = false;">
                     <span>Vazgeç</span>
                 </button>
-                <button type="button" class="px-4 py-2 rounded bg-red-200 text-red-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click.once="deleteCharacter(character.characterData.id)">
+                <button type="button" class="px-4 py-2 rounded bg-red-200 text-red-700 hoverEffect h-[42px] flex gap-1 items-center justify-center"
+                    @click.once="deleteCharacter(character.characterData.id)">
                     <span>Sil</span>
                     <MiniLoader :show="deleteLoad" radius="4" />
                 </button>
@@ -488,7 +574,8 @@
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     Zar At
                 </h2>
-                <button type="button" class="absolute top-0 right-0 flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-900 dark:text-white hoverEffect" @click="zarModalShow = false;">
+                <button type="button" class="absolute top-0 right-0 flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-900 dark:text-white hoverEffect"
+                    @click="zarModalShow = false;">
                     <i class="text-sm fa-solid fa-x"></i>
                 </button>
             </div>
@@ -510,13 +597,15 @@ import Roll from '@/Components/Roll.vue';
 import TextAreaInput from '@/Components/TextAreaInput.vue';
 import TextCounter from '@/Components/TextCounter.vue';
 import TextInput from '@/Components/TextInput.vue';
+import Switch from '@/Components/Switch.vue';
+import Checkbox from '@/Components/Checkbox.vue';
+
 import toast from '@/Stores/toast';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import nProgress from 'nprogress';
 import { computed, onMounted, watch } from 'vue';
 import { ref } from 'vue';
-
 const props = defineProps({
     character: {
         type: Object,
@@ -539,6 +628,10 @@ const armorTrainings = ref({
     heavy: false,
     shield: false
 })
+const spellcastingAbility = computed(() => {
+    return character.characterData.spellcasting_ability ? abilities.value.find(ability => ability.ability_name == character.characterData.spellcasting_ability) : null;
+})
+const spellSlots = ref({})
 console.log(props.character);
 onMounted(() => {
     abilities.value = JSON.parse(props.character.abilities.abilities);
@@ -548,17 +641,17 @@ onMounted(() => {
     proficiencies.value.tools = parsedProficiencies.find(proficiency => proficiency.name == 'Tools');
     console.log(abilities.value);
     console.log(proficiencies.value);
-    
+
     armorTrainings.value = {
         light: proficiencies.value.armor.proficiencies.includes('light'),
         medium: proficiencies.value.armor.proficiencies.includes('medium'),
         heavy: proficiencies.value.armor.proficiencies.includes('heavy'),
         shield: proficiencies.value.armor.proficiencies.includes('shield')
     }
-    
+
     character.characterData.abilities.heroic_inspiration = props.character.abilities.heroic_inspiration == 1 ? true : false;
-    
-    
+
+
     if (props.character.success_death_save > 0) {
         for (let index = 0; index < props.character.success_death_save; index++) {
             successDeathSaves.value[index].checked = true;
@@ -570,6 +663,7 @@ onMounted(() => {
         }
     }
 
+    spellSlots.value = JSON.parse(props.character.spell_slots);
     fetchProperties();
 })
 
@@ -580,11 +674,12 @@ const checkUser = computed(() => {
 const saveLoading = ref(false);
 const copied = ref(false);
 
-const character = useForm({ characterData: props.character, abilities: JSON.parse(props.character.abilities.abilities), proficiencies: JSON.parse(props.character.abilities.proficiencies)});
+const character = useForm({ characterData: props.character, abilities: JSON.parse(props.character.abilities.abilities), proficiencies: JSON.parse(props.character.abilities.proficiencies) });
 const updateCharacter = async () => {
     nProgress.start()
     saveLoading.value = true;
     updateArmorTraining();
+    character.characterData.spell_slots = JSON.stringify(spellSlots.value);
     // character.skills.skills_data = JSON.stringify(skills_data.value);
     character.post('/dnd/character-update', {
         preserveScroll: true,
@@ -608,8 +703,8 @@ const updateCharacter = async () => {
 // AutoSaves
 const autoSaveInfo = setInterval(() => {
     toast.add({
-            type: 'warning', message: "Kardeş bayadır kaydete basmadın!"
-        });
+        type: 'warning', message: "Kardeş bayadır kaydete basmadın! 2 dakika içinde autosave alınacaktır."
+    });
 }, 300000);
 
 const autoSave = setInterval(() => {
@@ -617,13 +712,12 @@ const autoSave = setInterval(() => {
 }, 500000);
 
 const tabs = ref([
-    { id: 0, name:"Character Info", active: true },
-    { id: 1, name:"Abilities", active: false },
-    { id: 2, name:"Feats", active: false },
-    { id: 3, name:"Equipment", active: false },
-    { id: 4, name:"Spells", active: false },
-    { id: 5, name:"Notes", active: false },
-    { id: 6, name:"Settings", active: false }
+    { id: 0, name: "Character Info", active: true },
+    { id: 1, name: "Abilities", active: false },
+    { id: 2, name: "Feats", active: false },
+    { id: 3, name: "Equipment", active: false },
+    { id: 4, name: "Spells", active: false },
+    { id: 5, name: "Settings", active: false }
 ])
 const openMore = ref(false);
 const deleteModalShow = ref(false);
@@ -779,53 +873,53 @@ const removeSpeciesTrait = (index) => {
 };
 
 const handleWeaponSelected = async (weapon) => {
-  try {
-    await axios.post('/dnd/character-weapon-add', {
-      character_id: character.characterData.id,
-      weapon_id: weapon.id
-    });
-    toast.add({ type: 'success', message: 'Weapon added successfully' });
-    character.characterData.weapons.push(weapon);
-  } catch (error) {
-    toast.add({ type: 'error', message: 'Failed to add weapon' });
-  }
+    try {
+        await axios.post('/dnd/character-weapon-add', {
+            character_id: character.characterData.id,
+            weapon_id: weapon.id
+        });
+        toast.add({ type: 'success', message: 'Weapon added successfully' });
+        character.characterData.weapons.push(weapon);
+    } catch (error) {
+        toast.add({ type: 'error', message: 'Failed to add weapon' });
+    }
 };
 
 const handleWeaponRemoved = (weaponId) => {
-  character.characterData.weapons = character.characterData.weapons.filter(weapon => weapon.id !== weaponId);
+    character.characterData.weapons = character.characterData.weapons.filter(weapon => weapon.id !== weaponId);
 };
 
 const handleSpellSelected = async (spell) => {
-  try {
-    await axios.post('/dnd/character-spell-add', {
-      character_id: character.characterData.id,
-      spell_id: spell.id
-    });
-    toast.add({ type: 'success', message: 'Spell added successfully' });
-    character.characterData.spells.push(spell);
-  } catch (error) {
-    toast.add({ type: 'error', message: 'Failed to add spell' });
-  }
+    try {
+        await axios.post('/dnd/character-spell-add', {
+            character_id: character.characterData.id,
+            spell_id: spell.id
+        });
+        toast.add({ type: 'success', message: 'Spell added successfully' });
+        character.characterData.spells.push(spell);
+    } catch (error) {
+        toast.add({ type: 'error', message: 'Failed to add spell' });
+    }
 };
 
 const handleSpellRemoved = (spellId) => {
-  character.characterData.spells = character.characterData.spells.filter(spell => spell.id !== spellId);
+    character.characterData.spells = character.characterData.spells.filter(spell => spell.id !== spellId);
 };
 
 const properties = ref([]);
 
 const fetchProperties = async () => {
-  try {
-    const response = await axios.get('/dnd/weapon-properties');
-    properties.value = response.data;
-  } catch (error) {
-    toast.add({ type: 'error', message: 'Failed to fetch properties' });
-  }
+    try {
+        const response = await axios.get('/dnd/weapon-properties');
+        properties.value = response.data;
+    } catch (error) {
+        toast.add({ type: 'error', message: 'Failed to fetch properties' });
+    }
 };
 </script>
 
 <style>
 .lineInput {
-    @apply bg-transparent w-full p-0 border-t-transparent border-x-transparent border-b-gray-300 focus:outline-none focus:ring-0 focus:border-x-transparent focus:border-t-transparent focus:border-b-indigo-500 leading-none;
+    @apply bg-transparent p-0 border-t-transparent border-x-transparent border-b-gray-300 focus:outline-none focus:ring-0 focus:border-x-transparent focus:border-t-transparent focus:border-b-indigo-500 leading-none;
 }
 </style>

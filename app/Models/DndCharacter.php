@@ -12,6 +12,7 @@ class DndCharacter extends Model
     protected $table = 'dnd_characters';
 
     protected $fillable = [
+        'user_id',
         'name',
         'class',
         'background',
@@ -35,6 +36,8 @@ class DndCharacter extends Model
         'backstory',
         'alignment',
         'languages',
+        'spellcasting_ability',
+        'spell_slots'
     ];
 
     public function weapons()
