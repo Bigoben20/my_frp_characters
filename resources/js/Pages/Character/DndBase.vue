@@ -432,7 +432,7 @@
                         </div>
                         <hr class="border-gray-300 dark:border-gray-700" />
                     </div>
-                    <div class="flex flex-col p-4 bg-white rounded-lg md:col-span-2 dark:bg-gray-800" v-if="checkUser">
+                    <div class="flex flex-col p-4 bg-white rounded-lg dark:bg-gray-800" v-if="checkUser">
                         <div class="font-semibold tracking-wide text-center">
                             Spell Slots
                         </div>
