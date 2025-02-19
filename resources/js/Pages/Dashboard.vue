@@ -1,4 +1,5 @@
 <template>
+
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
@@ -13,7 +14,8 @@
                             Filters
                         </span>
                         <div class="flex gap-2">
-                            <button v-for="(filter,index) in filters" :key="index" class="px-4 py-2.5 leading-none text-indigo-700 rounded-full hoverEffect" :class=" system == filter.toLowerCase()? 'bg-indigo-200':'bg-stone-100'" @click="system = filter.toLowerCase()">
+                            <button v-for="(filter, index) in filters" :key="index" class="px-4 py-2.5 leading-none text-indigo-700 rounded-full hoverEffect"
+                                :class="system == filter.toLowerCase() ? 'bg-indigo-200' : 'bg-stone-100'" @click="system = filter.toLowerCase()">
                                 {{ filter }}
                             </button>
                         </div>
@@ -25,7 +27,7 @@
                     </div>
                 </div>
             </div>
-    
+
             <!-- My Fate Characters -->
             <div v-show="system == 'all' || system == 'fate'" class="">
                 <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -44,7 +46,8 @@
                                     </tr>
                                 </thead>
                                 <tbody class="dark:text-gray-100">
-                                    <tr v-for="character in characters.data" :key="character.id" @click="goToChar(character.id,'fate')" class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
+                                    <tr v-for="character in characters.data" :key="character.id" @click="goToChar(character.id, 'fate')"
+                                        class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
                                         <td class="px-3 py-1.5">{{ character.id }}</td>
                                         <td class="px-3 py-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{{ character.name }}</td>
                                         <td class="px-3 py-1.5">
@@ -72,13 +75,13 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- My DND Character -->
             <div v-show="system == 'all' || system == 'd&d'" class="">
                 <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div class="p-4 overflow-hidden bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
                         <div class="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">My D&D Characters <span class="text-blue-600 dark:text-blue-400">({{ characters.total }})</span></div>
-                        
+
                         <div class="w-full">
                             <table class="w-full text-left table-fixed">
                                 <thead class="dark:text-gray-300">
@@ -90,14 +93,15 @@
                                     </tr>
                                 </thead>
                                 <tbody class="dark:text-gray-100">
-                                    <tr v-for="character in dndCharacters.data" :key="character.id" @click="goToChar(character.id,'d&d')" class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
+                                    <tr v-for="character in dndCharacters.data" :key="character.id" @click="goToChar(character.id, 'd&d')"
+                                        class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
                                         <td class="px-3 py-1.5">{{ character.id }}</td>
                                         <td class="px-3 py-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{{ character.name }}</td>
                                         <td class="px-3 py-1.5">
-                                            {{ character.level?? '1' }}
+                                            {{ character.level ?? '1' }}
                                         </td>
                                         <td class="px-3 py-1.5">
-                                            {{ character.class? getClassName(character.class) :'Unknown' }}
+                                            {{ character.class ? getClassName(character.class) : 'Unknown' }}
                                         </td>
                                         <!-- <td class="px-3 py-1.5 w-[168px]">
                                             <div class="flex items-center gap-2 w-fit">
@@ -129,11 +133,46 @@
             </div>
         </div>
 
-        <!-- Other Characters -->
+        <!-- Other DnD Characters -->
         <div class="pb-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="mx-auto space-y-2 max-w-7xl sm:px-6 lg:px-8">
                 <div class="p-4 overflow-hidden bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
-                    <div class="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">Other Characters <span class="text-blue-600 dark:text-blue-400">({{ allCharacters.total }})</span></div>
+                    <div class="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">Other D&D Characters <span class="text-blue-600 dark:text-blue-400">({{ allDndCharacters.total }})</span>
+                    </div>
+                    <div class="w-full">
+                        <table class="w-full text-left table-fixed">
+                            <thead class="dark:text-gray-300">
+                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                    <th class="px-3 py-1.5 rounded-l w-10">ID</th>
+                                    <th class="px-3 py-1.5">Name</th>
+                                    <th class="px-3 py-1.5">Level</th>
+                                    <th class="px-3 py-1.5">Class</th>
+                                </tr>
+                            </thead>
+                            <tbody class="dark:text-gray-100">
+                                <tr v-for="character in allDndCharacters.data" :key="character.id" @click="goToChar(character.id, 'dnd')"
+                                    class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
+                                    <td class="px-3 py-1.5">{{ character.id }}</td>
+                                    <td class="px-3 py-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{{ character.name }}</td>
+                                    <td class="px-3 py-1.5">
+                                        {{ character.level ?? '1' }}
+                                    </td>
+                                    <td class="px-3 py-1.5">
+                                        {{ character.class ? getClassName(character.class) : 'Unknown' }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="mt-4">
+                            <Pagination :links="allDndCharacters.links" />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="p-4 overflow-hidden bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
+                    <div class="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">Other Fate Characters <span class="text-blue-600 dark:text-blue-400">({{ allCharacters.total }})</span>
+                    </div>
                     <div class="w-full">
                         <table class="w-full text-left table-fixed">
                             <thead class="dark:text-gray-300">
@@ -145,7 +184,8 @@
                                 </tr>
                             </thead>
                             <tbody class="dark:text-gray-100">
-                                <tr v-for="character in allCharacters.data" :key="character.id" @click="goToChar(character.id)" class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
+                                <tr v-for="character in allCharacters.data" :key="character.id" @click="goToChar(character.id, 'fate')"
+                                    class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
                                     <td class="px-3 py-1.5">{{ character.id }}</td>
                                     <td class="px-3 py-1.5 whitespace-nowrap">{{ character.user.name }}</td>
                                     <td class="px-3 py-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{{ character.name }}</td>
@@ -183,7 +223,7 @@
                     {{ error }}
                 </div>
             </div>
-            
+
             <div class="flex flex-col">
                 <label for="system" class="dark:text-gray-200">System</label>
                 <SelectInput id="system" v-model="system">
@@ -191,19 +231,19 @@
                     <option value="fate">Fate</option>
                     <option value="d&d">D&D</option>
                 </SelectInput>
-                
+
             </div>
 
             <form v-if="system == 'fate'" @submit.prevent="submitForm" class="grid justify-between grid-cols-1 mt-4 md:items-end">
                 <div class="flex flex-col">
                     <label for="name" class="dark:text-gray-200">Name:</label>
                     <TextInput maxlength="100" id="name" v-model="form.name" />
-                    <TextCounter maxlength="100" :value="form.name.length.toString()"/>
+                    <TextCounter maxlength="100" :value="form.name.length.toString()" />
                 </div>
                 <div class="flex flex-col">
                     <label for="high_concept" class="dark:text-gray-200">High Concept:</label>
                     <TextAreainput maxlength="300" rows="2" id="high_concept" v-model="form.high_concept" />
-                    <TextCounter maxlength="300" :value="form.high_concept.length.toString()"/>
+                    <TextCounter maxlength="300" :value="form.high_concept.length.toString()" />
                 </div>
                 <button class="px-4 py-2 rounded bg-indigo-200 text-indigo-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" type="submit" :disabled="submitLoad || successMessage">
                     <span>Create</span>
@@ -211,12 +251,12 @@
                     <i class="text-green-500 fa-solid fa-check-circle" v-if="successMessage"></i>
                 </button>
             </form>
-            
+
             <form v-else-if="system == 'd&d'" @submit.prevent="submitDndForm" class="grid justify-between grid-cols-1 gap-5 mt-4 md:items-end">
                 <div class="flex flex-col">
                     <label for="name" class="dark:text-gray-200">Name:</label>
                     <TextInput maxlength="100" id="name" v-model="formDnd.name" />
-                    <TextCounter maxlength="100" :value="formDnd.name.length.toString()"/>
+                    <TextCounter maxlength="100" :value="formDnd.name.length.toString()" />
                 </div>
                 <button class="px-4 py-2 rounded bg-indigo-200 text-indigo-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" type="submit" :disabled="submitLoad || successMessage">
                     <span>Create</span>
@@ -234,7 +274,8 @@
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     Karakteri Sil
                 </h2>
-                <button class="absolute top-0 right-0 flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-900 dark:text-white hoverEffect" @click="selectedCharacter = null; deleteModalShow = false;">
+                <button class="absolute top-0 right-0 flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-900 dark:text-white hoverEffect"
+                    @click="selectedCharacter = null; deleteModalShow = false;">
                     <i class="text-sm fa-solid fa-x"></i>
                 </button>
             </div>
@@ -242,7 +283,7 @@
                 "{{ selectedCharacter.name }}" karakterini silmek istediğinize emin misiniz?
             </div>
             <div class="flex items-center justify-between">
-                
+
                 <button class="px-4 py-2 rounded bg-sky-200 text-sky-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click="selectedCharacter = null; deleteModalShow = false;">
                     <span>Vazgeç</span>
                 </button>
@@ -285,6 +326,9 @@ const props = defineProps({
     },
     dndClasses: {
         type: Object,
+    },
+    allDndCharacters: {
+        type: Object,
     }
 })
 // console.log(props.characters);
@@ -292,7 +336,7 @@ const page = usePage();
 
 const system = ref('all');
 const filters = ref([
-    "All","Fate","D&D"
+    "All", "Fate", "D&D"
 ])
 
 const selectedCharacter = ref(null);
@@ -396,21 +440,21 @@ function resetCreate() {
     createModalShow.value = false;
 }
 
-function goToChar(id,system) {
+function goToChar(id, system) {
     let url = "";
     switch (system) {
         case 'fate':
-            url = "/character-detail/"+id
-        break;
+            url = "/character-detail/" + id
+            break;
         case 'd&d':
-            url = "/dnd/character-detail/"+id
-        break;
-        
+            url = "/dnd/character-detail/" + id
+            break;
+
         default:
             url = '/'
             break;
-        }
-        window.location.href= url;
+    }
+    window.location.href = url;
 }
 
 function getClassName(classId) {

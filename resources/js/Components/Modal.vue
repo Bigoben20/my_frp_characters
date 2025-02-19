@@ -18,10 +18,10 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
-const isMobile = ref(window.innerWidth < 640);
+const isMobile = ref(window.innerWidth < 1024);
 
 const handleResize = () => {
-    isMobile.value = window.innerWidth < 640;
+    isMobile.value = window.innerWidth < 1024;
 };
 
 watch(
@@ -73,7 +73,7 @@ const maxWidthClass = computed(() => {
     <Teleport to="body">
         <transition name="mobile-slide" :duration="400">
             <div v-if="isMobile" class="outer fixed top-0 left-0 z-50 flex items-end w-[100vw] h-[100svh] overflow-hidden bg-black/60" v-show="show" @click.self="close()">
-                <div class="w-full inner h-[70vh] pt-0 pb-6 overflow-y-hidden bg-white rounded-t-2xl">
+                <div class="w-full inner h-[70vh] pt-0 pb-6 overflow-y-hidden bg-white dark:bg-gray-900 rounded-t-2xl">
                     <slot v-if="show" />
                 </div>
             </div>
@@ -83,7 +83,7 @@ const maxWidthClass = computed(() => {
                 <transition enter-active-class="duration-300 ease-out" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="duration-200 ease-in"
                     leave-from-class="opacity-100" leave-to-class="opacity-0">
                     <div v-show="show" class="fixed inset-0 transition-all transform">
-                        <div class="absolute inset-0 bg-gray-500 opacity-75 dark:bg-gray-900"  @click.self="close()"/>
+                        <div class="absolute inset-0 bg-gray-500 opacity-75 dark:bg-gray-900" @click.self="close()" />
                     </div>
                 </transition>
 
