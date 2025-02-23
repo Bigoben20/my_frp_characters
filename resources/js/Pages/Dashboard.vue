@@ -150,7 +150,7 @@
                                 </tr>
                             </thead>
                             <tbody class="dark:text-gray-100">
-                                <tr v-for="character in allDndCharacters.data" :key="character.id" @click="goToChar(character.id, 'dnd')"
+                                <tr v-for="character in allDndCharacters.data" :key="character.id" @click="goToChar(character.id, 'd&d')"
                                     class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
                                     <td class="px-3 py-1.5">{{ character.id }}</td>
                                     <td class="px-3 py-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{{ character.name }}</td>
