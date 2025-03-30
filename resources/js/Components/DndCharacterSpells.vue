@@ -119,7 +119,7 @@ const page = usePage();
 const emit = defineEmits(['spellRemoved']);
 const spells = computed(() => {
     return props.spells
-        ? [...props.spells].sort((a, b) => a.name - b.name).sort((a, b) => a.level - b.level)
+        ? [...props.spells].sort((a, b) => a.level - b.level || a.name.localeCompare(b.name))
         : [];
 });
 const classes = ref(page.props.classes);
