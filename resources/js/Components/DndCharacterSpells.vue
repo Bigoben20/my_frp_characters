@@ -5,8 +5,8 @@
             <table class="w-full mt-4 text-sm text-left table-auto">
                 <thead class="bg-gray-100 dark:bg-gray-700">
                     <tr>
+                        <th class="w-20 px-2 py-1">Level</th>
                         <th class="px-2 py-1">Spell Name</th>
-                        <th class="px-2 py-1">Level</th>
                         <th class="px-2 py-1">School</th>
                         <th class="px-2 py-1">Casting Time</th>
                         <th class="px-2 py-1">Range</th>
@@ -16,8 +16,8 @@
                 </thead>
                 <tbody>
                     <tr v-for="spell in spells" :key="spell.id">
-                        <td class="px-2 py-1">{{ spell.name }}</td>
                         <td class="px-2 py-1">{{ spell.level }}</td>
+                        <td class="px-2 py-1">{{ spell.name }}</td>
                         <td class="px-2 py-1">{{ spell.school }}</td>
                         <td class="px-2 py-1">{{ spell.casting_time }}</td>
                         <td class="px-2 py-1">{{ spell.range }}</td>
