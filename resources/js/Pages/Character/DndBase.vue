@@ -171,12 +171,12 @@
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div class="grid grid-cols-1 gap-2 p-4 bg-white rounded-lg dark:bg-gray-800">
                         <label for="appearance" class="w-full ml-1 font-semibold tracking-wide text-center">Appearance</label>
-                        <TextAreaInput row="10" maxlength="1000" :auth="checkUser" id="appearance" v-model="character.characterData.appearance" class="w-full" />
+                        <TextAreaInput rows="10" maxlength="1000" :auth="checkUser" id="appearance" v-model="character.characterData.appearance" class="w-full" />
                         <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.appearance)" />
                     </div>
                     <div class="grid grid-cols-1 gap-2 p-4 bg-white rounded-lg dark:bg-gray-800">
                         <label for="backstory" class="w-full ml-1 font-semibold tracking-wide text-center">Backstory</label>
-                        <TextAreaInput row="10" maxlength="1000" :auth="checkUser" id="backstory" v-model="character.characterData.backstory" class="w-full" />
+                        <TextAreaInput rows="10" maxlength="1000" :auth="checkUser" id="backstory" v-model="character.characterData.backstory" class="w-full" />
                         <TextCounter v-if="checkUser" maxlength="300" :value="getLength(character.characterData.backstory)" />
                     </div>
                     <div class="grid grid-cols-1 gap-2 p-4 bg-white rounded-lg dark:bg-gray-800">
@@ -285,19 +285,19 @@
                             </tr>
                         </thead>
                         <tbody class="">
-                            <tr v-for="(feat, index) in character.characterData.features.feats" :key="index">
+                            <tr v-for="(feat, index) in character.characterData.features.feats" :key="index" class="">
                                 <td class="px-2 py-1">
-                                    <div class="flex items-end h-[42px]">
-                                        <input maxlength="20" v-model="feat.name" placeholder="Feat Name" class="text-sm lineInput" />
+                                    <div class="flex items-end ">
+                                        <input maxlength="80" v-model="feat.name" placeholder="Feat Name" class="text-sm lineInput" />
                                     </div>
                                 </td>
                                 <td class="px-2 py-1">
-                                    <div class="flex items-end h-[42px]">
-                                        <textarea row="3" maxlength="255" v-model="feat.description" placeholder="Description" class="text-[11px] lineInput" />
+                                    <div class="flex items-end ">
+                                        <textarea rows="3" maxlength="255" v-model="feat.description" placeholder="Description" class="text-[11px] leading-none generalInput" />
                                     </div>
                                 </td>
                                 <td class="px-2 py-1">
-                                    <div class="flex items-end h-[42px]">
+                                    <div class="flex items-end ">
                                         <button type="button" @click="removeFeat(index)" class="text-red-600">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
@@ -323,17 +323,17 @@
                         <tbody class="">
                             <tr v-for="(feature, index) in character.characterData.features.class_features" :key="index">
                                 <td class="px-2 py-1">
-                                    <div class="flex items-end h-[42px]">
-                                        <input maxlength="20" v-model="feature.name" placeholder="Feature Name" class="text-sm lineInput" />
+                                    <div class="flex items-end ">
+                                        <input maxlength="80" v-model="feature.name" placeholder="Feature Name" class="text-sm lineInput" />
                                     </div>
                                 </td>
                                 <td class="px-2 py-1">
-                                    <div class="flex items-end h-[42px]">
-                                        <textarea row="3" maxlength="255" v-model="feature.description" placeholder="Description" class="text-[11px] lineInput" />
+                                    <div class="flex items-end ">
+                                        <textarea rows="3" maxlength="255" v-model="feature.description" placeholder="Description" class="text-[11px] leading-none generalInput" />
                                     </div>
                                 </td>
                                 <td class="px-2 py-1">
-                                    <div class="flex items-end h-[42px]">
+                                    <div class="flex items-end ">
                                         <button type="button" @click="removeClassFeature(index)" class="text-red-600">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
@@ -359,17 +359,17 @@
                         <tbody class="">
                             <tr v-for="(trait, index) in character.characterData.features.species_traits" :key="index">
                                 <td class="px-2 py-1">
-                                    <div class="flex items-end h-[42px]">
-                                        <input maxlength="20" v-model="trait.name" placeholder="Trait Name" class="text-sm lineInput" />
+                                    <div class="flex items-end ">
+                                        <input maxlength="80" v-model="trait.name" placeholder="Trait Name" class="text-sm lineInput" />
                                     </div>
                                 </td>
                                 <td class="px-2 py-1">
-                                    <div class="flex items-end h-[42px]">
-                                        <textarea row="3" maxlength="255" v-model="trait.description" placeholder="Description" class="text-[11px] lineInput" />
+                                    <div class="flex items-end ">
+                                        <textarea rows="3" maxlength="255" v-model="trait.description" placeholder="Description" class="text-[11px] leading-none generalInput" />
                                     </div>
                                 </td>
                                 <td class="px-2 py-1">
-                                    <div class="flex items-end h-[42px]">
+                                    <div class="flex items-end ">
                                         <button type="button" @click="removeSpeciesTrait(index)" class="text-red-600">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
@@ -555,10 +555,10 @@
                 "{{ character.characterData.name }}" karakterini silmek istediğinize emin misiniz?
             </div>
             <div class="flex items-center justify-between px-6 py-4 bg-gray-100 dark:bg-gray-800">
-                <button type="button" class="px-4 py-2 rounded bg-sky-200 text-sky-700 hoverEffect h-[42px] flex gap-1 items-center justify-center" @click="deleteModalShow = false;">
+                <button type="button" class="flex items-center justify-center gap-1 px-4 py-2 rounded bg-sky-200 text-sky-700 hoverEffect" @click="deleteModalShow = false;">
                     <span>Vazgeç</span>
                 </button>
-                <button type="button" class="px-4 py-2 rounded bg-red-200 text-red-700 hoverEffect h-[42px] flex gap-1 items-center justify-center"
+                <button type="button" class="flex items-center justify-center gap-1 px-4 py-2 text-red-700 bg-red-200 rounded hoverEffect"
                     @click.once="deleteCharacter(character.characterData.id)">
                     <span>Sil</span>
                     <MiniLoader :show="deleteLoad" radius="4" />
