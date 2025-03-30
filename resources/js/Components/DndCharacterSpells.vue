@@ -109,6 +109,7 @@ import axios from 'axios';
 import toast from '@/Stores/toast';
 import Modal from './Modal.vue';
 import { usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 const props = defineProps({
     spells: Array,
@@ -116,7 +117,11 @@ const props = defineProps({
 });
 const page = usePage();
 const emit = defineEmits(['spellRemoved']);
-
+const spells = computed(() => {
+    return props.spells
+        ? [...props.spells].sort((a, b) => a.level - b.level)
+        : [];
+});
 const classes = ref(page.props.classes);
 const detailsModalShow = ref(false);
 const selectedSpell = ref({});

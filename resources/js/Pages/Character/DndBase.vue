@@ -274,7 +274,7 @@
 
             <!-- Feats -->
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-3" v-show="tabs[2].active" :key="tabs[2].id">
-                <div class="flex flex-col items-start gap-1 p-4 bg-white rounded-lg dark:bg-gray-800">
+                <div class="flex flex-col items-start gap-1 p-4 overflow-x-auto bg-white rounded-lg dark:bg-gray-800">
                     <span class="text-sm font-semibold">Feats</span>
                     <table class="w-full text-sm text-left">
                         <thead class="bg-gray-100 dark:bg-gray-700">
@@ -310,7 +310,7 @@
                         <i class="fa-solid fa-plus"></i> Add Feat
                     </button>
                 </div>
-                <div class="flex flex-col items-start gap-1 p-4 bg-white rounded-lg dark:bg-gray-800">
+                <div class="flex flex-col items-start gap-1 p-4 overflow-x-auto bg-white rounded-lg dark:bg-gray-800">
                     <span class="text-sm font-semibold">Class Features</span>
                     <table class="w-full text-sm text-left">
                         <thead class="bg-gray-100 dark:bg-gray-700">
@@ -346,7 +346,7 @@
                         <i class="fa-solid fa-plus"></i> Add Feature
                     </button>
                 </div>
-                <div class="flex flex-col items-start gap-1 p-4 bg-white rounded-lg dark:bg-gray-800">
+                <div class="flex flex-col items-start gap-1 p-4 overflow-x-auto bg-white rounded-lg dark:bg-gray-800">
                     <span class="text-sm font-semibold">Species Traits</span>
                     <table class="w-full text-sm text-left">
                         <thead class="bg-gray-100 dark:bg-gray-700">

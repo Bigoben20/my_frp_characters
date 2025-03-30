@@ -87,7 +87,7 @@ class DashboardController extends Controller
     public function detailsCharacter($id)
     {
         $character = Character::join('notes', 'characters.id', '=', 'notes.character_id')->where("characters.id", $id)->first();
-        $skills = Skills::where("character_id", $id)->orderBy('level','ASC')->first();
+        $skills = Skills::where("character_id", $id)->first();
         $skillLabels = SkillLabel::pluck('title');
 
         return Inertia::render('CharacterDetails', compact("character", "skills", "skillLabels"));
