@@ -1,5 +1,22 @@
 <template>
     <form @submit.prevent="updateCharacter" class="grid grid-cols-1 gap-8 px-2 pt-6 pb-32 md:px-6 dark:text-gray-100">
+        <!-- Read-Only Mode Indicator -->
+        <div v-if="!checkUser" class="p-4 mb-4 border-l-4 border-blue-500 rounded-lg bg-blue-50 dark:bg-blue-900/20 dark:border-blue-400">
+            <div class="flex items-center">
+                <div class="flex items-center justify-center w-8 h-8 mr-3 bg-blue-100 rounded-full dark:bg-blue-800">
+                    <i class="text-blue-600 fa-solid fa-eye dark:text-blue-400"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-blue-800 dark:text-blue-200">
+                        Read-Only Mode
+                    </h3>
+                    <p class="text-sm text-blue-700 dark:text-blue-300">
+                        You are viewing this character sheet in read-only mode. You cannot make changes.
+                    </p>
+                </div>
+            </div>
+        </div>
+
         <div class="flex flex-col gap-1 -mb-4 col-span-full">
             <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 Tabs
@@ -11,7 +28,7 @@
                     All
                 </button>
                 <template v-for="tab in tabs" :key="tab.id">
-                    <button type="button" @click="tabs.forEach(t => t.active = t.id == tab.id)"
+                    <button v-if="!(tab.id === 5 && !checkUser)" type="button" @click="tabs.forEach(t => t.active = t.id == tab.id)"
                         :class="tab.active ? 'bg-indigo-500 dark:bg-indigo-200 text-white dark:text-indigo-600' : 'bg-gray-200 text-gray-800'" class="px-4 py-1 rounded-full whitespace-nowrap">
                         {{ tab.name }}
                     </button>
@@ -57,11 +74,11 @@
                     <div class="flex flex-col justify-end p-4 bg-white rounded-lg dark:bg-gray-800">
                         <div class="flex flex-col items-start w-full gap-2">
                             <label for="level" class="ml-1">Level</label>
-                            <TextInput maxlength="3" type="tel" v-mask="'###'" :auth="checkUser" id="level" v-model="character.characterData.level" class="w-full" />
+                            <TextInput maxlength="3" type="tel" :v-mask="checkUser ? '###' : null" :auth="checkUser" id="level" v-model="character.characterData.level" class="w-full" />
                         </div>
                         <div class="flex flex-col items-start w-full">
                             <label for="xp" class="ml-1">XP</label>
-                            <TextInput maxlength="10" type="tel" v-mask="'##########'" :auth="checkUser" id="level" v-model="character.characterData.xp" class="w-full" />
+                            <TextInput maxlength="10" type="tel" :v-mask="checkUser ? '##########' : null" :auth="checkUser" id="level" v-model="character.characterData.xp" class="w-full" />
                         </div>
                     </div>
 
@@ -195,7 +212,7 @@
                 <div class="flex flex-wrap gap-4 col-span-full">
                     <div class="flex flex-col items-center gap-1 p-4 bg-white rounded-lg dark:bg-gray-800 h-fit">
                         <span class="text-sm font-semibold">Proficiency Bonus</span>
-                        <TextInput maxlength="3" type="tel" v-mask="'+#'" :auth="checkUser" id="proficiency_bonus" v-model="character.characterData.abilities.proficiency_bonus" class="w-12" />
+                        <TextInput maxlength="3" type="tel" :v-mask="checkUser ? '+#' : null" :auth="checkUser" id="proficiency_bonus" v-model="character.characterData.abilities.proficiency_bonus" class="w-12" />
                     </div>
                     <div class="flex flex-col items-center gap-1 p-4 bg-white rounded-lg dark:bg-gray-800 h-fit">
                         <span class="text-sm font-semibold">Heroic Inspiration</span>
@@ -241,7 +258,7 @@
                                 {{ ability.ability_modifier }}
                             </div>
                             <div>
-                                <TextInput maxlength="3" type="tel" v-mask="'###'" :auth="checkUser" id="ability_score" v-model="ability.ability_score"
+                                <TextInput maxlength="3" type="tel" :v-mask="checkUser ? '###' : null" :auth="checkUser" id="ability_score" v-model="ability.ability_score"
                                     @input="ability.ability_modifier = getModifier(ability.ability_score)" class="w-full" placeholder="Score" />
                             </div>
                         </div>
@@ -514,13 +531,13 @@
                 <!-- Weapons Section -->
                 <div class="grid grid-cols-1 gap-6">
                     <DndWeapons v-if="checkUser" @weaponSelected="handleWeaponSelected" />
-                    <DndCharacterWeapons v-if="checkUser" :weapons="character.characterData.weapons" :character-id="character.characterData.id" @weaponRemoved="handleWeaponRemoved" />
+                    <DndCharacterWeapons :weapons="character.characterData.weapons" :character-id="character.characterData.id" :check-user="checkUser" @weaponRemoved="handleWeaponRemoved" />
                 </div>
 
                 <!-- Equipment Section -->
                 <div class="grid grid-cols-1 gap-6">
                     <DndEquipments v-if="checkUser" @equipmentSelected="handleEquipmentSelected" />
-                    <DndCharacterEquipments v-if="checkUser" :equipment="character.characterData.equipments" :character-id="character.characterData.id" @equipmentRemoved="handleEquipmentRemoved" />
+                    <DndCharacterEquipments :equipment="character.characterData.equipments" :character-id="character.characterData.id" :check-user="checkUser" @equipmentRemoved="handleEquipmentRemoved" />
                 </div>
             </div>
 
@@ -606,11 +623,11 @@
                 </div>
                 <DndSpells v-if="checkUser" @spellSelected="handleSpellSelected" class="col-span-full" />
 
-                <DndCharacterSpells v-if="checkUser" :spells="character.characterData.spells" :character-id="character.characterData.id" @spellRemoved="handleSpellRemoved" class="col-span-full" />
+                <DndCharacterSpells :spells="character.characterData.spells" :character-id="character.characterData.id" :check-user="checkUser" @spellRemoved="handleSpellRemoved" class="col-span-full" />
             </div>
 
             <!-- Settings -->
-             <div class="flex flex-col p-4 bg-white rounded-lg dark:bg-gray-800" v-show="tabs[5].active" :key="tabs[5].id">
+             <div class="flex flex-col p-4 bg-white rounded-lg dark:bg-gray-800" v-show="tabs[5].active && checkUser" :key="tabs[5].id">
                 <div class="flex flex-col items-start gap-1">
                     <span class="font-semibold">Settings</span>
                     <div class="flex items-center gap-2">
@@ -799,6 +816,12 @@ onMounted(() => {
 
     spellSlots.value = JSON.parse(props.character.spell_slots);
     fetchProperties();
+
+    if (!checkUser.value) {
+        tabs.value.forEach(tab => {
+            tab.active = true;
+        });
+    }
 })
 
 const checkUser = computed(() => {

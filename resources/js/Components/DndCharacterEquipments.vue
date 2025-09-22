@@ -18,7 +18,7 @@
                   <p class="text-sm text-gray-600 dark:text-gray-400">{{ item.type }}</p>
                   <p v-if="item.notes" class="text-xs text-gray-500 dark:text-gray-500 mt-1">{{ item.notes }}</p>
                 </div>
-                <button type="button" 
+                <button v-if="checkUser" type="button" 
                         @click="removeEquipment(item.id)" 
                         class="ml-2 p-1 text-red-600 hover:text-red-800 hover:bg-red-100 rounded transition-colors dark:hover:bg-red-900 dark:hover:text-red-400"
                         title="Remove equipment">
@@ -45,7 +45,8 @@
   
   const props = defineProps({
     equipment: Array,
-    characterId: Number
+    characterId: Number,
+    checkUser: Boolean
   });
   
   const emit = defineEmits(['equipmentRemoved']);

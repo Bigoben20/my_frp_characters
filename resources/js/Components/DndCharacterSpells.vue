@@ -59,6 +59,7 @@
                                     <i class="text-sm fa-solid fa-info"></i>
                                 </button>
                                 <button
+                                    v-if="checkUser"
                                     @click="removeSpell(spell.id)"
                                     class="flex items-center justify-center w-8 h-8 text-red-600 transition-all duration-200 rounded-full hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/30"
                                     title="Remove Spell"
@@ -231,7 +232,8 @@ import { usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
     spells: Array,
-    characterId: Number
+    characterId: Number,
+    checkUser: Boolean
 });
 
 const page = usePage();

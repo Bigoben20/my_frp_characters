@@ -19,8 +19,6 @@ class DndCharacterController extends Controller
         $character = DndCharacter::with('weapons', 'spells', 'equipments', 'features','abilities')->find($id);
         if (!$character) {
             return redirect()->back()->with('error', 'Karakter bulunamadı');
-        } else if ($character->user_id != Auth::user()->id) {
-            return redirect()->back()->with('error', 'Buna yetkiniz bulunmamaktadır!');
         }
         $classes = DndClasses::orderBy('name','asc')->get();
 

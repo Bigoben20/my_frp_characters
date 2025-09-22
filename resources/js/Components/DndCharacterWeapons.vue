@@ -11,7 +11,7 @@
                 <h5 class="font-semibold text-gray-900 dark:text-gray-100 text-lg">{{ weapon.name }}</h5>
                 <p class="text-sm text-orange-600 dark:text-orange-400 font-medium">{{ weapon.damage_and_type }}</p>
               </div>
-              <button type="button" 
+              <button v-if="checkUser" type="button" 
                       @click="removeWeapon(weapon.id)" 
                       class="ml-2 p-2 text-red-600 hover:text-red-800 hover:bg-red-100 rounded-lg transition-colors dark:hover:bg-red-900 dark:hover:text-red-400"
                       title="Remove weapon">
@@ -70,7 +70,8 @@
   
   const props = defineProps({
     weapons: Array,
-    characterId: Number
+    characterId: Number,
+    checkUser: Boolean
   });
   
   const emit = defineEmits(['weaponRemoved']);
