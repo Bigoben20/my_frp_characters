@@ -274,122 +274,254 @@
 
             <!-- Feats -->
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-3" v-show="tabs[2].active" :key="tabs[2].id">
-                <div class="flex flex-col items-start gap-1 p-4 overflow-x-auto bg-white rounded-lg dark:bg-gray-800">
-                    <span class="text-sm font-semibold">Feats</span>
-                    <table class="w-full text-sm text-left">
-                        <thead class="bg-gray-100 dark:bg-gray-700">
-                            <tr>
-                                <th class="px-2 py-1">Feat Name</th>
-                                <th class="px-2 py-1">Description</th>
-                                <th class="px-2 py-1">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="">
-                            <tr v-for="(feat, index) in character.characterData.features.feats" :key="index" class="">
-                                <td class="px-2 py-1">
-                                    <div class="flex items-end ">
-                                        <input maxlength="80" v-model="feat.name" placeholder="Feat Name" class="text-sm lineInput" />
+                <!-- Feats Section -->
+                <div class="flex flex-col bg-white rounded-lg h-[500px] lg:h-[70svh] dark:bg-gray-800">
+                    <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-600">
+                        <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Feats</span>
+                        <button type="button" @click="addFeat" class="flex items-center gap-2 px-3 py-1 text-sm text-green-700 transition-colors bg-green-100 rounded-lg hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Add Feat</span>
+                        </button>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-600">
+                        <div class="relative">
+                            <input
+                                v-model="featSearchTerm"
+                                type="text"
+                                placeholder="Search feats..."
+                                class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <i class="text-gray-400 fa-solid fa-search"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            {{ filteredFeats.length }} of {{ character.characterData.features.feats.length }} feats
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Content -->
+                    <div ref="featScrollContainer" class="flex-1 p-4 overflow-y-auto">
+                        <div class="space-y-4" v-if="filteredFeats.length > 0">
+                            <div v-for="(feat, index) in filteredFeats" :key="feat.id" 
+                                 class="p-4 transition-shadow border border-gray-200 rounded-lg dark:border-gray-600 dark:bg-gray-700 hover:shadow-md">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div class="flex-1">
+                                        <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Feat Name</label>
+                                        <TextInput 
+                                            maxlength="80" 
+                                            v-model="feat.name" 
+                                            placeholder="Enter feat name..." 
+                                            class="w-full font-medium"
+                                            :auth="checkUser" />
                                     </div>
-                                </td>
-                                <td class="px-2 py-1">
-                                    <div class="flex items-end ">
-                                        <textarea rows="3" maxlength="255" v-model="feat.description" placeholder="Description" class="text-[11px] leading-none generalInput" />
-                                    </div>
-                                </td>
-                                <td class="px-2 py-1">
-                                    <div class="flex items-end ">
-                                        <button type="button" @click="removeFeat(index)" class="text-red-600">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button type="button" @click="addFeat" class="mt-2 text-green-600">
-                        <i class="fa-solid fa-plus"></i> Add Feat
-                    </button>
+                                    <button type="button" 
+                                            @click="removeFeat(character.characterData.features.feats.indexOf(feat))" 
+                                            class="p-2 ml-3 text-red-600 transition-colors rounded-lg hover:text-red-800 hover:bg-red-100 dark:hover:bg-red-900 dark:hover:text-red-400"
+                                            title="Delete feat">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                                    <TextAreaInput 
+                                        rows="3" 
+                                        maxlength="500" 
+                                        v-model="feat.description" 
+                                        placeholder="Describe what this feat does, its benefits, and any special rules..." 
+                                        class="w-full text-sm"
+                                        :auth="checkUser" />
+                                    <TextCounter v-if="checkUser" maxlength="500" :value="getLength(feat.description)" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div v-else-if="character.characterData.features.feats.length > 0" class="text-center text-gray-500 dark:text-gray-400">
+                            <i class="mb-2 text-2xl fa-solid fa-search"></i>
+                            <p class="text-sm">No feats match your search</p>
+                        </div>
+                        
+                        <div v-else class="text-center text-gray-500 dark:text-gray-400">
+                            <i class="mb-2 text-3xl opacity-50 fa-solid fa-magic"></i>
+                            <p class="text-sm">No feats added yet</p>
+                            <p class="mt-1 text-xs">Click "Add Feat" to get started</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex flex-col items-start gap-1 p-4 overflow-x-auto bg-white rounded-lg dark:bg-gray-800">
-                    <span class="text-sm font-semibold">Class Features</span>
-                    <table class="w-full text-sm text-left">
-                        <thead class="bg-gray-100 dark:bg-gray-700">
-                            <tr>
-                                <th class="px-2 py-1">Feature Name</th>
-                                <th class="px-2 py-1">Description</th>
-                                <th class="px-2 py-1">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="">
-                            <tr v-for="(feature, index) in character.characterData.features.class_features" :key="index">
-                                <td class="px-2 py-1">
-                                    <div class="flex items-end ">
-                                        <input maxlength="80" v-model="feature.name" placeholder="Feature Name" class="text-sm lineInput" />
+
+                <!-- Class Features Section -->
+                <div class="flex flex-col bg-white rounded-lg h-[500px] lg:h-[70svh] dark:bg-gray-800">
+                    <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-600">
+                        <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Class Features</span>
+                        <button type="button" @click="addClassFeature" class="flex items-center gap-2 px-3 py-1 text-sm text-blue-700 transition-colors bg-blue-100 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Add Feature</span>
+                        </button>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-600">
+                        <div class="relative">
+                            <input
+                                v-model="classFeatureSearchTerm"
+                                type="text"
+                                placeholder="Search class features..."
+                                class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <i class="text-gray-400 fa-solid fa-search"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            {{ filteredClassFeatures.length }} of {{ character.characterData.features.class_features.length }} features
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Content -->
+                    <div ref="classFeatureScrollContainer" class="flex-1 p-4 overflow-y-auto">
+                        <div class="space-y-4" v-if="filteredClassFeatures.length > 0">
+                            <div v-for="(feature, index) in filteredClassFeatures" :key="feature.id" 
+                                 class="p-4 transition-shadow border border-gray-200 rounded-lg dark:border-gray-600 dark:bg-gray-700 hover:shadow-md">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div class="flex-1">
+                                        <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Feature Name</label>
+                                        <TextInput 
+                                            maxlength="80" 
+                                            v-model="feature.name" 
+                                            placeholder="Enter class feature name..." 
+                                            class="w-full font-medium"
+                                            :auth="checkUser" />
                                     </div>
-                                </td>
-                                <td class="px-2 py-1">
-                                    <div class="flex items-end ">
-                                        <textarea rows="3" maxlength="255" v-model="feature.description" placeholder="Description" class="text-[11px] leading-none generalInput" />
-                                    </div>
-                                </td>
-                                <td class="px-2 py-1">
-                                    <div class="flex items-end ">
-                                        <button type="button" @click="removeClassFeature(index)" class="text-red-600">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button type="button" @click="addClassFeature" class="mt-2 text-green-600">
-                        <i class="fa-solid fa-plus"></i> Add Feature
-                    </button>
+                                    <button type="button" 
+                                            @click="removeClassFeature(character.characterData.features.class_features.indexOf(feature))" 
+                                            class="p-2 ml-3 text-red-600 transition-colors rounded-lg hover:text-red-800 hover:bg-red-100 dark:hover:bg-red-900 dark:hover:text-red-400"
+                                            title="Delete feature">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                                    <TextAreaInput 
+                                        rows="3" 
+                                        maxlength="500" 
+                                        v-model="feature.description" 
+                                        placeholder="Describe this class feature, its mechanics, and when it can be used..." 
+                                        class="w-full text-sm"
+                                        :auth="checkUser" />
+                                    <TextCounter v-if="checkUser" maxlength="500" :value="getLength(feature.description)" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div v-else-if="character.characterData.features.class_features.length > 0" class="text-center text-gray-500 dark:text-gray-400">
+                            <i class="mb-2 text-2xl fa-solid fa-search"></i>
+                            <p class="text-sm">No class features match your search</p>
+                        </div>
+                        
+                        <div v-else class="text-center text-gray-500 dark:text-gray-400">
+                            <i class="mb-2 text-3xl opacity-50 fa-solid fa-cog"></i>
+                            <p class="text-sm">No class features added yet</p>
+                            <p class="mt-1 text-xs">Click "Add Feature" to get started</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex flex-col items-start gap-1 p-4 overflow-x-auto bg-white rounded-lg dark:bg-gray-800">
-                    <span class="text-sm font-semibold">Species Traits</span>
-                    <table class="w-full text-sm text-left">
-                        <thead class="bg-gray-100 dark:bg-gray-700">
-                            <tr>
-                                <th class="px-2 py-1">Trait Name</th>
-                                <th class="px-2 py-1">Description</th>
-                                <th class="px-2 py-1">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="">
-                            <tr v-for="(trait, index) in character.characterData.features.species_traits" :key="index">
-                                <td class="px-2 py-1">
-                                    <div class="flex items-end ">
-                                        <input maxlength="80" v-model="trait.name" placeholder="Trait Name" class="text-sm lineInput" />
+
+                <!-- Species Traits Section -->
+                <div class="flex flex-col bg-white rounded-lg h-[500px] lg:h-[70svh] dark:bg-gray-800">
+                    <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-600">
+                        <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Species Traits</span>
+                        <button type="button" @click="addSpeciesTrait" class="flex items-center gap-2 px-3 py-1 text-sm text-purple-700 transition-colors bg-purple-100 rounded-lg hover:bg-purple-200 dark:bg-purple-900 dark:text-purple-300 dark:hover:bg-purple-800">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Add Trait</span>
+                        </button>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-600">
+                        <div class="relative">
+                            <input
+                                v-model="speciesTraitSearchTerm"
+                                type="text"
+                                placeholder="Search species traits..."
+                                class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <i class="text-gray-400 fa-solid fa-search"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            {{ filteredSpeciesTraits.length }} of {{ character.characterData.features.species_traits.length }} traits
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Content -->
+                    <div ref="speciesTraitScrollContainer" class="flex-1 p-4 overflow-y-auto">
+                        <div class="space-y-4" v-if="filteredSpeciesTraits.length > 0">
+                            <div v-for="(trait, index) in filteredSpeciesTraits" :key="trait.id" 
+                                 class="p-4 transition-shadow border border-gray-200 rounded-lg dark:border-gray-600 dark:bg-gray-700 hover:shadow-md">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div class="flex-1">
+                                        <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Trait Name</label>
+                                        <TextInput 
+                                            maxlength="80" 
+                                            v-model="trait.name" 
+                                            placeholder="Enter species trait name..." 
+                                            class="w-full font-medium"
+                                            :auth="checkUser" />
                                     </div>
-                                </td>
-                                <td class="px-2 py-1">
-                                    <div class="flex items-end ">
-                                        <textarea rows="3" maxlength="255" v-model="trait.description" placeholder="Description" class="text-[11px] leading-none generalInput" />
-                                    </div>
-                                </td>
-                                <td class="px-2 py-1">
-                                    <div class="flex items-end ">
-                                        <button type="button" @click="removeSpeciesTrait(index)" class="text-red-600">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button type="button" @click="addSpeciesTrait" class="mt-2 text-green-600">
-                        <i class="fa-solid fa-plus"></i> Add Trait
-                    </button>
+                                    <button type="button" 
+                                            @click="removeSpeciesTrait(character.characterData.features.species_traits.indexOf(trait))" 
+                                            class="p-2 ml-3 text-red-600 transition-colors rounded-lg hover:text-red-800 hover:bg-red-100 dark:hover:bg-red-900 dark:hover:text-red-400"
+                                            title="Delete trait">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                                    <TextAreaInput 
+                                        rows="3" 
+                                        maxlength="500" 
+                                        v-model="trait.description" 
+                                        placeholder="Describe this racial trait, its benefits, and any special conditions..." 
+                                        class="w-full text-sm"
+                                        :auth="checkUser" />
+                                    <TextCounter v-if="checkUser" maxlength="500" :value="getLength(trait.description)" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div v-else-if="character.characterData.features.species_traits.length > 0" class="text-center text-gray-500 dark:text-gray-400">
+                            <i class="mb-2 text-2xl fa-solid fa-search"></i>
+                            <p class="text-sm">No species traits match your search</p>
+                        </div>
+                        
+                        <div v-else class="text-center text-gray-500 dark:text-gray-400">
+                            <i class="mb-2 text-3xl opacity-50 fa-solid fa-dna"></i>
+                            <p class="text-sm">No species traits added yet</p>
+                            <p class="mt-1 text-xs">Click "Add Trait" to get started</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Equipment -->
-            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2" v-show="tabs[3].active" :key="tabs[3].id">
-                <DndWeapons v-if="checkUser" @weaponSelected="handleWeaponSelected" class="col-span-full" />
+            <div class="space-y-6" v-show="tabs[3].active" :key="tabs[3].id">
+                <!-- Weapons Section -->
+                <div class="grid grid-cols-1 gap-6">
+                    <DndWeapons v-if="checkUser" @weaponSelected="handleWeaponSelected" />
+                    <DndCharacterWeapons v-if="checkUser" :weapons="character.characterData.weapons" :character-id="character.characterData.id" @weaponRemoved="handleWeaponRemoved" />
+                </div>
 
-                <DndCharacterWeapons v-if="checkUser" :weapons="character.characterData.weapons" :character-id="character.characterData.id" @weaponRemoved="handleWeaponRemoved"
-                    class="col-span-full" />
+                <!-- Equipment Section -->
+                <div class="grid grid-cols-1 gap-6">
+                    <DndEquipments v-if="checkUser" @equipmentSelected="handleEquipmentSelected" />
+                    <DndCharacterEquipments v-if="checkUser" :equipment="character.characterData.equipments" :character-id="character.characterData.id" @equipmentRemoved="handleEquipmentRemoved" />
+                </div>
             </div>
 
             <!-- Spells -->
@@ -497,15 +629,15 @@
                         <i class="text-xs fa-solid fa-trash"></i>
                         <span class="hidden sm:block">Sil</span>
                     </button>
-                    <!-- <button type="button" class="col-span-2 col-start-3 text-amber-600 bg-amber-100 generalButton" @click="openMore = !openMore">
-                        <i class="fa-solid fa-note-sticky"></i>
-                        <span class="hidden sm:block">Notlar</span>
-                    </button> -->
-                    <button type="button" class="col-span-2 col-start-5 text-indigo-600 bg-indigo-100 generalButton" @click="zarModalShow = true;">
+                    <button type="button" class="col-span-2 text-purple-600 bg-purple-100 generalButton" @click="fullRest">
+                        <i class="text-xs fa-solid fa-bed"></i>
+                        <span class="hidden sm:block">Full Rest</span>
+                    </button>
+                    <button type="button" class="col-span-2 text-indigo-600 bg-indigo-100 generalButton" @click="zarModalShow = true;">
                         <i class="text-xs fa-solid fa-dice"></i>
                         <span class="hidden sm:block">Zar</span>
                     </button>
-                    <button type="button" class="col-start-2 row-start-2 sm:row-start-1 sm:col-start-8 text-neutral-600 bg-neutral-100 generalButton" @click="copyUrl">
+                    <button type="button" class="col-start-6 row-start-2 sm:row-start-1 sm:col-start-8 text-neutral-600 bg-neutral-100 generalButton" @click="copyUrl">
                         <i class="text-xs fa-solid fa-share" v-show="!copied"></i>
                         <i class="text-xs fa-solid fa-check" v-show="copied"></i>
                     </button>
@@ -589,6 +721,8 @@
 <script setup>
 import DndWeapons from '@/Components/DndWeapons.vue';
 import DndCharacterWeapons from '@/Components/DndCharacterWeapons.vue';
+import DndEquipments from '@/Components/DndEquipments.vue';
+import DndCharacterEquipments from '@/Components/DndCharacterEquipments.vue';
 import DndSpells from '@/Components/DndSpells.vue';
 import DndCharacterSpells from '@/Components/DndCharacterSpells.vue';
 import MiniLoader from '@/Components/MiniLoader.vue';
@@ -604,7 +738,7 @@ import toast from '@/Stores/toast';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import nProgress from 'nprogress';
-import { computed, onMounted, watch } from 'vue';
+import { computed, onMounted, watch, nextTick } from 'vue';
 import { ref } from 'vue';
 const props = defineProps({
     character: {
@@ -848,28 +982,116 @@ const featIdCounter = ref(1);
 const classFeatureIdCounter = ref(1);
 const speciesTraitIdCounter = ref(1);
 
-const addFeat = () => {
+// Search states for each section
+const featSearchTerm = ref('');
+const classFeatureSearchTerm = ref('');
+const speciesTraitSearchTerm = ref('');
+
+// Scroll container refs
+const featScrollContainer = ref(null);
+const classFeatureScrollContainer = ref(null);
+const speciesTraitScrollContainer = ref(null);
+
+// Filtered arrays for each section
+const filteredFeats = computed(() => {
+    if (!featSearchTerm.value) {
+        return character.characterData.features.feats;
+    }
+    return character.characterData.features.feats.filter(feat =>
+        feat.name.toLowerCase().includes(featSearchTerm.value.toLowerCase()) ||
+        feat.description.toLowerCase().includes(featSearchTerm.value.toLowerCase())
+    );
+});
+
+const filteredClassFeatures = computed(() => {
+    if (!classFeatureSearchTerm.value) {
+        return character.characterData.features.class_features;
+    }
+    return character.characterData.features.class_features.filter(feature =>
+        feature.name.toLowerCase().includes(classFeatureSearchTerm.value.toLowerCase()) ||
+        feature.description.toLowerCase().includes(classFeatureSearchTerm.value.toLowerCase())
+    );
+});
+
+const filteredSpeciesTraits = computed(() => {
+    if (!speciesTraitSearchTerm.value) {
+        return character.characterData.features.species_traits;
+    }
+    return character.characterData.features.species_traits.filter(trait =>
+        trait.name.toLowerCase().includes(speciesTraitSearchTerm.value.toLowerCase()) ||
+        trait.description.toLowerCase().includes(speciesTraitSearchTerm.value.toLowerCase())
+    );
+});
+
+const addFeat = async () => {
     character.characterData.features.feats.push({ id: featIdCounter.value++, name: "", description: "" });
+    await nextTick();
+    if (featScrollContainer.value) {
+        featScrollContainer.value.scrollTop = featScrollContainer.value.scrollHeight;
+    }
 };
 
 const removeFeat = (index) => {
     character.characterData.features.feats.splice(index, 1);
 };
 
-const addClassFeature = () => {
+const addClassFeature = async () => {
     character.characterData.features.class_features.push({ id: classFeatureIdCounter.value++, name: "", description: "" });
+    await nextTick();
+    if (classFeatureScrollContainer.value) {
+        classFeatureScrollContainer.value.scrollTop = classFeatureScrollContainer.value.scrollHeight;
+    }
 };
 
 const removeClassFeature = (index) => {
     character.characterData.features.class_features.splice(index, 1);
 };
 
-const addSpeciesTrait = () => {
+const addSpeciesTrait = async () => {
     character.characterData.features.species_traits.push({ id: speciesTraitIdCounter.value++, name: "", description: "" });
+    await nextTick();
+    if (speciesTraitScrollContainer.value) {
+        speciesTraitScrollContainer.value.scrollTop = speciesTraitScrollContainer.value.scrollHeight;
+    }
 };
 
 const removeSpeciesTrait = (index) => {
     character.characterData.features.species_traits.splice(index, 1);
+};
+
+// Full Rest Function
+const fullRest = () => {
+    // Reset spell slots (set expanded to 0 for all slots)
+    if (spellSlots.value && Array.isArray(spellSlots.value)) {
+        spellSlots.value.forEach(slot => {
+            if (slot && typeof slot === 'object') {
+                slot.expanded = 0;
+            }
+        });
+    }
+    
+    // Reset HP to max HP
+    if (character.characterData.max_hp) {
+        character.characterData.current_hp = character.characterData.max_hp;
+    }
+    
+    // Reset spent hit dice to 0
+    character.characterData.spent_hit_dice = '0';
+    
+    // Reset death saves
+    successDeathSaves.value.forEach(save => {
+        save.checked = false;
+    });
+    failDeathSaves.value.forEach(save => {
+        save.checked = false;
+    });
+    
+    // Update character data for death saves
+    character.characterData.success_death_save = 0;
+    character.characterData.fail_death_save = 0;
+    
+    // Show success message
+    toast.add({ type: 'success', message: 'Full rest completed! HP restored, spell slots reset, hit dice recovered, death saves cleared.' });
 };
 
 const handleWeaponSelected = async (weapon) => {
@@ -887,6 +1109,23 @@ const handleWeaponSelected = async (weapon) => {
 
 const handleWeaponRemoved = (weaponId) => {
     character.characterData.weapons = character.characterData.weapons.filter(weapon => weapon.id !== weaponId);
+};
+
+const handleEquipmentSelected = async (equipment) => {
+    try {
+        await axios.post('/dnd/character-equipment-add', {
+            character_id: character.characterData.id,
+            equipment_id: equipment.id
+        });
+        toast.add({ type: 'success', message: 'Equipment added successfully' });
+        character.characterData.equipments.push(equipment);
+    } catch (error) {
+        toast.add({ type: 'error', message: 'Failed to add equipment' });
+    }
+};
+
+const handleEquipmentRemoved = (equipmentId) => {
+    character.characterData.equipments = character.characterData.equipments.filter(equipment => equipment.id !== equipmentId);
 };
 
 const handleSpellSelected = async (spell) => {
@@ -920,6 +1159,51 @@ const fetchProperties = async () => {
 
 <style>
 .lineInput {
-    @apply bg-transparent p-0 border-t-transparent border-x-transparent border-b-gray-300 focus:outline-none focus:ring-0 focus:border-x-transparent focus:border-t-transparent focus:border-b-indigo-500 leading-none;
+    background-color: transparent;
+    padding: 0;
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
+    border-bottom: 1px solid rgb(209 213 219);
+    outline: none;
+    box-shadow: none;
+    line-height: 1;
+}
+
+.lineInput:focus {
+    outline: none;
+    box-shadow: none;
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
+    border-bottom: 1px solid rgb(99 102 241);
+}
+
+/* Custom scrollbar for feats sections */
+.overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Dark mode scrollbar */
+.dark .overflow-y-auto::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.dark .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
 }
 </style>
