@@ -36,7 +36,7 @@
                     <div
                         v-for="spell in levelSpells"
                         :key="spell.id"
-                        @click="showDetails(spell)"
+                        @click.self="showDetails(spell)"
                         class="p-4 transition-all duration-200 bg-white border border-gray-200 rounded-lg shadow-sm hover:cursor-pointer dark:bg-gray-700 dark:border-gray-600 hover:shadow-md hover:border-purple-300 dark:hover:border-purple-500 group"
                     >
                         <!-- Spell Header -->
@@ -54,7 +54,7 @@
                             <div class="flex items-center gap-1 ml-2">
                                 <button
                                     @click="showDetails(spell)"
-                                    class="flex items-center justify-center w-8 h-8 text-blue-600 transition-all duration-200 rounded-full  md:hidden hover:bg-blue-100 dark:text-blue-400 dark:hover:bg-blue-900/30"
+                                    class="flex items-center justify-center w-8 h-8 text-blue-600 transition-all duration-200 rounded-full md:hidden hover:bg-blue-100 dark:text-blue-400 dark:hover:bg-blue-900/30"
                                     title="View Details"
                                 >
                                     <i class="text-sm fa-solid fa-info"></i>
