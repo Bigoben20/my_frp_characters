@@ -36,12 +36,13 @@
                     <div
                         v-for="spell in levelSpells"
                         :key="spell.id"
-                        class="p-4 transition-all duration-200 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-700 dark:border-gray-600 hover:shadow-md hover:border-purple-300 dark:hover:border-purple-500 group"
+                        @click="showDetails(spell)"
+                        class="p-4 transition-all duration-200 bg-white border border-gray-200 rounded-lg shadow-sm hover:cursor-pointer dark:bg-gray-700 dark:border-gray-600 hover:shadow-md hover:border-purple-300 dark:hover:border-purple-500 group"
                     >
                         <!-- Spell Header -->
                         <div class="flex items-start justify-between mb-3">
                             <div class="flex-1">
-                                <h5 class="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                                <h5 class="font-semibold text-gray-900 transition-colors dark:text-gray-100 group-hover:text-purple-600 dark:group-hover:text-purple-400">
                                     {{ spell.name }}
                                 </h5>
                                 <div class="flex items-center gap-2 mt-1">
@@ -53,7 +54,7 @@
                             <div class="flex items-center gap-1 ml-2">
                                 <button
                                     @click="showDetails(spell)"
-                                    class="flex items-center justify-center w-8 h-8 text-blue-600 transition-all duration-200 rounded-full hover:bg-blue-100 dark:text-blue-400 dark:hover:bg-blue-900/30"
+                                    class="flex items-center justify-center w-8 h-8 text-blue-600 transition-all duration-200 rounded-full  md:hidden hover:bg-blue-100 dark:text-blue-400 dark:hover:bg-blue-900/30"
                                     title="View Details"
                                 >
                                     <i class="text-sm fa-solid fa-info"></i>
@@ -107,7 +108,12 @@
 
                         <!-- Spell Description Preview -->
                         <div class="mt-3">
-                            <p class="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">
+                            <a class="text-sm text-red-700 dark:text-red-300 hover:underline line-clamp-2"
+                             v-if="spell.description.includes('http')" :href="spell.description" target="_blank">
+                                Details<i class="ml-1 fa-solid fa-arrow-up-right-from-square"></i> 
+                            </a>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 line-clamp-2"
+                             v-else>
                                 {{ spell.description }}
                             </p>
                         </div>
@@ -154,7 +160,7 @@
 
                 <div class="space-y-6 overflow-y-auto max-h-[calc(70vh-120px)]">
                     <!-- Quick Stats -->
-                    <div class="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg dark:bg-gray-700/50 md:grid-cols-4">
+                    <div class="grid grid-cols-2 gap-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-700/50 md:grid-cols-4">
                         <div class="text-center">
                             <div class="text-xs font-medium text-gray-600 dark:text-gray-400">Casting Time</div>
                             <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ selectedSpell.casting_time }}</div>
@@ -195,7 +201,8 @@
                     <div class="space-y-3">
                         <div>
                             <h3 class="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">Description</h3>
-                            <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">{{ selectedSpell.description }}</p>
+                            <a class="text-sm leading-relaxed text-red-600 dark:text-red-400" v-if="selectedSpell.description.includes('http')" :href="selectedSpell.description" target="_blank">Details <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                            <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400" v-else>{{ selectedSpell.description }}</p>
                         </div>
 
                         <div v-if="selectedSpell.higher_levels" class="pt-3 border-t border-gray-200 dark:border-gray-600">
