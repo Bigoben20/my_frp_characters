@@ -6,6 +6,9 @@ use App\Http\Controllers\DndEquipmentController;
 use App\Http\Controllers\DndSpellController;
 use App\Http\Controllers\DndWeaponController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Character;
+use App\Models\DndCharacter;
+use App\Models\DndClasses;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,11 +25,19 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
+    $allCharacters = Character::with('user')->orderBy("id", "Desc")->paginate(15);
+    $allDndCharacters = DndCharacter::with('user')->orderBy("id", "DESC")->paginate("15", ["*"], "allDndCharacters");
+    $dndClasses = DndClasses::orderBy('name', 'asc')->get();
+
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'allCharacters' => $allCharacters,
+        'allDndCharacters' => $allDndCharacters,
+        'dndClasses' => $dndClasses,
     ]);
 });
 Route::get('/character-detail/{id}', [DashboardController::class, 'detailsCharacter'])->name('character.details');
@@ -47,6 +58,9 @@ Route::middleware('auth')->group(function () {
     
     // DND Character
     Route::prefix('dnd')->group(function () {
+        Route::get('/spells-list', [DndSpellController::class, 'showSpellList'])->name('dnd.spells.list');
+        Route::get('/spells/filter-options', [DndSpellController::class, 'getFilterOptions'])->name('dnd.spells.filter-options');
+        
         Route::post('/character-create', [DndCharacterController::class, 'dndCharacterStore'])->name('dnd.character.store');
         Route::post('/character-update', [DndCharacterController::class, 'dndCharacterUpdate'])->name('dnd.character.update');
         Route::post('/character-delete', [DndCharacterController::class, 'dndCharacterDelete'])->name('dnd.character.delete');
