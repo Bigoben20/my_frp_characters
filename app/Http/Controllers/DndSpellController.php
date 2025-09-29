@@ -55,9 +55,9 @@ class DndSpellController extends Controller
 
         // Sayfalama
         $perPage = $request->get('per_page', 20);
-        $spells = $query->paginate($perPage);
+        $spells = $query->get();
 
-        return response()->json($spells);
+        return response()->json(["success" => true, "data" => $spells]);
     }
 
     public function showSpellList()

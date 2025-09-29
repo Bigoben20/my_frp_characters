@@ -359,8 +359,7 @@ const searchSpells = () => {
   
   filteredSpells.value = spells.value.filter(spell =>
     spell.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-    spell.school.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-    spell.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+    spell.school.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 };
 
