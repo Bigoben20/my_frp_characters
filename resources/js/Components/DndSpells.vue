@@ -312,9 +312,10 @@ watch(selectedClasses, () => {
 const fetchSpells = async () => {
   try {
     const response = await axios.get('/dnd/spells');
-    spells.value = response.data;
+    spells.value = response.data.data || []; // Paginated data içerisinden actual data array'ini al
     filteredSpells.value = spells.value;
   } catch (error) {
+    console.error('Fetch spells error:', error);
     toast.add({ type: 'error', message: 'Failed to fetch spells' });
   }
 };
@@ -350,6 +351,12 @@ const addSpell = async () => {
 };
 
 const searchSpells = () => {
+  if (!Array.isArray(spells.value)) {
+    console.warn('Spells is not an array:', spells.value);
+    filteredSpells.value = [];
+    return;
+  }
+  
   filteredSpells.value = spells.value.filter(spell =>
     spell.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
     spell.school.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
