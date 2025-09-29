@@ -171,7 +171,14 @@
                                 </div>
 
                                 <div class="mb-2 text-sm text-gray-700 dark:text-gray-300">
-                                    {{ spell.description }}
+                                    <a class="text-sm text-red-700 dark:text-red-300 hover:underline line-clamp-2"
+                                    v-if="spell.description.includes('http')" :href="spell.description" target="_blank">
+                                        Details<i class="ml-1 fa-solid fa-arrow-up-right-from-square"></i> 
+                                    </a>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 line-clamp-2"
+                                    v-else>
+                                        {{ spell.description }}
+                                    </p>
                                 </div>
 
                                 <div v-if="spell.higher_levels" class="text-sm text-gray-600 dark:text-gray-400">
