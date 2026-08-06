@@ -425,9 +425,9 @@ function deleteCharacter(id) {
 }
 function getLength(data) {
     if (data == null) {
-        return 0;
+        return "0";
     }
-    return data.length;
+    return data.length.toString();
 }
 
 // Kopyalama

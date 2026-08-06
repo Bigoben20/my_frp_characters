@@ -6,7 +6,7 @@ import postIt from '@/assets/icons/post-it.png';
 import Roll from '@/Components/Roll.vue';
 import Galeri from '@/Components/Galeri.vue';
 
-defineProps({
+const props = defineProps({
     canLogin: {
         type: Boolean,
     },
@@ -21,7 +21,37 @@ defineProps({
         type: String,
         required: true,
     },
+    allCharacters: {
+        type: Object,
+    },
+    allDndCharacters: {
+        type: Object,
+    },
+    dndClasses: {
+        type: Object,
+    },
 });
+
+function goToChar(id, system) {
+    let url = "";
+    switch (system) {
+        case 'fate':
+            url = "/character-detail/" + id
+            break;
+        case 'd&d':
+            url = "/dnd/character-detail/" + id
+            break;
+
+        default:
+            url = '/'
+            break;
+    }
+    window.location.href = url;
+}
+
+function getClassName(classId) {
+    return props.dndClasses.find(classItem => classItem.id == classId).name;
+}
 </script>
 
 <template>
@@ -30,19 +60,19 @@ defineProps({
 
     <div class="relative min-h-screen bg-gray-100 bg-center sm:flex sm:justify-center sm:items-center bg-dots-darker dark:bg-dots-lighter dark:bg-gray-900">
         <div class="flex items-center justify-between">
-            <div class="w-1/2 p-6 font-semibold dark:text-gray-400 sm:fixed sm:top-0 sm:left-0 sm:w-fit">
+            <div class="z-20 w-1/2 p-6 font-semibold dark:text-gray-400 sm:fixed sm:top-0 sm:left-0 sm:w-fit">
                 My Frp Characters
             </div>
-            <div v-if="canLogin" class="w-1/2 p-6 sm:fixed sm:top-0 sm:right-0 text-end sm:w-fit">
+            <div v-if="canLogin" class="z-20 w-1/2 p-6 sm:fixed sm:top-0 sm:right-0 text-end sm:w-fit">
                 <Link v-if="$page.props.auth.user" :href="route('dashboard')"
                     class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">Dashboard
                 </Link>
-    
+
                 <template v-else>
                     <Link :href="route('login')"
                         class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">Log in
                     </Link>
-    
+
                     <Link v-if="canRegister" :href="route('register')"
                         class="font-semibold text-gray-600 ms-4 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">
                     Register
@@ -99,8 +129,80 @@ defineProps({
                     </div>
                 </div>
             </div>
-            
+
             <!-- <Galeri/> -->
+            <!-- Other DnD Characters -->
+            <div class="mt-8">
+                <div class="space-y-2 max-w-7xl">
+                    <div class="p-4 overflow-hidden bg-white rounded-lg shadow-sm sm:p-6 dark:bg-gray-800">
+                        <div class="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">Other D&D Characters <span class="text-blue-600 dark:text-blue-400">({{ allDndCharacters.total
+                                }})</span>
+                        </div>
+                        <div class="w-full">
+                            <table class="w-full text-left table-fixed">
+                                <thead class="dark:text-gray-300">
+                                    <tr class="bg-gray-100 dark:bg-gray-700">
+                                        <th class="px-3 py-1.5 rounded-l w-10">ID</th>
+                                        <th class="px-3 py-1.5">Name</th>
+                                        <th class="px-3 py-1.5">Level</th>
+                                        <th class="px-3 py-1.5">Class</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="dark:text-gray-100">
+                                    <tr v-for="character in allDndCharacters.data" :key="character.id" @click="goToChar(character.id, 'd&d')"
+                                        class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
+                                        <td class="px-3 py-1.5">{{ character.id }}</td>
+                                        <td class="px-3 py-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{{ character.name }}</td>
+                                        <td class="px-3 py-1.5">
+                                            {{ character.level ?? '1' }}
+                                        </td>
+                                        <td class="px-3 py-1.5">
+                                            {{ character.class ? getClassName(character.class) : 'Unknown' }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="mt-4">
+                                <Pagination :links="allDndCharacters.links" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="p-4 overflow-hidden bg-white rounded-lg shadow-sm sm:p-6 dark:bg-gray-800">
+                        <div class="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">Other Fate Characters <span class="text-blue-600 dark:text-blue-400">({{ allCharacters.total }})</span>
+                        </div>
+                        <div class="w-full">
+                            <table class="w-full text-left table-fixed">
+                                <thead class="dark:text-gray-300">
+                                    <tr class="bg-gray-100 dark:bg-gray-700">
+                                        <th class="px-3 py-1.5 rounded-l w-10">ID</th>
+                                        <th class="px-3 py-1.5">User</th>
+                                        <th class="px-3 py-1.5">Name</th>
+                                        <th class="px-3 py-1.5 rounded-r">High Concept</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="dark:text-gray-100">
+                                    <tr v-for="character in allCharacters.data" :key="character.id" @click="goToChar(character.id, 'fate')"
+                                        class="hover:cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/20">
+                                        <td class="px-3 py-1.5">{{ character.id }}</td>
+                                        <td class="px-3 py-1.5 whitespace-nowrap">{{ character.user.name }}</td>
+                                        <td class="px-3 py-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{{ character.name }}</td>
+                                        <td class="px-3 py-1.5">
+                                            <div class="overflow-hidden text-ellipsis whitespace-nowrap">
+                                                {{ character.high_concept }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="mt-4">
+                                <Pagination :links="allCharacters.links" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="flex justify-center px-6 mt-16 sm:items-center sm:justify-between">
                 <div class="text-sm text-center text-gray-500 dark:text-gray-400 sm:text-start">
