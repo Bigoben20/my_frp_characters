@@ -729,7 +729,7 @@
                 </button>
             </div>
             <div class="my-6 dark:text-gray-200">
-                <Roll type="2"></Roll>
+                <DiceRoller />
             </div>
         </div>
     </Modal>
@@ -744,7 +744,7 @@ import DndSpells from '@/Components/DndSpells.vue';
 import DndCharacterSpells from '@/Components/DndCharacterSpells.vue';
 import MiniLoader from '@/Components/MiniLoader.vue';
 import Modal from '@/Components/Modal.vue';
-import Roll from '@/Components/Roll.vue';
+import DiceRoller from '@/Components/Dice/DiceRoller.vue';
 import TextAreaInput from '@/Components/TextAreaInput.vue';
 import TextCounter from '@/Components/TextCounter.vue';
 import TextInput from '@/Components/TextInput.vue';
