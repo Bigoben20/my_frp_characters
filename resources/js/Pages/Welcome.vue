@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import ditto from '@/assets/icons/ditto.png';
 import Logo from '@/Components/ApplicationLogo.vue';
 import postIt from '@/assets/icons/post-it.png';
-import Roll from '@/Components/Roll.vue';
+import DiceRoller from '@/Components/Dice/DiceRoller.vue';
 import Galeri from '@/Components/Galeri.vue';
 
 const props = defineProps({
@@ -83,9 +83,9 @@ function getClassName(classId) {
 
         <div class="p-6 mx-auto max-w-7xl lg:p-8 sm:mt-[72px]">
             <div class="flex items-center justify-center">
-                <div class="sm:w-1/2">
+                <div class="w-full sm:w-1/2">
                     <!-- <Logo class="w-40 h-40" /> -->
-                    <Roll type="1"></Roll>
+                    <DiceRoller />
                 </div>
             </div>
 

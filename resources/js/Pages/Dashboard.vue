@@ -128,14 +128,6 @@
         <div class="pt-12 pb-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="p-4 bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
-                    <Roll></Roll>
-                </div>
-            </div>
-        </div>
-
-        <div class="pb-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="p-4 bg-white shadow-sm sm:p-6 dark:bg-gray-800 sm:rounded-lg">
                     <div class="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">Zar At</div>
                     <DiceRoller class="max-w-2xl mx-auto" />
                 </div>
@@ -319,7 +311,6 @@ import SelectInput from '@/Components/SelectInput.vue';
 import TextCounter from '@/Components/TextCounter.vue';
 import MiniLoader from '@/Components/MiniLoader.vue';
 import TextAreainput from '@/Components/TextAreaInput.vue';
-import Roll from '@/Components/Roll.vue'
 import DiceRoller from '@/Components/Dice/DiceRoller.vue'
 import Pagination from '@/Components/Pagination.vue'
 
