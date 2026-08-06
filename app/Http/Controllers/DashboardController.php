@@ -22,7 +22,7 @@ class DashboardController extends Controller
         $allCharacters = Character::with('user')->where("user_id", "<>", Auth::user()->id)->orderBy("id", "Desc")->paginate(15);
         $dndClasses = DndClasses::orderBy('name', 'asc')->get();
         $dndCharacters = DndCharacter::where("user_id", Auth::user()->id)->orderBy("id", "DESC")->paginate("15", ["*"], "dndCharacters");
-        $allDndCharacters = DndCharacter::with('user')->where("user_id", "<>", Auth::user()->id)->orderBy("id", "DESC")->paginate("15", ["*"], "allDndCharacters");
+        $allDndCharacters = DndCharacter::with('user')->where("user_id", "<>", Auth::user()->id)->where("is_public", 1)->orderBy("id", "DESC")->paginate("15", ["*"], "allDndCharacters");
 
         return Inertia::render('Dashboard', compact("characters", "allCharacters", "dndCharacters", "dndClasses", "allDndCharacters"));
     }

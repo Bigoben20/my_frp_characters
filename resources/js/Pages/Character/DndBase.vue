@@ -295,7 +295,7 @@
                 <div class="flex flex-col bg-white rounded-lg h-[500px] lg:h-[70svh] dark:bg-gray-800">
                     <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-600">
                         <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Feats</span>
-                        <button type="button" @click="addFeat" class="flex items-center gap-2 px-3 py-1 text-sm text-green-700 transition-colors bg-green-100 rounded-lg hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800">
+                        <button v-if="checkUser" type="button" @click="addFeat" class="flex items-center gap-2 px-3 py-1 text-sm text-green-700 transition-colors bg-green-100 rounded-lg hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800">
                             <i class="fa-solid fa-plus"></i>
                             <span>Add Feat</span>
                         </button>
@@ -334,8 +334,8 @@
                                             class="w-full font-medium"
                                             :auth="checkUser" />
                                     </div>
-                                    <button type="button" 
-                                            @click="removeFeat(character.characterData.features.feats.indexOf(feat))" 
+                                    <button v-if="checkUser" type="button"
+                                            @click="removeFeat(character.characterData.features.feats.indexOf(feat))"
                                             class="p-2 ml-3 text-red-600 transition-colors rounded-lg hover:text-red-800 hover:bg-red-100 dark:hover:bg-red-900 dark:hover:text-red-400"
                                             title="Delete feat">
                                         <i class="fa-solid fa-trash"></i>
@@ -373,7 +373,7 @@
                 <div class="flex flex-col bg-white rounded-lg h-[500px] lg:h-[70svh] dark:bg-gray-800">
                     <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-600">
                         <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Class Features</span>
-                        <button type="button" @click="addClassFeature" class="flex items-center gap-2 px-3 py-1 text-sm text-blue-700 transition-colors bg-blue-100 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800">
+                        <button v-if="checkUser" type="button" @click="addClassFeature" class="flex items-center gap-2 px-3 py-1 text-sm text-blue-700 transition-colors bg-blue-100 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800">
                             <i class="fa-solid fa-plus"></i>
                             <span>Add Feature</span>
                         </button>
@@ -412,8 +412,8 @@
                                             class="w-full font-medium"
                                             :auth="checkUser" />
                                     </div>
-                                    <button type="button" 
-                                            @click="removeClassFeature(character.characterData.features.class_features.indexOf(feature))" 
+                                    <button v-if="checkUser" type="button"
+                                            @click="removeClassFeature(character.characterData.features.class_features.indexOf(feature))"
                                             class="p-2 ml-3 text-red-600 transition-colors rounded-lg hover:text-red-800 hover:bg-red-100 dark:hover:bg-red-900 dark:hover:text-red-400"
                                             title="Delete feature">
                                         <i class="fa-solid fa-trash"></i>
@@ -451,7 +451,7 @@
                 <div class="flex flex-col bg-white rounded-lg h-[500px] lg:h-[70svh] dark:bg-gray-800">
                     <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-600">
                         <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Species Traits</span>
-                        <button type="button" @click="addSpeciesTrait" class="flex items-center gap-2 px-3 py-1 text-sm text-purple-700 transition-colors bg-purple-100 rounded-lg hover:bg-purple-200 dark:bg-purple-900 dark:text-purple-300 dark:hover:bg-purple-800">
+                        <button v-if="checkUser" type="button" @click="addSpeciesTrait" class="flex items-center gap-2 px-3 py-1 text-sm text-purple-700 transition-colors bg-purple-100 rounded-lg hover:bg-purple-200 dark:bg-purple-900 dark:text-purple-300 dark:hover:bg-purple-800">
                             <i class="fa-solid fa-plus"></i>
                             <span>Add Trait</span>
                         </button>
@@ -490,8 +490,8 @@
                                             class="w-full font-medium"
                                             :auth="checkUser" />
                                     </div>
-                                    <button type="button" 
-                                            @click="removeSpeciesTrait(character.characterData.features.species_traits.indexOf(trait))" 
+                                    <button v-if="checkUser" type="button"
+                                            @click="removeSpeciesTrait(character.characterData.features.species_traits.indexOf(trait))"
                                             class="p-2 ml-3 text-red-600 transition-colors rounded-lg hover:text-red-800 hover:bg-red-100 dark:hover:bg-red-900 dark:hover:text-red-400"
                                             title="Delete trait">
                                         <i class="fa-solid fa-trash"></i>
@@ -755,7 +755,7 @@ import toast from '@/Stores/toast';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import nProgress from 'nprogress';
-import { computed, onMounted, watch, nextTick } from 'vue';
+import { computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { ref } from 'vue';
 const props = defineProps({
     character: {
@@ -857,16 +857,24 @@ const updateCharacter = async () => {
     });
 }
 
-// AutoSaves
-const autoSaveInfo = setInterval(() => {
-    toast.add({
-        type: 'warning', message: "Kardeş bayadır kaydete basmadın! 2 dakika içinde autosave alınacaktır."
-    });
-}, 300000);
+// AutoSaves (sadece karakterin sahibi için)
+let autoSaveInfo = null;
+let autoSave = null;
+if (checkUser.value) {
+    autoSaveInfo = setInterval(() => {
+        toast.add({
+            type: 'warning', message: "Kardeş bayadır kaydete basmadın! 2 dakika içinde autosave alınacaktır."
+        });
+    }, 300000);
 
-const autoSave = setInterval(() => {
-    updateCharacter();
-}, 500000);
+    autoSave = setInterval(() => {
+        updateCharacter();
+    }, 500000);
+}
+onUnmounted(() => {
+    clearInterval(autoSaveInfo);
+    clearInterval(autoSave);
+});
 
 const tabs = ref([
     { id: 0, name: "Character Info", active: true },

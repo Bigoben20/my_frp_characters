@@ -10,6 +10,7 @@ use App\Models\Character;
 use App\Models\DndCharacter;
 use App\Models\DndClasses;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,7 +27,11 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     $allCharacters = Character::with('user')->orderBy("id", "Desc")->paginate(15);
-    $allDndCharacters = DndCharacter::with('user')->orderBy("id", "DESC")->paginate("15", ["*"], "allDndCharacters");
+    $allDndCharacters = DndCharacter::with('user')
+        ->where(function ($query) {
+            $query->where("is_public", 1)->orWhere("user_id", Auth::id());
+        })
+        ->orderBy("id", "DESC")->paginate("15", ["*"], "allDndCharacters");
     $dndClasses = DndClasses::orderBy('name', 'asc')->get();
 
 

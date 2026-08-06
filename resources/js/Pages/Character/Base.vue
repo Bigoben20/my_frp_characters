@@ -278,7 +278,7 @@ import Textinput from '@/Components/TextInput.vue';
 import TextAreainput from '@/Components/TextAreaInput.vue';
 import TextCounter from '@/Components/TextCounter.vue';
 import CharacterImageModal from '@/Includes/CharacterImageModal.vue';
-import { computed, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import MiniLoader from '@/Components/MiniLoader.vue';
 import NProgress from 'nprogress'
@@ -374,16 +374,24 @@ const updateCharacter = async () => {
     });
 }
 
-// AutoSaves
-const autoSaveInfo = setInterval(() => {
-    toast.add({
+// AutoSaves (sadece karakterin sahibi için)
+let autoSaveInfo = null;
+let autoSave = null;
+if (checkUser.value) {
+    autoSaveInfo = setInterval(() => {
+        toast.add({
             type: 'warning', message: "Kardeş bayadır kaydete basmadın!"
         });
-}, 290000);
+    }, 290000);
 
-const autoSave = setInterval(() => {
-    updateCharacter();
-}, 600000);
+    autoSave = setInterval(() => {
+        updateCharacter();
+    }, 600000);
+}
+onUnmounted(() => {
+    clearInterval(autoSaveInfo);
+    clearInterval(autoSave);
+});
 
 
 const openMore = ref(false);

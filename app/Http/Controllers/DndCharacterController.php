@@ -20,6 +20,9 @@ class DndCharacterController extends Controller
         if (!$character) {
             return redirect()->back()->with('error', 'Karakter bulunamadı');
         }
+        if (!$character->is_public && $character->user_id != Auth::id()) {
+            return redirect('/')->with('error', 'Bu karakteri görüntüleme yetkiniz bulunmamaktadır!');
+        }
         $classes = DndClasses::orderBy('name','asc')->get();
 
         return Inertia::render('DNDCharacterDetails', compact("character","classes"));
